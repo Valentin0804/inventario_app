@@ -15,6 +15,8 @@ const sequelize = new Sequelize(
 const Producto = require("./Producto.model")(sequelize, DataTypes);
 const Venta = require("./Venta.model")(sequelize, DataTypes);
 const DetalleVenta = require("./DetalleVenta.model")(sequelize, DataTypes);
+const Usuario = require("./Usuario.model")(sequelize, DataTypes); 
+
 
 // Se crea el objeto db con los modelos
 const db = {};
@@ -24,8 +26,15 @@ db.Sequelize = Sequelize;
 db.Producto = Producto;
 db.Venta = Venta;
 db.DetalleVenta = DetalleVenta;
+db.Usuario = Usuario;
 
 // Relaciones
+db.Usuario.hasMany(db.Producto, { foreignKey: 'usuarioId' });
+db.Producto.belongsTo(db.Usuario, { foreignKey: 'usuarioId' });
+
+db.Usuario.hasMany(db.Venta, { foreignKey: 'usuarioId' });
+db.Venta.belongsTo(db.Usuario, { foreignKey: 'usuarioId' });
+
 db.Venta.hasMany(db.DetalleVenta, { foreignKey: "ventaId" });
 db.DetalleVenta.belongsTo(db.Venta, { foreignKey: "ventaId" });
 

@@ -1,0 +1,25 @@
+<div class="login-container">
+  <div class="login-card">
+    <h2 class="login-title">Iniciar Sesión</h2>
+
+    <!-- Cuando el formulario se envía, llama a onLogin() -->
+    <form (ngSubmit)="onLogin()">
+      <!-- Email -->
+      <div class="input-group">
+        <label for="email" class="input-label">Correo electrónico</label>
+        <!-- Enlazamos el input con la variable 'email' -->
+        <input type="email" id="email" name="email" [(ngModel)]="email" required class="input-field" placeholder="ejemplo@correo.com"/>
+      </div>
+
+      <!-- Contraseña -->
+      <div class="input-group">
+        <label for="password" class="input-label">Contraseña</label>
+        <!-- Enlazamos el input con la variable 'password' -->
+        <input type="password" id="password" name="password" [(ngModel)]="password" required class="input-field" placeholder="********"/>
+      </div>
+
+      <!-- Botón -->
+      <button type="submit" class="submit-button">Ingresar</button>
+    </form>
+  </div>
+</div>

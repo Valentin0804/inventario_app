@@ -1,0 +1,83 @@
+/* Estilos generales del body para centrar el contenido */
+body {
+    margin: 0;
+    font-family: sans-serif;
+}
+
+/* Contenedor principal para el registro */
+.register-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f3f4f6; /* Un gris claro de fondo */
+}
+
+/* Tarjeta o contenedor del formulario */
+.register-card {
+    width: 100%;
+    max-width: 28rem; /* Ancho máximo */
+    background-color: #ffffff; /* Fondo blanco */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Sombra suave */
+    border-radius: 1rem; /* Bordes redondeados */
+    padding: 2rem; /* Espaciado interno */
+}
+
+/* Título del formulario */
+.register-title {
+    font-size: 1.5rem; /* Tamaño de fuente grande */
+    font-weight: 700; /* Texto en negrita */
+    text-align: center;
+    color: #1f2937; /* Color de texto oscuro */
+    margin-top: 0;
+    margin-bottom: 1.5rem; /* Espacio debajo del título */
+}
+
+/* Contenedor para cada par de etiqueta y campo de entrada */
+.input-group {
+    margin-bottom: 1.25rem; /* Espacio entre campos */
+}
+
+/* Etiqueta (label) de cada campo */
+.input-label {
+    display: block; /* Para que ocupe su propia línea */
+    color: #374151; /* Color de texto gris oscuro */
+    font-weight: 600; /* Semi-negrita */
+    margin-bottom: 0.5rem; /* Espacio debajo de la etiqueta */
+}
+
+/* Estilo para los campos de texto (input) */
+.input-field {
+    width: 100%;
+    box-sizing: border-box; /* Para que el padding no afecte el ancho total */
+    padding: 0.75rem 1rem; /* Espaciado interno */
+    border: 1px solid #d1d5db; /* Borde sutil */
+    border-radius: 0.5rem; /* Bordes redondeados */
+    font-size: 1rem;
+}
+
+/* Estilo del campo cuando está seleccionado (en foco) */
+.input-field:focus {
+    outline: none; /* Quitamos el contorno por defecto */
+    border-color: #3b82f6; /* Cambiamos el color del borde */
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3); /* Añadimos una sombra de foco */
+}
+
+/* Botón de envío */
+.submit-button {
+    width: 100%;
+    border: none;
+    cursor: pointer;
+    background-color: #2563eb; /* Color de fondo azul */
+    color: #ffffff; /* Texto blanco */
+    padding: 0.75rem 0; /* Espaciado vertical */
+    border-radius: 0.5rem; /* Bordes redondeados */
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background-color 0.2s; /* Transición suave para el hover */
+}
+
+/* Efecto al pasar el ratón sobre el botón */
+.submit-button:hover {
+    background-color: #1d4ed8; /* Un azul más oscuro */
+}

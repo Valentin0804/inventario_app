@@ -1,0 +1,80 @@
+/* Contenedor principal */
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #f3f4f6; /* bg-gray-100 */
+}
+
+/* Tarjeta de inicio de sesión */
+.login-card {
+  width: 100%;
+  max-width: 28rem; /* max-w-md */
+  background-color: #ffffff; /* bg-white */
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-lg */
+  border-radius: 1rem; /* rounded-2xl */
+  padding: 2rem; /* p-8 */
+}
+
+/* Título */
+.login-title {
+  font-size: 1.5rem; /* text-2xl */
+  font-weight: 700; /* font-bold */
+  text-align: center;
+  color: #1f2937; /* text-gray-800 */
+  margin-bottom: 1.5rem; /* mb-6 */
+}
+
+/* Grupo de entrada */
+.input-group {
+  margin-bottom: 1rem; /* mb-4 */
+}
+
+/* Etiqueta de entrada */
+.input-label {
+  display: block;
+  color: #374151; /* text-gray-700 */
+  font-weight: 400; /* font-semibold */
+  margin-bottom: 0.5rem; /* mb-2 */
+}
+
+/* Campo de entrada */
+.input-field {
+  width: 100%;
+  padding: 0.5rem 1rem; /* px-4 py-2 */
+  border: 1px solid #d1d5db; /* border */
+  border-radius: 0.5rem; /* rounded-lg */
+}
+
+.input-field:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(3px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+  --tw-ring-color: rgba(191, 219, 254, var(--tw-ring-opacity)); /* focus:ring-blue-200 */
+  --tw-ring-opacity: 1;
+}
+
+/* Botón de envío */
+.submit-button {
+  width: 100%;
+  background-color: #2563eb; /* bg-blue-600 */
+  color: #ffffff; /* text-white */
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem; /* py-2 */
+  border-radius: 0.5rem; /* rounded-lg */
+  transition-property: background-color;
+  transition-duration: 150ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); /* transition */
+}
+
+.submit-button:hover {
+  background-color: #1d4ed8; /* hover:bg-blue-700 */
+}
+
+.submit-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

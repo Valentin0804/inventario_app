@@ -13,6 +13,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.FLOAT,
         allowNull: false,
       },
+      usuarioId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Usuarios', // Nombre de la tabla referenciada
+          key: 'id' // Clave primaria de la tabla referenciada
+        }
+      },
     });
   
     return Venta;

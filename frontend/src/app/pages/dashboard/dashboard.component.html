@@ -1,0 +1,55 @@
+<div class="dashboard-container">
+  <h1>Dashboard</h1>
+
+  <!-- Usamos ng-container y *ngIf para esperar a que los datos lleguen -->
+  <ng-container *ngIf="summary$ | async as summary; else loading">
+
+    <!-- Fila de Acciones Rápidas -->
+    <div class="card-row">
+      <div class="action-card">
+        <h2>Nueva Venta</h2>
+        <p>Registra una nueva transacción.</p>
+        <button class="btn-primary">Iniciar Venta</button>
+      </div>
+      <div class="action-card">
+        <h2>Cargar Producto</h2>
+        <p>Añade un nuevo item a tu inventario.</p>
+        <button class="btn-secondary">Añadir Producto</button>
+      </div>
+    </div>
+
+    <!-- Fila de KPIs -->
+    <h2>Resumen de Hoy</h2>
+    <div class="card-row">
+      <div class="kpi-card">
+        <h3>Ventas de Hoy</h3>
+        <p class="kpi-value">{{ summary.kpis.salesToday }}</p>
+      </div>
+      <div class="kpi-card">
+        <h3>Ingresos de Hoy</h3>
+        <p class="kpi-value">{{ summary.kpis.revenueToday | currency:'USD':'symbol' }}</p>
+      </div>
+    </div>
+
+    <!-- Alertas de Stock Bajo -->
+    <div class="alert-card" *ngIf="summary.alerts.lowStockProducts.length > 0">
+      <h2>⚠️ Alertas de Stock Bajo</h2>
+      <ul>
+        <li *ngFor="let product of summary.alerts.lowStockProducts">
+          <span>{{ product.nombre }}</span>
+          <span class="stock-level">Quedan: {{ product.stock }}</span>
+        </li>
+      </ul>
+    </div>
+    <div class="alert-card-ok" *ngIf="summary.alerts.lowStockProducts.length === 0">
+      <h2>✅ Stock en Orden</h2>
+      <p>No hay productos con stock bajo.</p>
+    </div>
+
+  </ng-container>
+
+  <!-- Plantilla que se muestra mientras los datos cargan -->
+  <ng-template #loading>
+    <p>Cargando datos del dashboard...</p>
+  </ng-template>
+</div>

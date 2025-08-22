@@ -1,0 +1,72 @@
+.dashboard-container {
+  padding: 2rem;
+  font-family: sans-serif;
+}
+
+.card-row {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.action-card, .kpi-card, .alert-card, .alert-card-ok {
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background: #fff;
+}
+
+.action-card {
+  flex-basis: 300px;
+}
+
+.kpi-card {
+  flex-grow: 1;
+  text-align: center;
+}
+
+.kpi-value {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #3b82f6;
+  margin: 0;
+}
+
+.alert-card, .alert-card-ok {
+  width: 100%;
+}
+
+.alert-card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.alert-card li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.stock-level {
+  font-weight: bold;
+  color: #ef4444; /* Rojo para alertas */
+}
+
+button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-primary {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.btn-secondary {
+  background-color: #e5e7eb;
+  color: #1f2937;
+}
