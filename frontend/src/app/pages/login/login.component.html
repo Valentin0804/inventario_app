@@ -1,25 +1,154 @@
-<div class="login-container">
-  <div class="login-card">
-    <h2 class="login-title">Iniciar Sesión</h2>
-
-    <!-- Cuando el formulario se envía, llama a onLogin() -->
-    <form (ngSubmit)="onLogin()">
-      <!-- Email -->
-      <div class="input-group">
-        <label for="email" class="input-label">Correo electrónico</label>
-        <!-- Enlazamos el input con la variable 'email' -->
-        <input type="email" id="email" name="email" [(ngModel)]="email" required class="input-field" placeholder="ejemplo@correo.com"/>
+<div class="contenedor-pagina-login">
+  <div class="contenedor-login">
+    
+    <!-- Card de Login -->
+    <div class="tarjeta-login">
+      
+      <!-- Header con logo -->
+      <div class="encabezado-login">
+        <div class="logo-sistema">
+          <i class="fas fa-warehouse"></i>
+        </div>
+        <h2 class="titulo-login">Iniciar Sesión</h2>
+        <p class="subtitulo-login">Accede a tu panel de control</p>
       </div>
 
-      <!-- Contraseña -->
-      <div class="input-group">
-        <label for="password" class="input-label">Contraseña</label>
-        <!-- Enlazamos el input con la variable 'password' -->
-        <input type="password" id="password" name="password" [(ngModel)]="password" required class="input-field" placeholder="********"/>
+      <!-- Formulario -->
+      <form (ngSubmit)="onLogin()" class="formulario-login">
+        
+        <!-- Campo Email -->
+        <div class="grupo-formulario">
+          <label for="email" class="etiqueta-formulario">
+            <i class="fas fa-envelope"></i>
+            Correo electrónico
+          </label>
+          <input 
+            type="email" 
+            id="email" 
+            name="email" 
+            [(ngModel)]="email" 
+            required 
+            class="campo-formulario" 
+            placeholder="ejemplo@correo.com"
+          />
+          <div class="icono-campo">
+            <i class="fas fa-user"></i>
+          </div>
+        </div>
+
+        <!-- Campo Contraseña -->
+        <div class="grupo-formulario">
+          <label for="password" class="etiqueta-formulario">
+            <i class="fas fa-lock"></i>
+            Contraseña
+          </label>
+          <input 
+            type="password" 
+            id="password" 
+            name="password" 
+            [(ngModel)]="password" 
+            required 
+            class="campo-formulario" 
+            placeholder="••••••••"
+          />
+          <div class="icono-campo">
+            <i class="fas fa-key"></i>
+          </div>
+        </div>
+
+        <!-- Opciones adicionales -->
+        <div class="opciones-login">
+          <label class="recordar-sesion">
+             <!--<input type="checkbox" [(ngModel)]="recordarSesion" name="recordarSesion">-->
+            <span class="checkmark"></span>
+            Recordar sesión
+          </label>
+          <a href="#" class="enlace-olvidaste">¿Olvidaste tu contraseña?</a>
+        </div>
+
+        <!-- Botón de envío -->
+        <button type="submit" class="boton boton-primario boton-login">
+          <i class="fas fa-sign-in-alt"></i>
+          Ingresar al Sistema
+        </button>
+
+        <!-- Mensaje de error 
+        <div *ngIf="err" class="mensaje-error">
+          <i class="fas fa-exclamation-circle"></i>
+          {{ mensajeError }}
+        </div>-->
+
+      </form>
+
+      <!-- Separador -->
+      <div class="separador">
+        <span>¿Primera vez aquí?</span>
       </div>
 
-      <!-- Botón -->
-      <button type="submit" class="submit-button">Ingresar</button>
-    </form>
+      <!-- Link a registro -->
+      <div class="contenedor-registro">
+        <p>¿No tienes una cuenta?</p>
+        <a routerLink="/registro" class="boton boton-secundario boton-registro">
+          <i class="fas fa-user-plus"></i>
+          Crear Cuenta
+        </a>
+      </div>
+
+      <!-- Características rápidas -->
+      <div class="caracteristicas-rapidas">
+        <div class="caracteristica-rapida">
+          <i class="fas fa-shield-alt"></i>
+          <span>Seguro</span>
+        </div>
+        <div class="caracteristica-rapida">
+          <i class="fas fa-bolt"></i>
+          <span>Rápido</span>
+        </div>
+        <div class="caracteristica-rapida">
+          <i class="fas fa-cloud"></i>
+          <span>En la nube</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Panel lateral informativo -->
+    <div class="panel-lateral">
+      <div class="contenido-panel">
+        <h3>Control Total de tu Inventario</h3>
+        <p>Gestiona productos, ventas y proveedores en un solo lugar</p>
+        
+        <div class="lista-beneficios">
+          <div class="beneficio">
+            <i class="fas fa-check-circle"></i>
+            <span>Gestión en tiempo real</span>
+          </div>
+          <div class="beneficio">
+            <i class="fas fa-check-circle"></i>
+            <span>Reportes automáticos</span>
+          </div>
+          <div class="beneficio">
+            <i class="fas fa-check-circle"></i>
+            <span>Alertas de stock</span>
+          </div>
+          <div class="beneficio">
+            <i class="fas fa-check-circle"></i>
+            <span>Múltiples usuarios</span>
+          </div>
+        </div>
+
+        <div class="testimonio">
+          <div class="cita">
+            <i class="fas fa-quote-left"></i>
+            "Este sistema revolucionó la forma en que manejamos nuestro inventario"
+          </div>
+          <div class="autor">
+            <strong>María González</strong>
+            <span>Gerente de Operaciones</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>

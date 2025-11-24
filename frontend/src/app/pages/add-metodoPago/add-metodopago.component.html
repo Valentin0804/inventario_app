@@ -1,0 +1,48 @@
+<div class="contenedor-formulario">
+  <h2 class="titulo-pagina">
+    <i class="fas fa-credit-card"></i> {{ editing ? 'Editar' : 'Nuevo' }} Método de Pago
+  </h2>
+
+  <form [formGroup]="MetodoPagoForm" (ngSubmit)="guardar()">
+    <!-- Nombre -->
+    <div class="grupo-formulario">
+      <label for="nombre" class="etiqueta-formulario">Nombre *</label>
+      <input
+        id="nombre"
+        type="text"
+        class="campo-formulario"
+        formControlName="nombre"
+        placeholder="Ingresa el nombre del método de pago"
+        [class.campo-invalido]="nombreControl?.invalid && nombreControl?.touched" />
+      <div class="mensaje-error"
+        *ngIf="nombreControl?.invalid && nombreControl?.touched">
+        <small *ngIf="nombreControl?.errors?.['required']">El nombre es obligatorio.</small>
+        <small *ngIf="nombreControl?.errors?.['minlength']">
+          Debe tener al menos 3 caracteres.
+        </small>
+      </div>
+    </div>
+
+    <!-- Mensaje de Error General -->
+    <div *ngIf="errorMessage" class="mensaje-error">
+      <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
+    </div>
+
+    <!-- Botones -->
+    <div class="contenedor-botones-formulario">
+      <button 
+        type="submit" 
+        class="boton boton-primario"
+        [disabled]="isSubmitting || MetodoPagoForm.invalid">
+        <i class="fas" [class.fa-save]="!isSubmitting" [class.fa-spinner]="isSubmitting" [class.fa-spin]="isSubmitting"></i>
+        {{ isSubmitting ? 'Guardando...' : 'Guardar' }}
+      </button>
+      <button 
+        type="button" 
+        class="boton boton-secundario"
+        (click)="goToMetodoPagoList()">
+        <i class="fas fa-times"></i> Cancelar
+      </button>
+    </div>
+  </form>
+</div>

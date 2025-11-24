@@ -1,0 +1,122 @@
+<div class="contenedor">
+  <div class="contenedor-formulario">
+    <h1 class="titulo-pagina">
+      <i class="fas fa-cash-register"></i> Nueva Venta
+    </h1>
+
+    <!-- PARTE 1: BUSCADOR Y AGREGAR -->
+    <div class="seccion-agregar-producto formulario-grid">
+      <div class="grupo-formulario">
+        <label class="etiqueta-formulario">Producto:</label>
+        <select class="campo-formulario" [(ngModel)]="productoSeleccionadoId">
+          <option [ngValue]="null">Seleccione Producto...</option>
+          <option *ngFor="let p of listaProductos" [value]="p.id">
+            {{ p.nombre }} - ${{ p.precio_final }} (Stock: {{p.stock}})
+          </option>
+        </select>
+      </div>
+
+      <div class="grupo-formulario">
+        <label class="etiqueta-formulario">Cantidad:</label>
+        <input type="number" class="campo-formulario" [(ngModel)]="cantidadInput" min="1" placeholder="1">
+      </div>
+
+      <div class="contenedor-botones-vertical">
+        <button class="boton boton-secundario boton-con-icono" (click)="agregarProductoALista()">
+          <i class="fas fa-plus"></i> Agregar
+        </button>
+      </div>
+    </div>
+
+    <!-- PARTE 2: LISTA DE DETALLES (TABLA) -->
+    <div class="seccion-detalles">
+      <h3 class="titulo-seccion">Detalle de la Venta</h3>
+      <div class="contenedor-tabla">
+        <table class="tabla-datos">
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th class="texto-centrado">Cantidad</th>
+              <th class="texto-derecha">Precio Unitario</th>
+              <th class="texto-derecha">Subtotal</th>
+              <th class="columna-acciones">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of itemsVenta; let i = index">
+              <td>{{ item.nombre }}</td>
+              <td class="texto-centrado">{{ item.cantidad }}</td>
+              <td class="texto-derecha">${{ item.precio_unitario }}</td>
+              <td class="texto-derecha monto-total">${{ item.subtotal }}</td>
+              <td class="texto-centrado">
+                <button class="boton-eliminar-mini" (click)="eliminarItem(i)" title="Eliminar producto">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="itemsVenta.length === 0">
+              <td colspan="5" class="fila-sin-datos">No hay items cargados.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PARTE 3: TOTALES Y PAGO -->
+    <div class="seccion-totales">
+      <div class="grupo-formulario">
+        <label class="etiqueta-formulario">Método de Pago:</label>
+        <select class="campo-formulario" [(ngModel)]="metodoPagoId" (change)="onMetodoPagoChange()">
+          <option [ngValue]="null">Seleccionar...</option>
+          <option *ngFor="let mp of listaMetodosPago" [value]="mp.id">{{ mp.nombre }}</option>
+        </select>
+      </div>
+      <button 
+        *ngIf="metodoPagoSeleccionado?.includes('qr')"
+        class="btn btn-primary"
+        (click)="generarQR()">
+        Generar QR
+      </button>
+
+
+
+<!-- Modal para mostrar QR -->
+<div *ngIf="modalQR" class="modal open">
+  <div class="modal-content">
+    <h3>Escanea para pagar</h3>
+
+    <!-- CORRECCIÓN AQUÍ: Quitamos el 'data:image...' porque es una URL web -->
+    <ng-container *ngIf="qrBase64; else cargandoQR">
+      <img [src]="qrBase64" width="250" alt="Código QR de pago" />
+    </ng-container>
+
+    <ng-template #cargandoQR>
+      <p>Generando QR...</p>
+    </ng-template>
+
+    <p *ngIf="estadoPago === 'approved'" style="color: green;">✓ Pago aprobado</p>
+    <p *ngIf="estadoPago === 'pending'" style="color: orange;">Esperando pago...</p>
+
+    <button class="btn btn-danger" (click)="cerrarModal()">Cerrar</button>
+  </div>
+</div>
+
+      
+
+      <div class="contenedor-total">
+        <span class="texto-total">Total a Cobrar:</span>
+        <h2 class="monto-total-final">${{ totalCalculado }}</h2>
+      </div>
+    </div>
+
+    <!-- PARTE 4: BOTÓN CONFIRMAR -->
+    <div class="contenedor-botones-formulario ancho-completo">
+      <button 
+        class="boton boton-primario boton-con-icono" 
+        (click)="registrarVenta()" 
+        [disabled]="itemsVenta.length === 0 || !metodoPagoId">
+        <i class="fas fa-check"></i> Confirmar Venta
+      </button>
+    </div>
+  </div>
+</div>

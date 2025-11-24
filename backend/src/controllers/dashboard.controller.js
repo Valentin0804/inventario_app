@@ -1,48 +1,62 @@
-const db = require('../models');
-const { Op } = require('sequelize'); // Importamos los operadores de Sequelize
+const db = require("../models");
+const { Op } = require("sequelize");
 
-// Controlador para obtener el resumen de datos para el dashboard
 const getSummary = async (req, res) => {
   try {
-    const userId = req.userId; // Obtenemos el ID del usuario desde el middleware
+    // 1. Verificar qué ID de usuario está llegando
+    const userId = req.userId; 
+    console.log("🔎 ID de Usuario solicitante:", userId);
 
-    // --- 1. Calcular KPIs (Ventas e Ingresos de Hoy) ---
+    if (!userId) {
+      console.warn("⚠️ El req.userId llegó vacío o indefinido.");
+      return res.status(400).json({ message: "Usuario no identificado." });
+    }
+
+    // 2. Configurar la fecha de inicio del día
     const startOfToday = new Date();
     startOfToday.setHours(0, 0, 0, 0);
+    
+    console.log("📅 Filtrando ventas desde:", startOfToday.toISOString());
 
+    // 3. Consultar Ventas (Count)
     const salesToday = await db.Venta.count({
       where: {
-        usuarioId: userId,
-        createdAt: {
-          [Op.gte]: startOfToday, // gte = Greater Than or Equal (mayor o igual que)
-        },
-      },
-    });
-
-    // Nota: Asumo que tienes una columna 'total' en tu modelo de Venta
-    const revenueToday = await db.Venta.sum('total', {
-      where: {
-        usuarioId: userId,
-        createdAt: {
+        usuario_id: userId,
+        fecha: {
           [Op.gte]: startOfToday,
         },
       },
-    }) || 0; // Si no hay ventas, sum() devuelve null, así que lo cambiamos por 0
+    });
+    console.log("✅ Cantidad de ventas encontradas:", salesToday);
 
-    // --- 2. Encontrar productos con stock bajo ---
-    const lowStockThreshold = 10; // Definimos "stock bajo" como 10 o menos unidades
+    // 4. Consultar Ingresos (Sum)
+    // Nota: Sequelize devuelve null si no hay ventas, por eso el || 0
+    const revenueRaw = await db.Venta.sum("total_venta", { 
+        where: {
+          usuario_id: userId,
+          fecha: {
+            [Op.gte]: startOfToday,
+          },
+        },
+      });
+    
+    const revenueToday = revenueRaw || 0;
+    console.log("💰 Total recaudado encontrado:", revenueToday);
+
+    // 5. Consultar Stock Bajo
+    const lowStockThreshold = 5;
+    
     const lowStockProducts = await db.Producto.findAll({
       where: {
-        usuarioId: userId,
-        stock: {
-          [Op.lte]: lowStockThreshold, // lte = Less Than or Equal (menor o igual que)
+        usuario_id: userId, // Asegura que solo busque productos de este usuario
+        stock: { // IMPORTANTE: Asegurate que en tu BD la columna es 'stock'
+          [Op.lte]: lowStockThreshold,
         },
       },
-      order: [['stock', 'ASC']], // Ordenamos para mostrar los más críticos primero
-      limit: 5, // Mostramos solo los 5 más críticos
+      order: [["stock", "ASC"]], 
+      limit: 5,
     });
 
-    // --- 3. Construir y enviar la respuesta ---
     res.status(200).send({
       kpis: {
         salesToday,
@@ -54,7 +68,7 @@ const getSummary = async (req, res) => {
     });
 
   } catch (error) {
-    console.error("Error al obtener el resumen del dashboard:", error);
+    console.error("❌ Error CRÍTICO en Dashboard:", error);
     res.status(500).send({ message: "Error al obtener los datos del dashboard." });
   }
 };

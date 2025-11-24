@@ -1,44 +1,47 @@
 const { Sequelize, DataTypes } = require("sequelize");
-require("dotenv").config();
+const sequelize = require("../config/db");
 
-const sequelize = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USER,
-  process.env.DB_PASSWORD,
-  {
-    host: process.env.DB_HOST,
-    dialect: "mysql",
-  }
-);
-
-// Se cargan los modelos
-const Producto = require("./Producto.model")(sequelize, DataTypes);
-const Venta = require("./Venta.model")(sequelize, DataTypes);
-const DetalleVenta = require("./DetalleVenta.model")(sequelize, DataTypes);
-const Usuario = require("./Usuario.model")(sequelize, DataTypes); 
-
-
-// Se crea el objeto db con los modelos
 const db = {};
-db.sequelize = sequelize;
 db.Sequelize = Sequelize;
+db.sequelize = sequelize;
 
-db.Producto = Producto;
-db.Venta = Venta;
-db.DetalleVenta = DetalleVenta;
-db.Usuario = Usuario;
+// Carga correcta de modelos ejecutando la función
+db.Usuario = require("./Usuario.model.js");
+db.Proveedor = require("./Proveedor.model.js");
+db.MetodoPago = require("./MetodoPago.model.js");
+db.Categoria = require("./Categoria.model.js");
+db.Producto = require("./Producto.model.js");
+db.Venta = require("./Venta.model.js");
+db.DetalleVenta = require("./DetalleVenta.model.js");
 
 // Relaciones
-db.Usuario.hasMany(db.Producto, { foreignKey: 'usuarioId' });
-db.Producto.belongsTo(db.Usuario, { foreignKey: 'usuarioId' });
 
-db.Usuario.hasMany(db.Venta, { foreignKey: 'usuarioId' });
-db.Venta.belongsTo(db.Usuario, { foreignKey: 'usuarioId' });
+// Producto ↔ Proveedor
+db.Producto.belongsTo(db.Proveedor, { foreignKey: "proveedor_id", as: "proveedor" });
+db.Proveedor.hasMany(db.Producto, { foreignKey: "proveedor_id", as: "productos" });
 
-db.Venta.hasMany(db.DetalleVenta, { foreignKey: "ventaId" });
-db.DetalleVenta.belongsTo(db.Venta, { foreignKey: "ventaId" });
+// Producto ↔ Categoria
+db.Producto.belongsTo(db.Categoria, { foreignKey: "categoria_id", as: "categoria" });
+db.Categoria.hasMany(db.Producto, { foreignKey: "categoria_id", as: "productos" });
 
-db.Producto.hasMany(db.DetalleVenta, { foreignKey: "productoId" });
-db.DetalleVenta.belongsTo(db.Producto, { foreignKey: "productoId" });
+// Venta ↔ Método pago
+db.Venta.belongsTo(db.MetodoPago, { foreignKey: "metodopago_id", as: "metodoPago" });
+db.MetodoPago.hasMany(db.Venta, { foreignKey: "metodopago_id", as: "ventas" });
+
+// Venta ↔ Usuario
+db.Venta.belongsTo(db.Usuario, { foreignKey: "usuario_id", as: "usuario" });
+db.Usuario.hasMany(db.Venta, { foreignKey: "usuario_id", as: "ventas" });
+
+// Venta ↔ Detalle venta
+db.Venta.hasMany(db.DetalleVenta, { foreignKey: "venta_id", as: "detalleVenta" });
+db.DetalleVenta.belongsTo(db.Venta, { foreignKey: "venta_id", as: "venta" });
+
+// Producto ↔ Detalle venta
+db.Producto.hasMany(db.DetalleVenta, { foreignKey: "producto_id", as: "detalleVenta" });
+db.DetalleVenta.belongsTo(db.Producto, { foreignKey: "producto_id", as: "producto" });
+
+// Producto ↔ Usuario (quién lo cargó)
+db.Producto.belongsTo(db.Usuario, { foreignKey: "usuario_id", as: "usuario" });
+db.Usuario.hasMany(db.Producto, { foreignKey: "usuario_id", as: "productos" });
 
 module.exports = db;

@@ -1,0 +1,60 @@
+<div class="contenedor">
+
+  <div class="encabezado-seccion">
+    <h1 class="titulo-pagina">
+      <i class="fas fa-truck-loading"></i> Lista de Proveedores
+    </h1>
+    
+    <div class="contenedor-botones">
+      <button class="boton boton-primario boton-con-icono" routerLink="/add-proveedor">
+        <i class="fas fa-plus-circle"></i> Nuevo Proveedor
+      </button>
+      <button class="boton boton-secundario boton-con-icono" routerLink="/dashboard">
+        <i class="fas fa-arrow-alt-circle-left"></i> Volver al Dashboard
+      </button>
+    </div>
+  </div>
+
+  <div class="contenedor-tabla">
+    <table class="tabla-datos">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Contacto</th> 
+          <th>Dirección</th>
+          <th class="columna-acciones">Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let p of proveedores">
+          <td class="columna-id">{{ p.id }}</td>
+          <td>{{ p.nombre }}</td>
+          <td>{{ p.telefono }}</td> 
+          <td>{{ p.direccion }}</td>
+
+          <td>
+            <div class="contenedor-acciones-celda">
+              <button class="boton boton-editar boton-con-icono" [routerLink]="['/add-proveedor', p.id]">
+                <i class="fas fa-edit"></i> Editar
+              </button>
+
+              <button class="boton boton-eliminar boton-con-icono" (click)="eliminar(p.id!)">
+                <i class="fas fa-trash-alt"></i> Eliminar
+              </button>
+            </div>
+          </td>
+        </tr>
+        <tr *ngIf="proveedores && proveedores.length === 0">
+          <td colspan="5" class="fila-sin-datos">No hay proveedores registrados.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="!proveedores || proveedores.length === 0" class="mensaje-informativo">
+    <i class="fas fa-info-circle"></i> Aún no hay proveedores para mostrar. ¡Añade uno nuevo!
+  </div>
+
+</div>

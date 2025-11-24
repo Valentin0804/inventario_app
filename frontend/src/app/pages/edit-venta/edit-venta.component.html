@@ -1,0 +1,106 @@
+<div class="contenedor">
+  <div class="contenedor-formulario">
+    
+    <!-- TÍTULO -->
+    <h1 class="titulo-pagina">
+      <i class="fas fa-edit"></i> Editando Venta #{{ ventaId }}
+    </h1>
+
+    <!-- PARTE 1: BUSCADOR Y AGREGAR PRODUCTOS -->
+    <div class="seccion-agregar-producto formulario-grid">
+      
+      <div class="grupo-formulario">
+        <label class="etiqueta-formulario">Producto:</label>
+        <select class="campo-formulario" [(ngModel)]="productoSeleccionadoId">
+           <option [ngValue]="null">Seleccione Producto...</option>
+           <option *ngFor="let p of listaProductos" [value]="p.id">
+             {{ p.nombre }} - ${{ p.precio_final }} (Stock: {{p.stock}})
+           </option>
+        </select>
+      </div>
+
+      <div class="grupo-formulario">
+        <label class="etiqueta-formulario">Cantidad:</label>
+        <input type="number" class="campo-formulario" [(ngModel)]="cantidadInput" min="1" placeholder="1">
+      </div>
+
+      <div class="contenedor-botones-vertical">
+        <button class="boton boton-secundario boton-con-icono" (click)="agregarProductoALista()">
+          <i class="fas fa-plus"></i> Agregar
+        </button>
+      </div>
+
+    </div>
+
+    <!-- ALERTA INFORMATIVA -->
+    <div class="mensaje-informativo">
+      <i class="fas fa-info-circle"></i> 
+      <span><strong>Nota:</strong> Al guardar, el sistema devolverá el stock de la venta original y descontará el stock de esta nueva configuración automáticamente.</span>
+    </div>
+
+    <!-- PARTE 2: TABLA DE DETALLES -->
+    <div class="seccion-detalles">
+      <h3 class="titulo-seccion">Detalles de la Venta</h3>
+      <div class="contenedor-tabla">
+        <table class="tabla-datos">
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th class="texto-centrado">Cantidad</th>
+              <th class="texto-derecha">Precio Unitario</th>
+              <th class="texto-derecha">Subtotal</th>
+              <th class="columna-acciones">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of itemsVenta; let i = index">
+              <td>{{ item.nombre }}</td>
+              <td class="texto-centrado">{{ item.cantidad }}</td>
+              <td class="texto-derecha">${{ item.precio_unitario }}</td>
+              <td class="texto-derecha monto-total">${{ item.subtotal | number:'1.2-2' }}</td>
+              <td class="texto-centrado">
+                <button class="boton-eliminar-mini" (click)="eliminarItem(i)" title="Quitar item">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="itemsVenta.length === 0">
+              <td colspan="5" class="fila-sin-datos">La lista de productos está vacía.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PARTE 3: TOTALES Y MÉTODO DE PAGO -->
+    <div class="seccion-totales">
+      
+      <div class="grupo-formulario">
+        <label class="etiqueta-formulario">Método de Pago:</label>
+        <select class="campo-formulario" [(ngModel)]="metodoPagoId">
+          <option [ngValue]="null">Seleccionar...</option>
+          <option *ngFor="let mp of listaMetodosPago" [value]="mp.id">{{ mp.nombre }}</option>
+        </select>
+      </div>
+
+      <div class="contenedor-total">
+        <span class="texto-total">Nuevo Total:</span>
+        <h2 class="monto-total-final">${{ totalCalculado | number:'1.2-2' }}</h2>
+      </div>
+
+    </div>
+
+    <!-- BOTONES FINALES -->
+    <div class="contenedor-botones-formulario ancho-completo">
+      <button class="boton boton-secundario boton-con-icono" routerLink="/venta-list">
+        <i class="fas fa-times"></i> Cancelar
+      </button>
+
+      <button class="boton boton-primario boton-con-icono" (click)="actualizarVenta()" 
+              [disabled]="itemsVenta.length === 0 || !metodoPagoId">
+        <i class="fas fa-save"></i> Guardar Cambios
+      </button>
+    </div>
+
+  </div>
+</div>

@@ -1,55 +1,160 @@
-<div class="dashboard-container">
-  <h1>Dashboard</h1>
-
-  <!-- Usamos ng-container y *ngIf para esperar a que los datos lleguen -->
-  <ng-container *ngIf="summary$ | async as summary; else loading">
-
-    <!-- Fila de Acciones Rápidas -->
-    <div class="card-row">
-      <div class="action-card">
-        <h2>Nueva Venta</h2>
-        <p>Registra una nueva transacción.</p>
-        <button class="btn-primary">Iniciar Venta</button>
-      </div>
-      <div class="action-card">
-        <h2>Cargar Producto</h2>
-        <p>Añade un nuevo item a tu inventario.</p>
-        <button class="btn-secondary">Añadir Producto</button>
-      </div>
+<div class="contenedor-dashboard">
+  <!-- Barra de navegación -->
+  <nav class="barra-navegacion">
+    <h1 class="titulo-dashboard">Panel de Control General</h1>
+    <div class="contenedor-botones-navegacion">
+      <button class="boton-navegacion" (click)="goToAddVenta()">
+        <i class="fas fa-home"></i> Inicio
+      </button>
+      <button class="boton-navegacion" (click)="goToAddVenta()">
+        <i class="fas fa-chart-line"></i> Ventas
+      </button>
+      <button class="boton-navegacion" (click)="goToAddVenta()">
+        <i class="fas fa-boxes"></i> Inventario
+      </button>
+      <button class="boton-navegacion" (click)="goToAddVenta()">
+        <i class="fas fa-cog"></i> Configuración
+      </button>
     </div>
+  </nav>
 
-    <!-- Fila de KPIs -->
-    <h2>Resumen de Hoy</h2>
-    <div class="card-row">
-      <div class="kpi-card">
-        <h3>Ventas de Hoy</h3>
-        <p class="kpi-value">{{ summary.kpis.salesToday }}</p>
-      </div>
-      <div class="kpi-card">
-        <h3>Ingresos de Hoy</h3>
-        <p class="kpi-value">{{ summary.kpis.revenueToday | currency:'USD':'symbol' }}</p>
-      </div>
-    </div>
+  <ng-container *ngIf="summary$ | async as summary; else cargando">
 
-    <!-- Alertas de Stock Bajo -->
-    <div class="alert-card" *ngIf="summary.alerts.lowStockProducts.length > 0">
-      <h2>⚠️ Alertas de Stock Bajo</h2>
-      <ul>
-        <li *ngFor="let product of summary.alerts.lowStockProducts">
-          <span>{{ product.nombre }}</span>
-          <span class="stock-level">Quedan: {{ product.stock }}</span>
-        </li>
-      </ul>
-    </div>
-    <div class="alert-card-ok" *ngIf="summary.alerts.lowStockProducts.length === 0">
-      <h2>✅ Stock en Orden</h2>
-      <p>No hay productos con stock bajo.</p>
-    </div>
+    <!-- Sección de acciones principales -->
+    <section class="seccion-contenedor">
+      <h2 class="titulo-seccion">Acciones Principales</h2>
+      <div class="contenedor-acciones">
+        <!-- Acción principal destacada -->
+        <div class="tarjeta accion-principal">
+          <div class="icono-accion-principal">
+            <i class="fas fa-shopping-cart"></i>
+          </div>
+          <div class="contenido-accion-principal">
+            <h3>Nueva Venta</h3>
+            <p>Registra una nueva transacción de venta en el sistema.</p>
+            <button class="boton-principal" (click)="goToAddVenta()">
+              Iniciar Venta
+            </button>
+          </div>
+        </div>
+
+        <!-- Acciones secundarias en grid -->
+        <div class="contenedor-acciones-secundarias">
+          <div class="tarjeta accion-secundaria">
+            <div class="icono-accion-secundaria">
+              <i class="fas fa-box"></i>
+            </div>
+            <h3>Cargar Producto</h3>
+            <p>Añade un nuevo ítem a tu inventario de productos.</p>
+            <button class="boton-secundario" (click)="goToAddProduct()">
+              Añadir Producto
+            </button>
+          </div>
+
+          <div class="tarjeta accion-secundaria">
+            <div class="icono-accion-secundaria">
+              <i class="fas fa-truck"></i>
+            </div>
+            <h3>Cargar Proveedor</h3>
+            <p>Registra un nuevo contacto de proveedor.</p>
+            <button class="boton-secundario" (click)="goToAddProveedor()">
+              Añadir Proveedor
+            </button>
+          </div>
+          
+          <div class="tarjeta accion-secundaria">
+            <div class="icono-accion-secundaria">
+              <i class="fas fa-tags"></i>
+            </div>
+            <h3>Cargar Categoría</h3>
+            <p>Organiza tus productos con nuevas categorías.</p>
+            <button class="boton-secundario" (click)="goToAddCategoria()">
+              Añadir Categoría
+            </button>
+          </div>
+
+          <div class="tarjeta accion-secundaria">
+            <div class="icono-accion-secundaria">
+              <i class="fas fa-credit-card"></i>
+            </div>
+            <h3>Cargar Método de Pago</h3>
+            <p>Agrega un nuevo método de pago para las transacciones.</p>
+            <button class="boton-secundario" (click)="goToAddMetodoPago()">
+              Añadir Método
+            </button>
+          </div>
+
+          <div class="tarjeta accion-secundaria">
+            <div class="icono-accion-secundaria">
+              <i class="fas fa-history"></i>
+            </div>
+            <h3>Historial de Ventas</h3>
+            <p>Consulta el registro completo de todas las ventas realizadas.</p>
+            <button class="boton-secundario" (click)="goToVentas()">
+              Ver Historial
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección de KPIs -->
+    <section class="seccion-contenedor">
+      <h2 class="titulo-seccion">Resumen del Día</h2>
+      <div class="contenedor-kpis">
+        <div class="tarjeta tarjeta-kpi">
+          <div class="icono-kpi">
+            <i class="fas fa-chart-bar"></i>
+          </div>
+          <h3>Ventas Realizadas</h3>
+          <p class="valor-kpi">{{ summary.kpis.salesToday }}</p>
+          <span class="unidad-kpi">transacciones</span>
+        </div>
+        <div class="tarjeta tarjeta-kpi">
+          <div class="icono-kpi">
+            <i class="fas fa-money-bill-wave"></i>
+          </div>
+          <h3>Ingresos Totales</h3>
+          <p class="valor-kpi">{{ summary.kpis.revenueToday | currency:'USD':'symbol' }}</p>
+          <span class="unidad-kpi">Pesos Argentinos</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección de notificaciones -->
+    <section class="seccion-contenedor">
+      <h2 class="titulo-seccion">Notificaciones Importantes</h2>
+      <div class="contenedor-alertas">
+        <div class="tarjeta alerta-stock-bajo" *ngIf="summary.alerts.lowStockProducts.length > 0">
+          <div class="encabezado-alerta">
+            <i class="fas fa-exclamation-triangle icono-alerta"></i>
+            <h3>Alerta: Stock Bajo</h3>
+          </div>
+          <p>Los siguientes productos requieren tu atención:</p>
+          <ul class="lista-alerta">
+            <li *ngFor="let product of summary.alerts.lowStockProducts">
+              <span class="nombre-producto">{{ product.nombre }}</span>
+              <span class="stock-restante">Stock: {{ product.stock }}</span>
+            </li>
+          </ul>
+          <button class="boton-detalles">Ver Detalles</button>
+        </div>
+        <div class="tarjeta alerta-stock-ok" *ngIf="summary.alerts.lowStockProducts.length === 0">
+          <div class="encabezado-alerta">
+            <i class="fas fa-check-circle icono-alerta"></i>
+            <h3>Stock en Óptimas Condiciones</h3>
+          </div>
+          <p>No hay productos con stock bajo en este momento. ¡Todo en orden!</p>
+        </div>
+      </div>
+    </section>
 
   </ng-container>
 
-  <!-- Plantilla que se muestra mientras los datos cargan -->
-  <ng-template #loading>
-    <p>Cargando datos del dashboard...</p>
+  <ng-template #cargando>
+    <div class="estado-cargando">
+      <i class="fas fa-spinner fa-spin icono-cargando"></i>
+      <p>Cargando datos del dashboard, por favor espera...</p>
+    </div>
   </ng-template>
 </div>

@@ -1,0 +1,56 @@
+<div class="contenedor">
+  <div class="contenedor-formulario">
+    <h1 class="titulo-pagina">
+      <i class="fas fa-user-tie"></i> {{ editing ? "Editar Proveedor" : "Agregar Nuevo Proveedor" }}
+    </h1>
+
+    <form #f="ngForm" (ngSubmit)="guardar()" class="formulario-grid">
+
+      <div class="grupo-formulario">
+        <label class="etiqueta-formulario" for="nombre">Nombre <span class="asterisco-obligatorio">*</span></label>
+        <input
+          type="text"
+          id="nombre"
+          class="campo-formulario"
+          [(ngModel)]="proveedor.nombre"
+          name="nombre"
+          required
+          placeholder="Nombre del proveedor">
+      </div>
+
+      <div class="grupo-formulario">
+        <label class="etiqueta-formulario" for="telefono">Teléfono <span class="asterisco-obligatorio">*</span></label>
+        <input
+          type="text"
+          id="telefono"
+          class="campo-formulario"
+          [(ngModel)]="proveedor.telefono"
+          name="telefono"
+          required
+          placeholder="Número de contacto">
+      </div>
+
+      <div class="grupo-formulario ancho-completo">
+        <label class="etiqueta-formulario" for="direccion">Dirección <span class="asterisco-obligatorio">*</span></label>
+        <input
+          type="text"
+          id="direccion"
+          class="campo-formulario"
+          [(ngModel)]="proveedor.direccion"
+          name="direccion"
+          required
+          placeholder="Dirección completa del proveedor">
+      </div>
+
+      <div class="contenedor-botones-formulario ancho-completo">
+        <button type="submit" class="boton boton-primario boton-con-icono" [disabled]="f.invalid">
+          <i class="fas fa-save"></i> {{ editing ? "Actualizar Proveedor" : "Guardar Proveedor" }}
+        </button>
+
+        <button type="button" class="boton boton-secundario boton-con-icono" [routerLink]="'/proveedor-list'">
+          <i class="fas fa-times"></i> Cancelar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

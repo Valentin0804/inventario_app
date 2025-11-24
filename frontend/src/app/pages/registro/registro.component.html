@@ -1,24 +1,216 @@
-<div class="register-container">
-        <div class="register-card">
-            <h2 class="register-title">Registro de Usuario</h2>
-            
-            <form (ngSubmit)="registrarse()">
-                <div class="input-group">
-                    <label for="nombre" class="input-label">Nombre:</label>
-                    <input type="text" [(ngModel)]="nombre" id="nombre" name="nombre" required class="input-field" placeholder="Tu nombre completo">
-                </div>
+<div class="contenedor-pagina-registro">
+  <div class="contenedor-registro">
+    
+    <!-- Card de Registro -->
+    <div class="tarjeta-registro">
+      
+      <!-- Header con logo -->
+      <div class="encabezado-registro">
+        <div class="logo-sistema">
+          <i class="fas fa-warehouse"></i>
+        </div>
+        <h2 class="titulo-registro">Crear Cuenta</h2>
+        <p class="subtitulo-registro">Comienza a gestionar tu inventario</p>
+      </div>
 
-                <div class="input-group">
-                    <label for="email" class="input-label">Email:</label>
-                    <input type="email" [(ngModel)]="email"id="email" name="email" required class="input-field" placeholder="ejemplo@correo.com">
-                </div>
+      <!-- Formulario -->
+      <form (ngSubmit)="registrarse()" class="formulario-registro">
+        
+        <!-- Campo Nombre -->
+        <div class="grupo-formulario">
+          <label for="nombre" class="etiqueta-formulario">
+            <i class="fas fa-user"></i>
+            Nombre completo
+          </label>
+          <input 
+            type="text" 
+            [(ngModel)]="nombre" 
+            id="nombre" 
+            name="nombre" 
+            required 
+            class="campo-formulario" 
+            placeholder="Tu nombre completo"
+          />
+          <div class="icono-campo">
+            <i class="fas fa-id-card"></i>
+          </div>
+        </div>
 
-                <div class="input-group">
-                    <label for="password" class="input-label">Contraseña:</label>
-                    <input type="password" [(ngModel)]="password" id="password" name="password" required class="input-field" placeholder="Mínimo 8 caracteres">
-                </div>
+        <!-- Campo Email -->
+        <div class="grupo-formulario">
+          <label for="email" class="etiqueta-formulario">
+            <i class="fas fa-envelope"></i>
+            Correo electrónico
+          </label>
+          <input 
+            type="email" 
+            [(ngModel)]="email"
+            id="email" 
+            name="email" 
+            required 
+            class="campo-formulario" 
+            placeholder="ejemplo@correo.com"
+          />
+          <div class="icono-campo">
+            <i class="fas fa-at"></i>
+          </div>
+        </div>
 
-                <button type="submit" class="submit-button">Registrarse</button>
-            </form>
-         </div>
+        <!-- Campo Contraseña -->
+        <div class="grupo-formulario">
+          <label for="password" class="etiqueta-formulario">
+            <i class="fas fa-lock"></i>
+            Contraseña
+          </label>
+          <input 
+            type="password" 
+            [(ngModel)]="password" 
+            id="password" 
+            name="password" 
+            required 
+            class="campo-formulario" 
+            placeholder="Mínimo 8 caracteres"
+            minlength="8"
+          />
+          <div class="icono-campo">
+            <i class="fas fa-key"></i>
+          </div>
+          
+          <!-- Indicador de fortaleza de contraseña -->
+          <div class="indicador-fortaleza">
+            <div class="niveles-fortaleza">
+              <span class="nivel" [class.activo]="password && password.length >= 1"></span>
+              <span class="nivel" [class.activo]="password && password.length >= 4"></span>
+              <span class="nivel" [class.activo]="password && password.length >= 6"></span>
+              <span class="nivel" [class.activo]="password && password.length >= 8"></span>
+            </div>
+            <span class="texto-fortaleza">{{ obtenerFortalezaContrasena() }}</span>
+          </div>
+        </div>
+
+        <!-- Términos y condiciones -->
+        <div class="grupo-terminos">
+          <label class="checkbox-terminos">
+            <input type="checkbox" [(ngModel)]="aceptaTerminos" name="aceptaTerminos" required>
+            <span class="checkmark"></span>
+           <a>Acepto los <a href="#" class="enlace-terminos">términos y condiciones</a> y la <a href="#" class="enlace-terminos">política de privacidad</a>
+          </a></label>
+        </div>
+
+        <!-- Botón de envío -->
+        <button type="submit" class="boton boton-primario boton-registro" [disabled]="!aceptaTerminos">
+          <i class="fas fa-user-plus"></i>
+          Crear Cuenta
+        </button>
+
+        <!-- Mensajes de error/éxito -->
+        <div *ngIf="mensajeExito" class="mensaje-exito">
+          <i class="fas fa-check-circle"></i>
+          {{ mensajeExito }}
+        </div>
+
+        <div *ngIf="mensajeError" class="mensaje-error">
+          <i class="fas fa-exclamation-circle"></i>
+          {{ mensajeError }}
+        </div>
+
+      </form>
+
+      <!-- Separador -->
+      <hr> 
+      <div class="separador">
+        <span>¿Ya tienes cuenta?</span>
+      </div>
+
+      <!-- Link a login -->
+      
+        <a routerLink="/login" class="boton boton-secundario boton-login">
+          <i class="fas fa-sign-in-alt"></i>
+          Iniciar Sesión
+        </a>
+      
+
+      <!-- Beneficios de registro -->
+      <!-- Beneficios de registro - PARTE CORREGIDA -->
+        <div class="beneficios-registro">
+          <h4>Al registrarte obtienes:</h4>
+          <div class="lista-beneficios">
+            <div class="beneficio">
+              <i class="fas fa-rocket"></i>
+              <span>Prueba gratuita de 30 días</span>
+            </div>
+            <div class="beneficio">
+              <i class="fas fa-chart-line"></i>
+              <span>Reportes ilimitados</span>
+            </div>
+            <div class="beneficio">
+              <i class="fas fa-headset"></i>
+              <span>Soporte prioritario</span>
+            </div>
+          </div>
+        </div>
+
+    </div>
+
+    <!-- Panel lateral informativo -->
+    <div class="panel-lateral">
+      <div class="contenido-panel">
+        <h3>Únete a miles de empresas</h3>
+        <p>Que ya optimizaron su gestión de inventario con nuestro sistema</p>
+        
+        <div class="estadisticas-registro">
+          <div class="estadistica">
+            <div class="numero">+2,500</div>
+            <div class="texto">Empresas registradas</div>
+          </div>
+          <div class="estadistica">
+            <div class="numero">98%</div>
+            <div class="texto">Satisfacción del cliente</div>
+          </div>
+          <div class="estadistica">
+            <div class="numero">24/7</div>
+            <div class="texto">Soporte disponible</div>
+          </div>
+        </div>
+
+        <div class="caracteristicas-destacadas">
+          <h4>Todo lo que necesitas:</h4>
+          <div class="lista-caracteristicas">
+            <div class="caracteristica">
+              <i class="fas fa-check"></i>
+              <span>Gestión de productos ilimitada</span>
+            </div>
+            <div class="caracteristica">
+              <i class="fas fa-check"></i>
+              <span>Control de stock en tiempo real</span>
+            </div>
+            <div class="caracteristica">
+              <i class="fas fa-check"></i>
+              <span>Reportes automáticos</span>
+            </div>
+            <div class="caracteristica">
+              <i class="fas fa-check"></i>
+              <span>Múltiples usuarios</span>
+            </div>
+            <div class="caracteristica">
+              <i class="fas fa-check"></i>
+              <span>App móvil incluida</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonio">
+          <div class="cita">
+            <i class="fas fa-quote-left"></i>
+            "Implementamos el sistema y en una semana ya teníamos control total sobre nuestro inventario"
+          </div>
+          <div class="autor">
+            <strong>Carlos Rodríguez</strong>
+            <span>Dueño de negocio</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </div>

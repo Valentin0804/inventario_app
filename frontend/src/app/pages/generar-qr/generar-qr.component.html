@@ -1,0 +1,8 @@
+<button (click)="generarQR()" [disabled]="cargando">
+  {{ cargando ? "Generando..." : "Generar QR" }}
+</button>
+
+<div *ngIf="qrBase64">
+  <h3>Escanee el QR con Mercado Pago</h3>
+  <img [src]="qrBase64" alt="QR Mercado Pago" width="300">
+</div>
