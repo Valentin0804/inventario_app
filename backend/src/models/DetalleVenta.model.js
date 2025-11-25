@@ -1,4 +1,3 @@
-// DetalleVenta.model.js
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/db");
 const Venta = require("./Venta.model");

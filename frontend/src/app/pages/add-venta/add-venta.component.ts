@@ -3,13 +3,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 
-// Servicios
 import { ProductosService, Producto } from '../../core/services/productos.service';
 import { VentaService, Venta } from '../../core/services/venta.service';
 import { MetodoPagoService } from '../../core/services/metodoPago.service';
 import { MercadoPagoService } from '../../core/services/mercadopago.service';
 
-// Interfaz LOCAL para la tabla visual
 interface ItemVisual {
   producto_id: number;
   nombre: string;
@@ -26,10 +24,7 @@ interface ItemVisual {
   styleUrls: ['./add-venta.component.css']
 })
 export class AddVentaComponent implements OnInit, OnDestroy {
-
-  // Inyección de dependencias
-  // Nota: Mantuve el estilo mixto (inject + constructor) para no romper tu código, 
-  // pero idealmente deberías usar uno solo. Aquí prioricé que funcione.
+ 
   private productoService = inject(ProductosService);
   private metodoPagoService = inject(MetodoPagoService);
   private router = inject(Router);
@@ -39,24 +34,21 @@ export class AddVentaComponent implements OnInit, OnDestroy {
     private mpService: MercadoPagoService,
   ) {}
 
-  // --- VARIABLES DE MERCADO PAGO ---
   modalQR: boolean = false;
   qrBase64: string | null = null;
   externalReference: string = ''; 
-  intervaloPago: any = null; // Timer para el polling
+  intervaloPago: any = null;
 
-  // --- VARIABLES DEL FORMULARIO ---
   listaProductos: Producto[] = [];
   listaMetodosPago: any[] = [];
   
   productoSeleccionadoId: number | null = null;
   cantidadInput: number = 1;
 
-  // --- VARIABLES DE LA VENTA ---
   itemsVenta: ItemVisual[] = [];
   metodoPagoId: number | null = null;
   totalCalculado: number = 0;
-  metodoPagoSeleccionadoNombre: string = ''; // Para saber si es QR o Efectivo
+  metodoPagoSeleccionadoNombre: string = '';
 
   ngOnInit(): void {
     this.cargarDatosIniciales();
@@ -66,9 +58,6 @@ export class AddVentaComponent implements OnInit, OnDestroy {
     this.detenerVerificacion();
   }
 
-  // ==========================================
-  // 1. CARGA DE DATOS
-  // ==========================================
   cargarDatosIniciales() {
     this.productoService.getProductos().subscribe({
       next: (res) => this.listaProductos = res,
@@ -81,9 +70,6 @@ export class AddVentaComponent implements OnInit, OnDestroy {
     });
   }
 
-  // ==========================================
-  // 2. LÓGICA DE CARRITO (Items)
-  // ==========================================
   agregarProductoALista() {
     if (!this.productoSeleccionadoId) {
       alert("Seleccione un producto");
@@ -93,8 +79,7 @@ export class AddVentaComponent implements OnInit, OnDestroy {
       alert("La cantidad debe ser mayor a 0");
       return;
     }
-
-    // Buscamos el producto en la lista memoria (comparación laxa == por si viene string)
+    
     const productoReal = this.listaProductos.find(p => p.id == this.productoSeleccionadoId);
 
     if (!productoReal) return;
@@ -110,10 +95,8 @@ export class AddVentaComponent implements OnInit, OnDestroy {
       alert(`Stock insuficiente. Tienes ${productoReal.stock} y quieres llevar ${totalRequerido}.`);
       return;
     }
-
-    // Calcular precio (usando precio_final si existe)
+    // Calcular precio
     const precioVenta = productoReal.precio_final || 0; 
-
     // Verificar si ya existe para agrupar
     const itemExistente = this.itemsVenta.find(i => i.producto_id === productoReal.id);
 
@@ -132,7 +115,6 @@ export class AddVentaComponent implements OnInit, OnDestroy {
 
     this.calcularTotalGeneral();
     
-    // Resetear formulario
     this.productoSeleccionadoId = null;
     this.cantidadInput = 1;
   }
@@ -143,7 +125,6 @@ export class AddVentaComponent implements OnInit, OnDestroy {
   }
 
   calcularTotalGeneral() {
-    // reduce devuelve un número
     this.totalCalculado = this.itemsVenta.reduce((acc, item) => acc + item.subtotal, 0);
     return this.totalCalculado;
   }
@@ -153,32 +134,29 @@ export class AddVentaComponent implements OnInit, OnDestroy {
     this.metodoPagoSeleccionadoNombre = metodo?.nombre?.toLowerCase() || '';
   }
 
-  // ==========================================
-  // 3. LÓGICA MERCADO PAGO (QR)
-  // ==========================================
   generarQR() {
-    // Validaciones básicas antes de generar QR
+    // Validaciones
     if (this.itemsVenta.length === 0) { alert("El carrito está vacío"); return; }
     if (!this.metodoPagoId) { alert("Seleccione método de pago"); return; }
 
     const data = {
-      total: this.calcularTotalGeneral(), // Llama a la función y obtiene el valor
+      total: this.calcularTotalGeneral(),
       items: this.itemsVenta
     };
 
     this.modalQR = true; 
-    this.qrBase64 = ''; // Muestra "Cargando..."
+    this.qrBase64 = '';
 
     this.mpService.generarQR(data).subscribe({
       next: (res) => {
-        // 1. Guardamos referencia
+        // referencia
         this.externalReference = res.external_reference;
         
-        // 2. Generamos imagen QR con API externa
+        // imagen QR con API externa
         const link = res.init_point;
         this.qrBase64 = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(link)}`;
         
-        // 3. Empezamos a preguntar si pagaron
+        // pregunta si pagaron
         this.iniciarVerificacionDePago();
       },
       error: (err) => {
@@ -190,7 +168,7 @@ export class AddVentaComponent implements OnInit, OnDestroy {
   }
 
   iniciarVerificacionDePago() {
-    // Evitar múltiples intervalos
+    
     this.detenerVerificacion();
 
     this.intervaloPago = setInterval(() => {
@@ -217,26 +195,17 @@ export class AddVentaComponent implements OnInit, OnDestroy {
     this.detenerVerificacion();
   }
 
-  // ==========================================
-  // 4. GUARDADO DE VENTA (Backend)
-  // ==========================================
-
-  // Se llama AUTOMÁTICAMENTE cuando el QR es aprobado
   finalizarVentaExito() {
     this.detenerVerificacion();
     
-    // IMPORTANTE: Reutilizamos la lógica de registrar venta
-    // para asegurar que se guarde con el formato correcto en BD.
     this.registrarVenta(true); 
   }
 
-  // Se llama MANUALMENTE (botón "Registrar Venta") o desde el QR
   registrarVenta(esAutomatico: boolean = false) {
     // Validaciones
     if (this.itemsVenta.length === 0) { alert("No hay productos."); return; }
     if (!this.metodoPagoId) { alert("Seleccione método de pago."); return; }
 
-    // Armar objeto para el Backend
     const payload: Venta = {
       metodopago_id: Number(this.metodoPagoId),
       items: this.itemsVenta.map(item => ({
@@ -246,24 +215,21 @@ export class AddVentaComponent implements OnInit, OnDestroy {
     };
 
     if(esAutomatico) {
-        // Si viene del QR, avisamos antes
          alert("¡Pago Aprobado! Guardando venta en el sistema...");
     }
 
     this.ventaService.addVenta(payload).subscribe({
       next: (res) => {
         if(esAutomatico) {
-            this.modalQR = false; // Cerramos modal solo si era QR
+            this.modalQR = false; 
         }
         alert("¡Venta registrada con éxito!");
-        this.router.navigate(['/venta-list']); // Cambié dashboard por venta-list según tu contexto
+        this.router.navigate(['/venta-list']); 
       },
       error: (err) => {
         console.error("Error guardando venta:", err);
         const mensaje = err.error?.message || "Ocurrió un error al guardar la venta.";
         alert(mensaje);
-        // Si falló el guardado pero ya pagó (QR), no cerramos el modal
-        // para que el vendedor pueda intentar guardar de nuevo o tomar nota.
       }
     });
   }

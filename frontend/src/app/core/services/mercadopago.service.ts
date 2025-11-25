@@ -18,6 +18,7 @@ export class MercadoPagoService {
   estadoPago(id: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/estado/${id}`);
   }
+  
   verificarEstadoPago(externalReference: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/estado/${externalReference}`);
   }

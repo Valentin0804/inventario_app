@@ -39,8 +39,7 @@ export class ProductoListComponent implements OnInit {
       });
     }
   }
-
-  // En tu componente TypeScript
+  
   getClaseStock(stock: number): string {
     if (stock > 20) {
       return 'indicador-stock stock-optimo';

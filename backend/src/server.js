@@ -1,7 +1,5 @@
 const app = require('./services/app');
-
-const db = require('./models'); //importa el index.js de la carpeta models
-
+const db = require('./models'); 
 const PORT = process.env.PORT || 3000;
 
 db.sequelize.sync({ force: false }).then(() => {

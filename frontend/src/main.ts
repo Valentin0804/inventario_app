@@ -20,7 +20,6 @@ bootstrapApplication(AppComponent, {
       useClass: AuthInterceptor,  // Registra nuestra clase de interceptor
       multi: true
     },
-    // ----------------------------------------------------------------
 
     // Tus otras configuraciones
     provideRouter(routes),

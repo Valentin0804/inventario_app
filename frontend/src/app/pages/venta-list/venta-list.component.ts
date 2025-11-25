@@ -45,7 +45,7 @@ export class VentaListComponent implements OnInit {
     this.ventaService.deleteVenta(id, password).subscribe({
       next: () => {
         alert("Venta eliminada y stock restaurado correctamente.");
-        this.cargarVentas(); // Recargar la tabla
+        this.cargarVentas(); // Recarga la tabla
       },
       error: (err) => {
         console.error(err);
@@ -55,7 +55,6 @@ export class VentaListComponent implements OnInit {
   }
 
   editar(venta: any) {
-    // Navegamos a la ruta de edición pasando el ID
     this.router.navigate(['/ventas/edit', venta.id]);
   }
 }

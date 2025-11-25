@@ -10,8 +10,8 @@ export interface MetodoPago {
 @Injectable({
   providedIn: 'root',
 })
+
 export class MetodoPagoService {
-  // URL base de tu backend
   private baseUrl = 'http://localhost:3000/api/metodosPago';
 
   constructor(private http: HttpClient) {}

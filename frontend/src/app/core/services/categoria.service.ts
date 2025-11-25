@@ -12,7 +12,6 @@ export interface Categoria {
   providedIn: 'root',
 })
 export class CategoriaService {
-  // URL base de tu backend
   private baseUrl = 'http://localhost:3000/api/categorias';
 
   constructor(private http: HttpClient) {}

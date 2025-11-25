@@ -2,11 +2,16 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-// Definimos la "forma" de los datos que esperamos recibir
+// Datos que esperamos recibir
 export interface DashboardSummary {
   kpis: {
     salesToday: number;
     revenueToday: number;
+    revenueMonth: number; 
+    averageTicket: number;
+  };
+  charts: {
+    salesByMethod: [];
   };
   alerts: {
     lowStockProducts: any[]; // Deberías crear una interfaz de Producto aquí
@@ -17,7 +22,7 @@ export interface DashboardSummary {
   providedIn: 'root'
 })
 export class DashboardService {
-  private apiUrl = '/api/dashboard'; // El proxy se encargará del resto
+  private apiUrl = '/api/dashboard';
 
   constructor(private http: HttpClient) { }
 

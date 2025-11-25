@@ -8,5 +8,4 @@ router.delete("/:id", ProveedorController.deleteProveedor);
 router.get("/:id", ProveedorController.obtenerProveedor);
 router.put("/:id", ProveedorController.actualizarProveedor);
 
-
 module.exports = router;

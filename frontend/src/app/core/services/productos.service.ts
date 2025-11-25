@@ -21,8 +21,8 @@ export interface Producto {
 @Injectable({
   providedIn: 'root',
 })
+
 export class ProductosService {
-  // URL base de tu backend
   private baseUrl = 'http://localhost:3000/api/productos';
 
   constructor(private http: HttpClient) {}

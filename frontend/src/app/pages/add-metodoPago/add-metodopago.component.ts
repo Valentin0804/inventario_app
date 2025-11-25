@@ -42,18 +42,18 @@ export class AddMetodoPagoComponent implements OnInit {
     if (id) {
       this.editing = true;
       this.MetodoPagoId = +id; // Convertir string a number
-      this.isSubmitting = true; // Mostrar "Cargando..." o similar mientras se carga
+      this.isSubmitting = true; // Mostrar "Cargando..."
       this.errorMessage = null;
 
       this.MetodoPagoService.getMetodoPago(this.MetodoPagoId).subscribe({
         next: (MetodoPago: MetodoPago) => {
-          this.MetodoPagoForm.patchValue(MetodoPago); // Rellenar el formulario con los datos
-          this.isSubmitting = false; // Desactivar el estado de subida
+          this.MetodoPagoForm.patchValue(MetodoPago); 
+          this.isSubmitting = false; 
         },
         error: (error: any) => {
           console.error('Error al cargar Metodo de Pago:', error);
           this.errorMessage = 'No se pudo cargar el metodo de pago para edición.';
-          this.isSubmitting = false; // Desactivar el estado de subida
+          this.isSubmitting = false; 
         }
       });
     }

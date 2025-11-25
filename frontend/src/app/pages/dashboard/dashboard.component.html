@@ -1,24 +1,27 @@
 <div class="contenedor-dashboard">
+
   <!-- Barra de navegación -->
   <nav class="barra-navegacion">
     <h1 class="titulo-dashboard">Panel de Control General</h1>
     <div class="contenedor-botones-navegacion">
-      <button class="boton-navegacion" (click)="goToAddVenta()">
+      <!-- Corregí las rutas de estos botones -->
+      <button class="boton-navegacion">
         <i class="fas fa-home"></i> Inicio
       </button>
-      <button class="boton-navegacion" (click)="goToAddVenta()">
+      <button class="boton-navegacion" (click)="goToVentas()">
         <i class="fas fa-chart-line"></i> Ventas
       </button>
-      <button class="boton-navegacion" (click)="goToAddVenta()">
+      <button class="boton-navegacion" (click)="goToAddProduct()">
         <i class="fas fa-boxes"></i> Inventario
       </button>
-      <button class="boton-navegacion" (click)="goToAddVenta()">
+      <!-- Botón de configuración -->
+      <button class="boton-navegacion">
         <i class="fas fa-cog"></i> Configuración
       </button>
     </div>
   </nav>
 
-  <ng-container *ngIf="summary$ | async as summary; else cargando">
+  <ng-container *ngIf="!loading; else cargando">
 
     <!-- Sección de acciones principales -->
     <section class="seccion-contenedor">
@@ -61,7 +64,7 @@
               Añadir Proveedor
             </button>
           </div>
-          
+
           <div class="tarjeta accion-secundaria">
             <div class="icono-accion-secundaria">
               <i class="fas fa-tags"></i>
@@ -107,6 +110,7 @@
             <i class="fas fa-chart-bar"></i>
           </div>
           <h3>Ventas Realizadas</h3>
+          <!-- Usamos summary directo -->
           <p class="valor-kpi">{{ summary.kpis.salesToday }}</p>
           <span class="unidad-kpi">transacciones</span>
         </div>
@@ -115,46 +119,106 @@
             <i class="fas fa-money-bill-wave"></i>
           </div>
           <h3>Ingresos Totales</h3>
-          <p class="valor-kpi">{{ summary.kpis.revenueToday | currency:'USD':'symbol' }}</p>
+          <!-- Usamos summary directo -->
+          <p class="valor-kpi">{{ summary.kpis.revenueToday |
+            currency:'ARS':'symbol-narrow':'1.0-0' }}</p>
           <span class="unidad-kpi">Pesos Argentinos</span>
         </div>
       </div>
     </section>
 
-    <!-- Sección de notificaciones -->
-    <section class="seccion-contenedor">
-      <h2 class="titulo-seccion">Notificaciones Importantes</h2>
-      <div class="contenedor-alertas">
-        <div class="tarjeta alerta-stock-bajo" *ngIf="summary.alerts.lowStockProducts.length > 0">
-          <div class="encabezado-alerta">
-            <i class="fas fa-exclamation-triangle icono-alerta"></i>
-            <h3>Alerta: Stock Bajo</h3>
-          </div>
-          <p>Los siguientes productos requieren tu atención:</p>
-          <ul class="lista-alerta">
-            <li *ngFor="let product of summary.alerts.lowStockProducts">
-              <span class="nombre-producto">{{ product.nombre }}</span>
-              <span class="stock-restante">Stock: {{ product.stock }}</span>
-            </li>
-          </ul>
-          <button class="boton-detalles">Ver Detalles</button>
+    <!-- Tarjeta de Métodos de Pago -->
+    <section class="seccion-contenedor"
+      *ngIf="summary.charts.salesByMethod.length > 0">
+      <h2 class="titulo-seccion">Detalle Financiero</h2>
+      <div class="tarjeta">
+        <div class="encabezado-alerta">
+          <i class="fas fa-wallet icono-alerta" style="color: #4CAF50;"></i>
+          <h3>Ventas por Método (Hoy)</h3>
         </div>
-        <div class="tarjeta alerta-stock-ok" *ngIf="summary.alerts.lowStockProducts.length === 0">
-          <div class="encabezado-alerta">
-            <i class="fas fa-check-circle icono-alerta"></i>
-            <h3>Stock en Óptimas Condiciones</h3>
-          </div>
-          <p>No hay productos con stock bajo en este momento. ¡Todo en orden!</p>
-        </div>
+
+        <ul class="lista-alerta">
+          <li *ngFor="let metodo of summary.charts.salesByMethod"
+            class="item-alerta">
+            <div class="info-producto">
+              <span class="nombre-producto">{{ metodo.metodoPago.nombre
+                }}</span>
+            </div>
+
+            <div class="estado-stock">
+              <span class="badge-stock">{{ metodo.cantidad }} ventas</span>
+            </div>
+
+            <div class="monto-metodo">
+              <strong>${{ metodo.total }}</strong>
+            </div>
+          </li>
+        </ul>
       </div>
     </section>
+
+    <!-- Alerta Stock -->
+    <ul class="lista-alerta">
+      <li *ngFor="let product of summary.alerts.lowStockProducts"
+        class="item-alerta">
+
+        <!--Info Producto -->
+        <div class="info-producto">
+          <span class="nombre-producto">{{ product.nombre }}</span>
+
+          <!-- Datos del proveedor -->
+          <div class="info-proveedor" *ngIf="product.proveedor">
+            <i class="fas fa-truck-loading"></i> {{ product.proveedor.nombre }}
+          </div>
+          <div class="info-proveedor" *ngIf="!product.proveedor">
+            <small class="texto-gris">Sin proveedor asignado</small>
+          </div>
+        </div>
+
+        <!-- Estado del Stock -->
+        <div class="estado-stock">
+          <span class="badge-stock">
+            Actual: <strong>{{ product.stock }}</strong>
+          </span>
+          <span class="meta-stock">Mín: {{ product.alarma_stock }}</span>
+        </div>
+
+
+        <div class="acciones-rapidas" *ngIf="product.proveedor">
+
+          <!-- Botón WhatsApp -->
+          <a *ngIf="product.proveedor.telefono"
+            [href]="'https://wa.me/' + product.proveedor.telefono + '?text=Hola, necesito reponer stock de ' + product.nombre"
+            target="_blank"
+            class="btn-icon whatsapp"
+            title="Pedir por WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+          </a>
+
+          <!-- Botón Email -->
+          <a *ngIf="product.proveedor.email"
+            [href]="'mailto:' + product.proveedor.email + '?subject=Reposición de ' + product.nombre"
+            class="btn-icon email"
+            title="Enviar Correo">
+            <i class="fas fa-envelope"></i>
+          </a>
+
+        </div>
+      </li>
+    </ul>
+
+    <!-- El botón principal ahora lleva al inventario filtrado 
+    <button class="boton-detalles" [routerLink]="['/productos']"
+      [queryParams]="{ alerta: 'stock-bajo' }">
+      Gestionar Inventario <i class="fas fa-arrow-right"></i>
+    </button> -->
 
   </ng-container>
 
   <ng-template #cargando>
     <div class="estado-cargando">
       <i class="fas fa-spinner fa-spin icono-cargando"></i>
-      <p>Cargando datos del dashboard, por favor espera...</p>
+      <p>Cargando datos del dashboard...</p>
     </div>
   </ng-template>
 </div>

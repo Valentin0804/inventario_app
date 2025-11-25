@@ -202,7 +202,7 @@ const updateVenta = async (req, res) => {
 
 const getVentas = async (req, res) => {
   try {
-    console.log("🔍 Buscando ventas en la BD...");
+    //console.log("🔍 Buscando ventas en la BD...");
 
     const ventas = await Venta.findAll({
       include: [
@@ -220,11 +220,11 @@ const getVentas = async (req, res) => {
       order: [["fecha", "DESC"]]
     });
 
-    console.log(`✅ Ventas encontradas: ${ventas.length}`);
+    //console.log(`✅ Ventas encontradas: ${ventas.length}`);
     res.status(200).json(ventas);
 
   } catch (error) {
-    console.error("❌ ERROR SEQUELIZE:", error);
+    //console.error("❌ ERROR SEQUELIZE:", error);
     res.status(500).json({ 
       message: "Error al obtener las ventas", 
       error: error.message

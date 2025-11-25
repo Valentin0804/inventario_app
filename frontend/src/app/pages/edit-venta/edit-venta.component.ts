@@ -12,7 +12,7 @@ import { MetodoPagoService } from '../../core/services/metodoPago.service';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './edit-venta.component.html',
-  styleUrls: ['./edit-venta.component.css'] // Puedes reusar el CSS de add-venta
+  styleUrls: ['./edit-venta.component.css']
 })
 export class EditVentaComponent implements OnInit {
 
@@ -26,11 +26,9 @@ export class EditVentaComponent implements OnInit {
   listaProductos: Producto[] = [];
   listaMetodosPago: any[] = [];
 
-  // Variables Formulario
   productoSeleccionadoId: number | null = null;
   cantidadInput: number = 1;
 
-  // Estado Venta
   itemsVenta: any[] = [];
   metodoPagoId: number | null = null;
   totalCalculado: number = 0;
@@ -38,27 +36,22 @@ export class EditVentaComponent implements OnInit {
   ngOnInit() {
     this.ventaId = this.route.snapshot.params['id'];
     
-    // Cargar Maestros
     this.ProductosService.getProductos().subscribe(res => this.listaProductos = res);
     this.metodoPagoService.getMetodosPagos().subscribe(res => this.listaMetodosPago = res);
 
-    // Cargar Venta a Editar
     if (this.ventaId) {
       this.cargarVentaExistente();
     }
   }
 
   cargarVentaExistente() {
-    // Necesitamos un endpoint que traiga 1 venta por ID con sus detalles
-    // Si no lo tienes en el servicio, agrégalo: getVentaById(id)
     this.ventaService.getVentaById(this.ventaId).subscribe({
       next: (venta: any) => {
         this.metodoPagoId = venta.metodopago_id;
         
-        // Transformar detalles del backend a formato visual
         this.itemsVenta = venta.detalleVenta.map((d: any) => ({
           producto_id: d.producto_id,
-          nombre: d.producto?.nombre || 'Producto Eliminado', // Asegurate que el backend traiga el producto
+          nombre: d.producto?.nombre || 'Producto Eliminado',
           precio_unitario: d.precio_unitario,
           cantidad: d.cantidad,
           subtotal: d.subtotal
@@ -70,17 +63,14 @@ export class EditVentaComponent implements OnInit {
     });
   }
 
-  // --- LÓGICA DE AGREGAR/QUITAR ITEMS (Igual que AddVenta) ---
   agregarProductoALista() {
     if (!this.productoSeleccionadoId) return;
     const prod = this.listaProductos.find(p => p.id == this.productoSeleccionadoId);
     if (!prod) return;
 
-    // Validación de stock (Simple)
+    // Validación de stock
     if (prod.stock < this.cantidadInput) {
       alert("Stock insuficiente (recuerda que al editar, el stock de la venta original se repondrá al guardar)");
-      // Aquí la validación es truculenta porque el stock "real" incluye lo que ya compraste.
-      // Por simplicidad, avisamos pero permitimos si es razonable.
     }
 
     const itemExistente = this.itemsVenta.find(i => i.producto_id === prod.id);
@@ -112,16 +102,14 @@ export class EditVentaComponent implements OnInit {
     this.totalCalculado = this.itemsVenta.reduce((acc, item) => acc + parseFloat(item.subtotal), 0);
   }
 
-  // --- GUARDAR EDICIÓN ---
   actualizarVenta() {
     if (this.itemsVenta.length === 0) return;
 
-    // 1. Pedir Contraseña
     const password = prompt("🔒 SEGURIDAD: Ingrese su contraseña para confirmar la modificación:");
     if (!password) return;
 
     const payload = {
-      password: password, // Enviamos la pass
+      password: password,
       metodopago_id: this.metodoPagoId,
       items: this.itemsVenta.map(item => ({
         producto_id: item.producto_id,

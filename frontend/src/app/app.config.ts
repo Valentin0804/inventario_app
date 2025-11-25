@@ -6,10 +6,8 @@ import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    // Proveedor de rutas
     provideRouter(routes),
 
-    // Proveedor GLOBAL para HttpClient y sus interceptores
     provideHttpClient(withInterceptorsFromDi()),
     {
       provide: HTTP_INTERCEPTORS,

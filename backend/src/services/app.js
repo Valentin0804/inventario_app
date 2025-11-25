@@ -14,11 +14,10 @@ app.use(cors({
   credentials: true
 }));
 
-//DEBUG
+/*DEBUG
 app.use((req, res, next) => {
   console.log(`📢 PETICIÓN RECIBIDA: ${req.method} ${req.url}`);
-  next();
-});
+  next(); }); */
 
 // Rutas
 const authRoutes = require("../routes/auth.routes");

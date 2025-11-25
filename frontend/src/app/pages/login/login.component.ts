@@ -15,32 +15,25 @@ export class LoginComponent {
   email = '';
   password = '';
 
-  // 2. Inyecta el HttpClient y el Router en el constructor
   constructor(private http: HttpClient, private router: Router) {}
 
-  // 3. Esta función se llamará cuando se envíe el formulario
   onLogin() {
     const credentials = {
       email: this.email,
       password: this.password
     };
 
-    // Hacemos la petición POST al backend
     this.http.post('/api/auth/login', credentials).subscribe({
-      // Si la petición es exitosa (código 200)
       next: (response: any) => {
         console.log('Login exitoso!', response);
 
-        // Guardamos el token en el almacenamiento local del navegador
         localStorage.setItem('auth_token', response.accessToken);
 
-        // Redirigimos al usuario al dashboard
         this.router.navigate(['/dashboard']);
       },
-      // Si hay un error (código 400, 401, 404, 500)
       error: (err) => {
         console.error('Error en el login:', err);
-        alert('Error: ' + err.error.message); // Muestra el mensaje de error del backend
+        alert('Error: ' + err.error.message);
       }
     });
   }

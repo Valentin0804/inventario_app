@@ -13,7 +13,6 @@ import { FormsModule } from '@angular/forms';
 })
 
 export class AddProveedorComponent implements OnInit {
-
   proveedor: Proveedor = { nombre: '', telefono: '', direccion: '' };
   editing = false;
 

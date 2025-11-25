@@ -13,8 +13,8 @@ import { ProveedorService } from '../../core/services/proveedor.service';
   templateUrl: './add-producto.component.html',
   styleUrls: ['./add-producto.component.css']
 })
-export class AddProductoComponent implements OnInit {
 
+export class AddProductoComponent implements OnInit {
   // Objeto inicial vacío
   producto: Producto = {
     nombre: '',
@@ -78,19 +78,18 @@ export class AddProductoComponent implements OnInit {
     this.productosService.addProducto(this.producto).subscribe({
       next: (res) => {
         console.log('Producto creado');
-        this.router.navigate(['/producto-list']); // Redirigir
+        this.router.navigate(['/producto-list']);
       },
       error: (err) => console.error(err)
     });
   }
 
   updateProducto() {
-    // Aseguramos que el ID exista para actualizar
     if (this.producto.id) {
       this.productosService.updateProducto(this.producto.id, this.producto).subscribe({
         next: (res) => {
           console.log('Producto actualizado');
-          this.router.navigate(['/productos']);
+          this.router.navigate(['/producto-list']);
         },
         error: (err) => console.error(err)
       });

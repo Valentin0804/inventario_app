@@ -1,7 +1,7 @@
 const db = require("../models");
 const Producto = db.Producto;
 
-// Función auxiliar para calcular precio final
+// Función para calcular precio final
 const calcularPrecioFinal = (neto, porcentaje) => {
   const costo = parseFloat(neto);
   const ganancia = parseFloat(porcentaje);
@@ -10,7 +10,7 @@ const calcularPrecioFinal = (neto, porcentaje) => {
 
 const createProducto = async (req, res) => {
   try {
-    // 1. Obtener datos con los nombres EXACTOS del modelo (snake_case)
+    //Obtener datos
     const { 
       codigo_barras,
       nombre, 
@@ -18,35 +18,34 @@ const createProducto = async (req, res) => {
       precio_neto, 
       porcentaje_ganancia, 
       descripcion, 
-      stock, // En el model es 'stock', no 'cantidad'
+      stock, 
       alarma_stock,
-      categoria_id, // En el model es 'categoria_id'
+      categoria_id,
       proveedor_id 
     } = req.body;
 
-    // 2. Validar campos obligatorios del Modelo
+    // Validar campos obligatorios del Modelo
     if (!nombre || !precio_neto || !porcentaje_ganancia || stock === undefined) {
       return res.status(400).json({ message: "Faltan datos requeridos (nombre, precio_neto, porcentaje, stock)." });
     }
 
-    // 3. Calcular Precio Final automáticamente
-    // El modelo pide precio_final obligatoriamente
+    // Calcular Precio Final automáticamente
     const precio_final = calcularPrecioFinal(precio_neto, porcentaje_ganancia);
 
-    // 4. Crear el producto
+    //Crear el producto
     const newProducto = await Producto.create({
         codigo_barras,
         nombre,
         marca,
         precio_neto,
         porcentaje_ganancia,
-        precio_final, // Guardamos el calculado
+        precio_final,
         descripcion,
         stock,
         alarma_stock,
         categoria_id,
         proveedor_id,
-        usuario_id: req.userId // Asumiendo que usas middleware de auth que inyecta el ID
+        usuario_id: req.userId
     });
 
     res.status(201).json(newProducto);
@@ -104,14 +103,12 @@ const updateProducto = async (req, res) => {
       return res.status(404).json({ message: "Producto no encontrado." });
     }
 
-    // Lógica especial: Si cambian el precio o la ganancia, hay que recalcular el precio final
+    // Si cambian el precio o la ganancia, se recalcula el precio final
     let nuevoPrecioFinal = producto.precio_final;
     
-    // Valores a usar para el cálculo (los nuevos si existen, o los viejos si no)
     const costoAUsar = precio_neto !== undefined ? precio_neto : producto.precio_neto;
     const gananciaAUsar = porcentaje_ganancia !== undefined ? porcentaje_ganancia : producto.porcentaje_ganancia;
 
-    // Recalculamos siempre para asegurar consistencia
     nuevoPrecioFinal = calcularPrecioFinal(costoAUsar, gananciaAUsar);
 
     await producto.update({
@@ -120,9 +117,9 @@ const updateProducto = async (req, res) => {
         marca: marca || producto.marca,
         precio_neto: precio_neto || producto.precio_neto,
         porcentaje_ganancia: porcentaje_ganancia || producto.porcentaje_ganancia,
-        precio_final: nuevoPrecioFinal, // Actualizamos el calculado
+        precio_final: nuevoPrecioFinal,
         descripcion: descripcion || producto.descripcion,
-        stock: (stock !== undefined) ? stock : producto.stock, // Validación especial para el 0
+        stock: (stock !== undefined) ? stock : producto.stock,
         alarma_stock: (alarma_stock !== undefined) ? alarma_stock : producto.alarma_stock,
         categoria_id: categoria_id || producto.categoria_id,
         proveedor_id: proveedor_id || producto.proveedor_id,

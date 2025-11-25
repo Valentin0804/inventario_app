@@ -68,6 +68,7 @@ const deleteProveedor = async (req, res) => {
     res.status(500).json({ error: "Error eliminando proveedor" });
   }
 };
+
 module.exports = {
     crearProveedor,
     listarProveedores,

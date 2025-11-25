@@ -9,5 +9,4 @@ router.put("/:id",verifyToken, VentaController.updateVenta);
 router.get("/",verifyToken, VentaController.getVentas);
 router.get("/:id",verifyToken, VentaController.getVentaById);
 
-
 module.exports = router;

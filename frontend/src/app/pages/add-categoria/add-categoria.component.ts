@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router'; // <-- Importar ActivatedRoute
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CategoriaService } from '../../core/services/categoria.service';
 import { CommonModule } from '@angular/common';
 
@@ -49,13 +49,13 @@ export class AddCategoriaComponent implements OnInit {
 
       this.categoriaService.getCategoriaById(this.categoriaId).subscribe({
         next: (categoria: Categoria) => {
-          this.categoriaForm.patchValue(categoria); // Rellenar el formulario con los datos
-          this.isSubmitting = false; // Desactivar el estado de subida
+          this.categoriaForm.patchValue(categoria); 
+          this.isSubmitting = false; 
         },
         error: (error: any) => {
           console.error('Error al cargar categoría:', error);
           this.errorMessage = 'No se pudo cargar la categoría para edición.';
-          this.isSubmitting = false; // Desactivar el estado de subida
+          this.isSubmitting = false; 
         }
       });
     }
