@@ -11,7 +11,7 @@
         <select class="campo-formulario" [(ngModel)]="productoSeleccionadoId">
           <option [ngValue]="null">Seleccione Producto...</option>
           <option *ngFor="let p of listaProductos" [value]="p.id">
-            {{ p.nombre }} - ${{ p.precio_final }} (Stock: {{p.stock}})
+            {{ p.nombre }} - ${{ p.precio_final || p.precio_neto }} (Stock: {{p.stock}})
           </option>
         </select>
       </div>
@@ -71,37 +71,36 @@
           <option *ngFor="let mp of listaMetodosPago" [value]="mp.id">{{ mp.nombre }}</option>
         </select>
       </div>
+
+      <!-- BOTÓN SOLO PARA QR (Corregido nombre variable) -->
       <button 
-        *ngIf="metodoPagoSeleccionado?.includes('qr')"
+        *ngIf="metodoPagoSeleccionadoNombre.includes('qr')"
         class="btn btn-primary"
         (click)="generarQR()">
-        Generar QR
+        <i class="fas fa-qrcode"></i> Generar QR
       </button>
 
+      <!-- Modal para mostrar QR -->
+      <div *ngIf="modalQR" class="modal open">
+        <div class="modal-content">
+          <h3>Escanea para pagar</h3>
 
+          <ng-container *ngIf="qrBase64; else cargandoQR">
+            <img [src]="qrBase64" width="250" alt="Código QR de pago" />
+            <!-- Mensaje fijo mientras el modal esté abierto -->
+            <p style="color: orange; font-weight: bold; margin-top: 10px;">
+              <i class="fas fa-sync fa-spin"></i> Esperando pago...
+            </p>
+            <p style="font-size: 0.8rem; color: #666;">La ventana se cerrará automáticamente al aprobarse.</p>
+          </ng-container>
 
-<!-- Modal para mostrar QR -->
-<div *ngIf="modalQR" class="modal open">
-  <div class="modal-content">
-    <h3>Escanea para pagar</h3>
+          <ng-template #cargandoQR>
+            <p>Conectando con Mercado Pago...</p>
+          </ng-template>
 
-    <!-- CORRECCIÓN AQUÍ: Quitamos el 'data:image...' porque es una URL web -->
-    <ng-container *ngIf="qrBase64; else cargandoQR">
-      <img [src]="qrBase64" width="250" alt="Código QR de pago" />
-    </ng-container>
-
-    <ng-template #cargandoQR>
-      <p>Generando QR...</p>
-    </ng-template>
-
-    <p *ngIf="estadoPago === 'approved'" style="color: green;">✓ Pago aprobado</p>
-    <p *ngIf="estadoPago === 'pending'" style="color: orange;">Esperando pago...</p>
-
-    <button class="btn btn-danger" (click)="cerrarModal()">Cerrar</button>
-  </div>
-</div>
-
-      
+          <button class="btn btn-danger" (click)="cerrarModal()">Cancelar / Cerrar</button>
+        </div>
+      </div>
 
       <div class="contenedor-total">
         <span class="texto-total">Total a Cobrar:</span>
@@ -109,11 +108,13 @@
       </div>
     </div>
 
-    <!-- PARTE 4: BOTÓN CONFIRMAR -->
+    <!-- PARTE 4: BOTÓN CONFIRMAR (Solo para Efectivo/Otros) -->
     <div class="contenedor-botones-formulario ancho-completo">
+      <!-- Ocultamos este botón si es QR para no confundir, o lo deshabilitamos -->
       <button 
+        *ngIf="!metodoPagoSeleccionadoNombre.includes('qr')"
         class="boton boton-primario boton-con-icono" 
-        (click)="registrarVenta()" 
+        (click)="registrarVenta(false)" 
         [disabled]="itemsVenta.length === 0 || !metodoPagoId">
         <i class="fas fa-check"></i> Confirmar Venta
       </button>

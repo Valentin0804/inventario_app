@@ -1,4 +1,5 @@
-const { MercadoPagoConfig, Preference } = require("mercadopago");
+const { MercadoPagoConfig, Preference, Payment} = require("mercadopago");
+const crypto = require('crypto');
 require("dotenv").config();
 
 const client = new MercadoPagoConfig({
@@ -9,6 +10,8 @@ const client = new MercadoPagoConfig({
 const crearQR = async (req, res) => {
   try {
     const { total, items } = req.body;
+
+    const externalReference = `venta-${Date.now()}`;
 
     // 1. DEBUG: Ver qué llega del front
     console.log("Datos recibidos del front:", JSON.stringify(items, null, 2));
@@ -26,7 +29,8 @@ const crearQR = async (req, res) => {
             failure: "https://www.google.com",
             pending: "https://www.google.com"
       },
-      auto_return: "approved"
+      auto_return: "approved",
+      external_reference: externalReference
     };
 
     // 2. DEBUG: Ver qué enviamos a MP
@@ -40,6 +44,7 @@ const crearQR = async (req, res) => {
 
     return res.json({
       init_point: preference.init_point,
+      external_reference: externalReference
     });
 
   } catch (error) {
@@ -47,6 +52,55 @@ const crearQR = async (req, res) => {
     // Importante: Agregué 'return' aquí para evitar que la ejecución continúe si hay error
     return res.status(500).json({ message: "Error generando link de pago", details: error });
   }
-}; 
+};
 
-module.exports = { crearQR };
+const comprobarPago = async (req, res) => {
+  try {
+    const { external_reference } = req.params;
+
+    // 1. Buscamos los últimos 10 pagos de la cuenta
+    const paymentSearch = await new Payment(client).search({
+      options: {
+        sort: 'date_created',
+        criteria: 'desc',
+        limit: 10
+      }
+    });
+
+    const ultimosPagos = paymentSearch.results || [];
+
+    // --- LOGS LLAMATIVOS (Busca esto en tu terminal) ---
+    console.log("🔴🔴🔴 INICIO DIAGNÓSTICO PAGO 🔴🔴🔴");
+    console.log(`🔎 Buscando etiqueta exacta: "${external_reference}"`);
+    console.log(`📊 Mercado Pago encontró ${ultimosPagos.length} pagos recientes en esta cuenta.`);
+    
+    // Imprimimos uno por uno para ver qué está pasando
+    ultimosPagos.forEach(p => {
+        let icono = p.status === 'approved' ? '✅' : '⏳';
+        // Si la referencia coincide, ponemos flechas gigantes
+        let marca = p.external_reference === external_reference ? ' <--- ¡AQUÍ ESTÁ!' : '';
+        
+        console.log(`${icono} ID: ${p.id} | Estado: ${p.status} | Ref: "${p.external_reference}"${marca}`);
+    });
+    console.log("🔴🔴🔴 FIN DIAGNÓSTICO 🔴🔴🔴");
+    // ---------------------------------------------------
+
+    // 2. Buscamos la coincidencia
+    const pagoEncontrado = ultimosPagos.find(p => 
+        p.external_reference === external_reference && p.status === 'approved'
+    );
+
+    if (pagoEncontrado) {
+      return res.json({ pagado: true, id_pago: pagoEncontrado.id });
+    }
+
+    return res.json({ pagado: false });
+
+  } catch (error) {
+    console.error("Error comprobando pago:", error);
+    return res.status(500).json({ message: "Error" });
+  }
+};
+
+
+module.exports = { crearQR, comprobarPago };
