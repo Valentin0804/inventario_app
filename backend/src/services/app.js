@@ -1,9 +1,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-
 require("dotenv").config();
-
 // Middlewares
 app.use(express.json());
 
@@ -14,31 +12,32 @@ app.use(cors({
   credentials: true
 }));
 
-/*DEBUG
-app.use((req, res, next) => {
-  console.log(`📢 PETICIÓN RECIBIDA: ${req.method} ${req.url}`);
-  next(); }); */
+const { verifyToken } = require("../middlewares/auth.middleware");
 
-// Rutas
+// Rutas públicas
 const authRoutes = require("../routes/auth.routes");
+app.use("/api/auth", authRoutes);
+
+const mpWebhookRoutes = require("../routes/mp.webhook");
+app.use("/webhook", mpWebhookRoutes);
+
+app.use(verifyToken);
+
+// Rutas privadas
 const dashboardRoutes = require("../routes/dashboard.routes");
 const categoriaRoutes = require("../routes/categoria.routes");
 const metodoPagoRoutes = require("../routes/metodopago.routes");
 const productoRoutes = require("../routes/producto.routes");
 const proveedorRoutes = require("../routes/proveedor.routes");
 const ventaRoutes = require("../routes/venta.routes");
-const mpWebhookRoutes = require("../routes/mp.webhook");
+const mercadoPagoRoutes = require("../routes/mercadoPago.routes");
 
-
-app.use("/api/auth", authRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/categorias", categoriaRoutes);
 app.use("/api/metodospago", metodoPagoRoutes);
 app.use("/api/productos", productoRoutes);
 app.use("/api/proveedores", proveedorRoutes);
 app.use("/api/ventas", ventaRoutes);
-app.use("/webhook", mpWebhookRoutes);
-app.use("/api/mercadopago", require("../routes/mercadoPago.routes"));
-
+app.use("/api/mercadopago", mercadoPagoRoutes);
 
 module.exports = app;

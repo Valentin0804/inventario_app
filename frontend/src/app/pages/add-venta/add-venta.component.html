@@ -32,22 +32,22 @@
     <div class="seccion-detalles">
       <h3 class="titulo-seccion">Detalle de la Venta</h3>
       <div class="contenedor-tabla">
-        <table class="tabla-datos">
+        <table class="tabla-datos texto-centrado">
           <thead>
             <tr>
-              <th>Producto</th>
+              <th class="texto-centrado">Producto</th>
               <th class="texto-centrado">Cantidad</th>
-              <th class="texto-derecha">Precio Unitario</th>
-              <th class="texto-derecha">Subtotal</th>
-              <th class="columna-acciones">Acciones</th>
+              <th class="texto-centrado">Precio Unitario</th>
+              <th class="texto-centrado">Subtotal</th>
+              <th class="texto-centrado ">Acciones</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let item of itemsVenta; let i = index">
               <td>{{ item.nombre }}</td>
               <td class="texto-centrado">{{ item.cantidad }}</td>
-              <td class="texto-derecha">${{ item.precio_unitario }}</td>
-              <td class="texto-derecha monto-total">${{ item.subtotal }}</td>
+              <td class="texto-centrado">${{ item.precio_unitario }}</td>
+              <td class="texto-centrado monto-total">${{ item.subtotal }}</td>
               <td class="texto-centrado">
                 <button class="boton-eliminar-mini" (click)="eliminarItem(i)" title="Eliminar producto">
                   <i class="fas fa-trash"></i>

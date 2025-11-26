@@ -4,16 +4,62 @@
     <h1 class="titulo-pagina">
       <i class="fas fa-truck-loading"></i> Lista de Productos
     </h1>
+
     <div class="contenedor-botones">
       <button class="boton boton-primario boton-con-icono" routerLink="/add-producto">
         <i class="fas fa-plus-circle"></i> Nuevo producto
       </button>
+
       <button class="boton boton-secundario boton-con-icono" routerLink="/dashboard">
         <i class="fas fa-arrow-alt-circle-left"></i> Volver al Dashboard
       </button>
     </div>
   </div>
 
+  <!-- 📌 FILTROS -->
+ <div class="filtros-container">
+
+  <div class="filtro-item">
+    <label>Buscar:</label>
+    <input 
+      type="text" 
+      placeholder="Buscar producto..."
+      [(ngModel)]="busqueda"
+      (input)="aplicarFiltros()"
+    />
+  </div>
+
+  <div class="filtro-item">
+    <label>Proveedor:</label>
+    <select 
+      [(ngModel)]="proveedorFiltro"
+      (change)="aplicarFiltros()"
+    >
+      <option value="">Todos</option>
+      <option *ngFor="let p of proveedores" [value]="p.id">
+        {{ p.nombre }}
+      </option>
+    </select>
+  </div>
+
+  <div class="filtro-item">
+    <label>Ordenar por stock:</label>
+    <select 
+      [(ngModel)]="ordenStock"
+      (change)="aplicarFiltros()"
+    >
+      <option value="">Sin orden</option>
+      <option value="asc">Stock menor → mayor</option>
+      <option value="desc">Stock mayor → menor</option>
+    </select>
+  </div>
+
+  <button class="btn-limpiar" (click)="limpiarFiltros()">Limpiar</button>
+
+</div>
+
+
+  <!-- TABLA -->
   <div class="contenedor-tabla">
     <table class="tabla-datos">
       <thead>
@@ -22,42 +68,49 @@
           <th>Nombre</th>
           <th>Marca</th>
           <th>Descripción</th>
+          <th>Proveedor</th>
           <th>Stock</th>
           <th class="columna-acciones">Acciones</th>
         </tr>
       </thead>
 
       <tbody>
-        <tr *ngFor="let p of productos">
+        <tr *ngFor="let p of productosFiltrados">
           <td class="columna-id">{{ p.id }}</td>
           <td>{{ p.nombre }}</td>
           <td>{{ p.marca }}</td>
           <td>{{ p.descripcion }}</td>
+
+          <!-- Mostrar nombre de proveedor -->
+          <td>
+            {{ getNombreProveedor(p.proveedor_id) }}
+          </td>
+
           <td>
             <span [class]="getClaseStock(p.stock)">{{ p.stock }}</span>
           </td>
 
           <td>
             <div class="contenedor-acciones-celda">
-              <button class="boton boton-editar boton-con-icono" [routerLink]="['/add-producto', p.id]">
+              <button class="boton boton-editar boton-con-icono"
+                [routerLink]="['/add-producto', p.id]">
                 <i class="fas fa-edit"></i> Editar
               </button>
 
-              <button class="boton boton-eliminar boton-con-icono" (click)="eliminar(p.id!)">
+              <button class="boton boton-eliminar boton-con-icono"
+                (click)="eliminar(p.id!)">
                 <i class="fas fa-trash-alt"></i> Eliminar
               </button>
             </div>
           </td>
         </tr>
-        <tr *ngIf="productos && productos.length === 0">
-          <td colspan="6" class="fila-sin-datos">No hay productos registrados.</td>
+
+        <!-- Sin datos -->
+        <tr *ngIf="productosFiltrados.length === 0">
+          <td colspan="7" class="fila-sin-datos">No hay productos que coincidan con la búsqueda.</td>
         </tr>
       </tbody>
     </table>
-  </div>
-
-  <div *ngIf="!productos || productos.length === 0" class="mensaje-informativo">
-    <i class="fas fa-info-circle"></i> Aún no hay productos para mostrar. ¡Añade uno nuevo!
   </div>
 
 </div>

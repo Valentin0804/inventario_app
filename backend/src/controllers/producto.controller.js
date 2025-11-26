@@ -125,7 +125,10 @@ const updateProducto = async (req, res) => {
         proveedor_id: proveedor_id || producto.proveedor_id,
     });
 
-    res.status(200).json(producto);
+    res.status(200).json({
+      message: "Producto actualizado con éxito.",
+      producto
+    });
   } catch (error) {
     console.error("Error al actualizar el producto:", error);
     res.status(500).json({ message: "Error del servidor." });

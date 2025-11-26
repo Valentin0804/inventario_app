@@ -1,0 +1,83 @@
+/* Contenedor general de los filtros */
+.filtros-container {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+  background: #ffffff;
+  padding: 12px 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+  margin-bottom: 20px;
+}
+
+/* Inputs y selects */
+.filtros-container input,
+.filtros-container select {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  transition: 0.2s ease;
+}
+
+.filtros-container input:focus,
+.filtros-container select:focus {
+  border-color: #1976d2;
+  outline: none;
+  box-shadow: 0 0 4px rgba(25,118,210,0.4);
+}
+
+/* Labels */
+.filtro-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Botón limpiar filtros */
+.btn-limpiar {
+  padding: 9px 16px;
+  background: #d32f2f;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.25s;
+}
+
+.btn-limpiar:hover {
+  background: #b71c1c;
+}
+
+/* Indicadores de stock */
+.indicador-stock {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.stock-optimo {
+  background: #2e7d32;
+}
+
+.stock-bajo {
+  background: #f9a825;
+}
+
+.stock-critico {
+  background: #d32f2f;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .filtros-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
