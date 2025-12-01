@@ -1,9 +1,9 @@
 <div class="contenedor-pagina-registro">
   <div class="contenedor-registro">
-    
+
     <!-- Card de Registro -->
     <div class="tarjeta-registro">
-      
+
       <!-- Header con logo -->
       <div class="encabezado-registro">
         <div class="logo-sistema">
@@ -15,22 +15,21 @@
 
       <!-- Formulario -->
       <form (ngSubmit)="registrarse()" class="formulario-registro">
-        
+
         <!-- Campo Nombre -->
         <div class="grupo-formulario">
           <label for="nombre" class="etiqueta-formulario">
             <i class="fas fa-user"></i>
             Nombre completo
           </label>
-          <input 
-            type="text" 
-            [(ngModel)]="nombre" 
-            id="nombre" 
-            name="nombre" 
-            required 
-            class="campo-formulario" 
-            placeholder="Tu nombre completo"
-          />
+          <input
+            type="text"
+            [(ngModel)]="nombre"
+            id="nombre"
+            name="nombre"
+            required
+            class="campo-formulario"
+            placeholder="Tu nombre completo" />
           <div class="icono-campo">
             <i class="fas fa-id-card"></i>
           </div>
@@ -42,15 +41,14 @@
             <i class="fas fa-envelope"></i>
             Correo electrónico
           </label>
-          <input 
-            type="email" 
+          <input
+            type="email"
             [(ngModel)]="email"
-            id="email" 
-            name="email" 
-            required 
-            class="campo-formulario" 
-            placeholder="ejemplo@correo.com"
-          />
+            id="email"
+            name="email"
+            required
+            class="campo-formulario"
+            placeholder="ejemplo@correo.com" />
           <div class="icono-campo">
             <i class="fas fa-at"></i>
           </div>
@@ -62,43 +60,51 @@
             <i class="fas fa-lock"></i>
             Contraseña
           </label>
-          <input 
-            type="password" 
-            [(ngModel)]="password" 
-            id="password" 
-            name="password" 
-            required 
-            class="campo-formulario" 
+          <input
+            type="password"
+            [(ngModel)]="password"
+            id="password"
+            name="password"
+            required
+            class="campo-formulario"
             placeholder="Mínimo 8 caracteres"
-            minlength="8"
-          />
+            minlength="8" />
           <div class="icono-campo">
             <i class="fas fa-key"></i>
           </div>
-          
+
           <!-- Indicador de fortaleza de contraseña -->
           <div class="indicador-fortaleza">
             <div class="niveles-fortaleza">
-              <span class="nivel" [class.activo]="password && password.length >= 1"></span>
-              <span class="nivel" [class.activo]="password && password.length >= 4"></span>
-              <span class="nivel" [class.activo]="password && password.length >= 6"></span>
-              <span class="nivel" [class.activo]="password && password.length >= 8"></span>
+              <span class="nivel"
+                [class.activo]="password && password.length >= 1"></span>
+              <span class="nivel"
+                [class.activo]="password && password.length >= 4"></span>
+              <span class="nivel"
+                [class.activo]="password && password.length >= 6"></span>
+              <span class="nivel"
+                [class.activo]="password && password.length >= 8"></span>
             </div>
-            <span class="texto-fortaleza">{{ obtenerFortalezaContrasena() }}</span>
+            <span class="texto-fortaleza">{{ obtenerFortalezaContrasena()
+              }}</span>
           </div>
         </div>
 
         <!-- Términos y condiciones -->
         <div class="grupo-terminos">
           <label class="checkbox-terminos">
-            <input type="checkbox" [(ngModel)]="aceptaTerminos" name="aceptaTerminos" required>
+            <input type="checkbox" [(ngModel)]="aceptaTerminos"
+              name="aceptaTerminos" required>
             <span class="checkmark"></span>
-           <a>Acepto los <a href="#" class="enlace-terminos">términos y condiciones</a> y la <a href="#" class="enlace-terminos">política de privacidad</a>
-          </a></label>
+            <a>Acepto los <a href="#" class="enlace-terminos">términos y
+                condiciones</a> y la <a href="#"
+                class="enlace-terminos">política de privacidad</a>
+            </a></label>
         </div>
 
         <!-- Botón de envío -->
-        <button type="submit" class="boton boton-primario boton-registro" [disabled]="!aceptaTerminos">
+        <button type="submit" class="boton boton-primario boton-registro"
+          [disabled]="!aceptaTerminos">
           <i class="fas fa-user-plus"></i>
           Crear Cuenta
         </button>
@@ -117,38 +123,37 @@
       </form>
 
       <!-- Separador -->
-      <hr> 
+      <hr>
       <div class="separador">
         <span>¿Ya tienes cuenta?</span>
       </div>
 
       <!-- Link a login -->
-      
-        <a routerLink="/login" class="boton boton-secundario boton-login">
-          <i class="fas fa-sign-in-alt"></i>
-          Iniciar Sesión
-        </a>
-      
+
+      <a routerLink="/login" class="boton boton-secundario boton-login">
+        <i class="fas fa-sign-in-alt"></i>
+        Iniciar Sesión
+      </a>
 
       <!-- Beneficios de registro -->
       <!-- Beneficios de registro - PARTE CORREGIDA -->
-        <div class="beneficios-registro">
-          <h4>Al registrarte obtienes:</h4>
-          <div class="lista-beneficios">
-            <div class="beneficio">
-              <i class="fas fa-rocket"></i>
-              <span>Prueba gratuita de 30 días</span>
-            </div>
-            <div class="beneficio">
-              <i class="fas fa-chart-line"></i>
-              <span>Reportes ilimitados</span>
-            </div>
-            <div class="beneficio">
-              <i class="fas fa-headset"></i>
-              <span>Soporte prioritario</span>
-            </div>
+      <div class="beneficios-registro">
+        <h4>Al registrarte obtienes:</h4>
+        <div class="lista-beneficios">
+          <div class="beneficio">
+            <i class="fas fa-rocket"></i>
+            <span>Prueba gratuita de 30 días</span>
+          </div>
+          <div class="beneficio">
+            <i class="fas fa-chart-line"></i>
+            <span>Reportes ilimitados</span>
+          </div>
+          <div class="beneficio">
+            <i class="fas fa-headset"></i>
+            <span>Soporte prioritario</span>
           </div>
         </div>
+      </div>
 
     </div>
 
@@ -157,7 +162,7 @@
       <div class="contenido-panel">
         <h3>Únete a miles de empresas</h3>
         <p>Que ya optimizaron su gestión de inventario con nuestro sistema</p>
-        
+
         <div class="estadisticas-registro">
           <div class="estadistica">
             <div class="numero">+2,500</div>

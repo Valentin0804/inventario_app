@@ -1,8 +1,8 @@
 const jwt = require("jsonwebtoken");
 
 const verifyToken = (req, res, next) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
 
   if (!token) {
     return res.status(403).send({ message: "No se proveyó un token." });
@@ -10,11 +10,13 @@ const verifyToken = (req, res, next) => {
 
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) {
-      return res.status(401).send({ message: "No autorizado. Token inválido." });
+      return res
+        .status(401)
+        .send({ message: "No autorizado. Token inválido." });
     }
 
     req.userId = decoded.id;
-    req.userRole = decoded.role;     // <-- AGREGADO
+    req.userRole = decoded.role; 
     next();
   });
 };
@@ -31,7 +33,9 @@ const isDueno = (req, res, next) => {
 // Dueños o Cajas
 const isCaja = (req, res, next) => {
   if (req.userRole !== "EMPLEADO" && req.userRole !== "DUEÑO") {
-    return res.status(403).send({ message: "Acceso permitido solo a Empleados o Dueños" });
+    return res
+      .status(403)
+      .send({ message: "Acceso permitido solo a Empleados o Dueños" });
   }
   next();
 };

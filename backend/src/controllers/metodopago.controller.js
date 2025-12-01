@@ -17,7 +17,9 @@ const getMetodosPago = async (req, res) => {
     const metodos = await MetodoPago.findAll();
     res.status(200).json(metodos);
   } catch (error) {
-    res.status(500).json({ message: "Error al obtener métodos de pago", error });
+    res
+      .status(500)
+      .json({ message: "Error al obtener métodos de pago", error });
   }
 };
 
@@ -38,7 +40,7 @@ const getMetodoPagoById = async (req, res) => {
 const updateMetodoPago = async (req, res) => {
   try {
     const [updated] = await MetodoPago.update(req.body, {
-      where: { id: req.params.id }
+      where: { id: req.params.id },
     });
     if (updated) {
       const metodo = await MetodoPago.findByPk(req.params.id);
@@ -46,7 +48,9 @@ const updateMetodoPago = async (req, res) => {
     }
     throw new Error("Método de pago no encontrado");
   } catch (error) {
-    res.status(500).json({ message: "Error al actualizar método de pago", error });
+    res
+      .status(500)
+      .json({ message: "Error al actualizar método de pago", error });
   }
 };
 
@@ -54,14 +58,16 @@ const updateMetodoPago = async (req, res) => {
 const deleteMetodoPago = async (req, res) => {
   try {
     const deleted = await MetodoPago.destroy({
-      where: { id: req.params.id }
+      where: { id: req.params.id },
     });
     if (deleted) {
       return res.status(204).send();
     }
     throw new Error("Método de pago no encontrado");
   } catch (error) {
-    res.status(500).json({ message: "Error al eliminar método de pago", error });
+    res
+      .status(500)
+      .json({ message: "Error al eliminar método de pago", error });
   }
 };
 
@@ -70,5 +76,5 @@ module.exports = {
   getMetodosPago,
   getMetodoPagoById,
   updateMetodoPago,
-  deleteMetodoPago
+  deleteMetodoPago,
 };

@@ -1,11 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CategoriaService } from '../../core/services/categoria.service';
 import { CommonModule } from '@angular/common';
 
 interface Categoria {
-  id?: number; 
+  id?: number;
   nombre: string;
   descripcion?: string;
 }
@@ -15,28 +21,26 @@ interface Categoria {
   templateUrl: './add-categoria.component.html',
   styleUrls: ['./add-categoria.component.css'],
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, ReactiveFormsModule]
+  imports: [CommonModule, FormsModule, RouterModule, ReactiveFormsModule],
 })
-
 export class AddCategoriaComponent implements OnInit {
-
   categoriaForm!: FormGroup;
   errorMessage: string | null = null;
   isSubmitting: boolean = false;
-  editing: boolean = false; 
-  categoriaId: number | null = null; 
+  editing: boolean = false;
+  categoriaId: number | null = null;
 
   constructor(
     private fb: FormBuilder,
     private categoriaService: CategoriaService,
     private router: Router,
-    private route: ActivatedRoute 
-  ) { }
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.categoriaForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.minLength(3)]],
-      descripcion: ['', [Validators.maxLength(250)]]
+      descripcion: ['', [Validators.maxLength(250)]],
     });
 
     const id = this.route.snapshot.paramMap.get('id');
@@ -44,19 +48,19 @@ export class AddCategoriaComponent implements OnInit {
     if (id) {
       this.editing = true;
       this.categoriaId = +id; // Convertir string a number
-      this.isSubmitting = true; // Mostrar "Cargando..." o similar mientras se carga
+      this.isSubmitting = true; // Mostrar "Cargando..."  mientras se carga
       this.errorMessage = null;
 
       this.categoriaService.getCategoriaById(this.categoriaId).subscribe({
         next: (categoria: Categoria) => {
-          this.categoriaForm.patchValue(categoria); 
-          this.isSubmitting = false; 
+          this.categoriaForm.patchValue(categoria);
+          this.isSubmitting = false;
         },
         error: (error: any) => {
           console.error('Error al cargar categoría:', error);
           this.errorMessage = 'No se pudo cargar la categoría para edición.';
-          this.isSubmitting = false; 
-        }
+          this.isSubmitting = false;
+        },
       });
     }
   }
@@ -82,18 +86,21 @@ export class AddCategoriaComponent implements OnInit {
     const categoriaData: Categoria = this.categoriaForm.value;
 
     if (this.editing && this.categoriaId) {
-      this.categoriaService.updateCategoria(this.categoriaId, categoriaData).subscribe({
-        next: (response: any) => {
-          console.log('Categoría actualizada con éxito:', response);
-          this.isSubmitting = false;
-          this.router.navigate(['/categoria-list']);
-        },
-        error: (error: any) => {
-          console.error('Error al actualizar categoría:', error);
-          this.errorMessage = 'Hubo un error al actualizar la categoría. Inténtalo de nuevo.';
-          this.isSubmitting = false;
-        }
-      });
+      this.categoriaService
+        .updateCategoria(this.categoriaId, categoriaData)
+        .subscribe({
+          next: (response: any) => {
+            console.log('Categoría actualizada con éxito:', response);
+            this.isSubmitting = false;
+            this.router.navigate(['/categoria-list']);
+          },
+          error: (error: any) => {
+            console.error('Error al actualizar categoría:', error);
+            this.errorMessage =
+              'Hubo un error al actualizar la categoría. Inténtalo de nuevo.';
+            this.isSubmitting = false;
+          },
+        });
     } else {
       this.categoriaService.addCategoria(categoriaData).subscribe({
         next: (response: any) => {
@@ -103,9 +110,10 @@ export class AddCategoriaComponent implements OnInit {
         },
         error: (error: any) => {
           console.error('Error al agregar categoría:', error);
-          this.errorMessage = 'Hubo un error al guardar la categoría. Inténtalo de nuevo.';
+          this.errorMessage =
+            'Hubo un error al guardar la categoría. Inténtalo de nuevo.';
           this.isSubmitting = false;
-        }
+        },
       });
     }
   }

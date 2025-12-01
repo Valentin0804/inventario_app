@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { Proveedor,  ProveedorService } from '../../core/services/proveedor.service';
+import {
+  Proveedor,
+  ProveedorService,
+} from '../../core/services/proveedor.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -9,9 +12,8 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './add-proveedor.component.html',
   standalone: true,
   styleUrls: ['./add-proveedor.component.css'],
-  imports:[CommonModule, FormsModule, RouterModule]
+  imports: [CommonModule, FormsModule, RouterModule],
 })
-
 export class AddProveedorComponent implements OnInit {
   proveedor: Proveedor = { nombre: '', telefono: '', direccion: '' };
   editing = false;
@@ -23,10 +25,10 @@ export class AddProveedorComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const id = this.route.snapshot.paramMap.get("id");
+    const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.editing = true;
-      this.proveedorService.getProveedorById(+id).subscribe(data => {
+      this.proveedorService.getProveedorById(+id).subscribe((data) => {
         this.proveedor = data;
       });
     }
@@ -34,17 +36,17 @@ export class AddProveedorComponent implements OnInit {
 
   guardar() {
     if (this.editing) {
-      this.proveedorService.updateProveedor(this.proveedor.id!, this.proveedor)
+      this.proveedorService
+        .updateProveedor(this.proveedor.id!, this.proveedor)
         .subscribe(() => {
-          alert("Proveedor actualizado con éxito");
+          alert('Proveedor actualizado con éxito');
           this.router.navigate(['/proveedor-list']);
         });
     } else {
-      this.proveedorService.addProveedor(this.proveedor)
-        .subscribe(() => {
-          alert("Proveedor creado con éxito");
-          this.router.navigate(['/proveedor-list']);
-        });
+      this.proveedorService.addProveedor(this.proveedor).subscribe(() => {
+        alert('Proveedor creado con éxito');
+        this.router.navigate(['/proveedor-list']);
+      });
     }
   }
 }

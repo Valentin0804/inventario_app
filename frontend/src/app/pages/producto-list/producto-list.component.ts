@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductosService, Producto } from '../../core/services/productos.service';
+import {
+  ProductosService,
+  Producto,
+} from '../../core/services/productos.service';
 import { ProveedorService } from '../../core/services/proveedor.service';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -13,11 +16,10 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, RouterModule, FormsModule],
 })
 export class ProductoListComponent implements OnInit {
-
   productos: Producto[] = [];
   productosFiltrados: Producto[] = [];
 
-  proveedores: any[] = []; // lista para el select
+  proveedores: any[] = [];
 
   // filtros
   busqueda: string = '';
@@ -37,7 +39,7 @@ export class ProductoListComponent implements OnInit {
 
   cargarProveedores() {
     this.proveedoresService.getProveedores().subscribe((data) => {
-      this.proveedores = data; // [{ id, nombre }, ...]
+      this.proveedores = data;
     });
   }
 
@@ -61,7 +63,7 @@ export class ProductoListComponent implements OnInit {
     // Filtro por proveedor
     if (this.proveedorFiltro !== '') {
       filtrados = filtrados.filter(
-        p => p.proveedor_id == Number(this.proveedorFiltro)
+        (p) => p.proveedor_id == Number(this.proveedorFiltro)
       );
     }
 
@@ -96,18 +98,14 @@ export class ProductoListComponent implements OnInit {
 
   getNombreProveedor(id: number | undefined): string {
     if (!id) return '-';
-    const prov = this.proveedores.find(p => p.id === id);
+    const prov = this.proveedores.find((p) => p.id === id);
     return prov ? prov.nombre : '-';
   }
 
   limpiarFiltros() {
-  this.busqueda = '';
-  this.proveedorFiltro = '';
-  this.ordenStock = '';
-
-  this.aplicarFiltros();
-}
-
-
-
+    this.busqueda = '';
+    this.proveedorFiltro = '';
+    this.ordenStock = '';
+    this.aplicarFiltros();
+  }
 }

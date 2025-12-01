@@ -6,9 +6,12 @@ const MetodoPago = sequelize.define(
   {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     nombre: { type: DataTypes.STRING(100), allowNull: false, unique: true },
-    activo: { type: DataTypes.BOOLEAN, defaultValue: true }
-  }, { 
-    tableName: "metodos_pagos", timestamps: false }
+    activo: { type: DataTypes.BOOLEAN, defaultValue: true },
+  },
+  {
+    tableName: "metodos_pagos",
+    timestamps: false,
+  }
 );
 
 module.exports = MetodoPago;

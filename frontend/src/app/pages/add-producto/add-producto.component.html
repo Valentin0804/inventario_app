@@ -1,9 +1,10 @@
 <div class="contenedor">
   <div class="contenedor-formulario">
-    
+
     <!-- Título -->
     <h1 class="titulo-pagina">
-      <i class="fas fa-box-open"></i> {{ editing ? "Editar Producto" : "Agregar Nuevo Producto" }}
+      <i class="fas fa-box-open"></i> {{ editing ? "Editar Producto" :
+      "Agregar Nuevo Producto" }}
     </h1>
 
     <!-- Formulario -->
@@ -12,23 +13,24 @@
       <!-- Fila 1: Código de Barras y Nombre -->
       <div class="grupo-formulario">
         <label class="etiqueta-formulario" for="codigo">Código de Barras</label>
-        <input 
-          type="text" 
-          id="codigo" 
+        <input
+          type="text"
+          id="codigo"
           class="campo-formulario"
-          [(ngModel)]="producto.codigo_barras" 
+          [(ngModel)]="producto.codigo_barras"
           name="codigo_barras"
           placeholder="Ej: 779123456">
       </div>
 
       <div class="grupo-formulario">
-        <label class="etiqueta-formulario" for="nombre">Nombre <span class="asterisco-obligatorio">*</span></label>
-        <input 
-          type="text" 
-          id="nombre" 
+        <label class="etiqueta-formulario" for="nombre">Nombre <span
+            class="asterisco-obligatorio">*</span></label>
+        <input
+          type="text"
+          id="nombre"
           class="campo-formulario"
-          [(ngModel)]="producto.nombre" 
-          name="nombre" 
+          [(ngModel)]="producto.nombre"
+          name="nombre"
           required
           placeholder="Nombre del producto">
       </div>
@@ -36,48 +38,51 @@
       <!-- Fila 2: Marca y Categoría -->
       <div class="grupo-formulario">
         <label class="etiqueta-formulario" for="marca">Marca</label>
-        <input 
-          type="text" 
-          id="marca" 
+        <input
+          type="text"
+          id="marca"
           class="campo-formulario"
-          [(ngModel)]="producto.marca" 
+          [(ngModel)]="producto.marca"
           name="marca"
           placeholder="Marca del producto">
       </div>
 
       <div class="grupo-formulario">
         <label class="etiqueta-formulario" for="categoria">Categoría</label>
-        <select 
-          id="categoria" 
-          class="campo-formulario" 
-          [(ngModel)]="producto.categoria_id" 
+        <select
+          id="categoria"
+          class="campo-formulario"
+          [(ngModel)]="producto.categoria_id"
           name="categoria_id">
           <option [ngValue]="null" disabled>Seleccione una categoría...</option>
-          <option *ngFor="let cat of categorias" [value]="cat.id">{{ cat.nombre }}</option>
+          <option *ngFor="let cat of categorias" [value]="cat.id">{{ cat.nombre
+            }}</option>
         </select>
       </div>
 
       <!-- Fila 3: Proveedor y Stock -->
       <div class="grupo-formulario">
         <label class="etiqueta-formulario" for="proveedor">Proveedor</label>
-        <select 
-          id="proveedor" 
-          class="campo-formulario" 
-          [(ngModel)]="producto.proveedor_id" 
+        <select
+          id="proveedor"
+          class="campo-formulario"
+          [(ngModel)]="producto.proveedor_id"
           name="proveedor_id">
           <option [ngValue]="null" disabled>Seleccione un proveedor...</option>
-          <option *ngFor="let prov of proveedores" [value]="prov.id">{{ prov.nombre }}</option>
+          <option *ngFor="let prov of proveedores" [value]="prov.id">{{
+            prov.nombre }}</option>
         </select>
       </div>
 
       <div class="grupo-formulario">
-        <label class="etiqueta-formulario" for="stock">Stock Actual <span class="asterisco-obligatorio">*</span></label>
-        <input 
-          type="number" 
-          id="stock" 
+        <label class="etiqueta-formulario" for="stock">Stock Actual <span
+            class="asterisco-obligatorio">*</span></label>
+        <input
+          type="number"
+          id="stock"
           class="campo-formulario"
-          [(ngModel)]="producto.stock" 
-          name="stock" 
+          [(ngModel)]="producto.stock"
+          name="stock"
           required
           min="0"
           placeholder="0">
@@ -85,13 +90,14 @@
 
       <!-- Fila 4: Precios -->
       <div class="grupo-formulario">
-        <label class="etiqueta-formulario" for="precio_neto">Costo (Neto) <span class="asterisco-obligatorio">*</span></label>
-        <input 
-          type="number" 
-          id="precio_neto" 
+        <label class="etiqueta-formulario" for="precio_neto">Costo (Neto) <span
+            class="asterisco-obligatorio">*</span></label>
+        <input
+          type="number"
+          id="precio_neto"
           class="campo-formulario"
-          [(ngModel)]="producto.precio_neto" 
-          name="precio_neto" 
+          [(ngModel)]="producto.precio_neto"
+          name="precio_neto"
           required
           min="0"
           step="0.01"
@@ -99,13 +105,14 @@
       </div>
 
       <div class="grupo-formulario">
-        <label class="etiqueta-formulario" for="ganancia">% Ganancia <span class="asterisco-obligatorio">*</span></label>
-        <input 
-          type="number" 
-          id="ganancia" 
+        <label class="etiqueta-formulario" for="ganancia">% Ganancia <span
+            class="asterisco-obligatorio">*</span></label>
+        <input
+          type="number"
+          id="ganancia"
           class="campo-formulario"
-          [(ngModel)]="producto.porcentaje_ganancia" 
-          name="porcentaje_ganancia" 
+          [(ngModel)]="producto.porcentaje_ganancia"
+          name="porcentaje_ganancia"
           required
           min="0"
           step="0.1"
@@ -114,14 +121,26 @@
 
       <!-- Fila 5: Alarma de Stock -->
       <div class="grupo-formulario">
-        <label class="etiqueta-formulario" for="alarma">Alerta de Stock Mínimo</label>
-        <input 
-          type="number" 
-          id="alarma" 
+        <label class="etiqueta-formulario" for="alarma">Alerta de Stock
+          Mínimo</label>
+        <input
+          type="number"
+          id="alarma"
           class="campo-formulario"
-          [(ngModel)]="producto.alarma_stock" 
+          [(ngModel)]="producto.alarma_stock"
           name="alarma_stock"
           placeholder="Ej: 5">
+      </div>
+      <div class="form-group">
+        <label>Imagen del Producto:</label>
+        <!-- (change) ejecuta la función cuando eligen archivo -->
+        <input type="file" (change)="onFileSelected($event)" accept="image/*">
+      </div>
+
+      <!-- VISTA PREVIA (Opcional) -->
+      <div *ngIf="imagePreview" class="preview-container">
+        <p>Vista previa:</p>
+        <img [src]="imagePreview" alt="Preview" width="150">
       </div>
 
       <!-- Espacio vacío para mantener la grilla alineada -->
@@ -130,10 +149,10 @@
       <!-- Fila 6: Descripción (Ancho completo) -->
       <div class="grupo-formulario ancho-completo">
         <label class="etiqueta-formulario" for="descripcion">Descripción</label>
-        <textarea 
-          id="descripcion" 
+        <textarea
+          id="descripcion"
           class="campo-formulario textarea-formulario"
-          [(ngModel)]="producto.descripcion" 
+          [(ngModel)]="producto.descripcion"
           name="descripcion"
           rows="3"
           placeholder="Detalles adicionales del producto..."></textarea>
@@ -141,11 +160,14 @@
 
       <!-- Botones -->
       <div class="contenedor-botones-formulario ancho-completo">
-        <button type="submit" class="boton boton-primario boton-con-icono" [disabled]="f.invalid">
-          <i class="fas fa-save"></i> {{ editing ? "Actualizar Producto" : "Guardar Producto" }}
+        <button type="submit" class="boton boton-primario boton-con-icono"
+          [disabled]="f.invalid">
+          <i class="fas fa-save"></i> {{ editing ? "Actualizar Producto" :
+          "Guardar Producto" }}
         </button>
 
-        <button type="button" class="boton boton-secundario" (click)="goToProductoList()">
+        <button type="button" class="boton boton-secundario"
+          (click)="goToProductoList()">
           <i class="fas fa-times"></i> Cancelar
         </button>
       </div>

@@ -1,11 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router'; 
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MetodoPagoService } from '../../core/services/metodoPago.service';
 import { CommonModule } from '@angular/common';
 
 interface MetodoPago {
-  id?: number; 
+  id?: number;
   nombre: string;
 }
 
@@ -14,23 +20,21 @@ interface MetodoPago {
   templateUrl: './add-metodopago.component.html',
   styleUrls: ['./add-metodopago.component.css'],
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, ReactiveFormsModule]
+  imports: [CommonModule, FormsModule, RouterModule, ReactiveFormsModule],
 })
-
 export class AddMetodoPagoComponent implements OnInit {
-
   MetodoPagoForm!: FormGroup;
   errorMessage: string | null = null;
   isSubmitting: boolean = false;
-  editing: boolean = false; 
-  MetodoPagoId: number | null = null; 
+  editing: boolean = false;
+  MetodoPagoId: number | null = null;
 
   constructor(
     private fb: FormBuilder,
     private MetodoPagoService: MetodoPagoService,
     private router: Router,
-    private route: ActivatedRoute 
-  ) { }
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.MetodoPagoForm = this.fb.group({
@@ -47,14 +51,15 @@ export class AddMetodoPagoComponent implements OnInit {
 
       this.MetodoPagoService.getMetodoPago(this.MetodoPagoId).subscribe({
         next: (MetodoPago: MetodoPago) => {
-          this.MetodoPagoForm.patchValue(MetodoPago); 
-          this.isSubmitting = false; 
+          this.MetodoPagoForm.patchValue(MetodoPago);
+          this.isSubmitting = false;
         },
         error: (error: any) => {
           console.error('Error al cargar Metodo de Pago:', error);
-          this.errorMessage = 'No se pudo cargar el metodo de pago para edición.';
-          this.isSubmitting = false; 
-        }
+          this.errorMessage =
+            'No se pudo cargar el metodo de pago para edición.';
+          this.isSubmitting = false;
+        },
       });
     }
   }
@@ -76,7 +81,10 @@ export class AddMetodoPagoComponent implements OnInit {
     const MetodoPagoData: MetodoPago = this.MetodoPagoForm.value;
 
     if (this.editing && this.MetodoPagoId) {
-      this.MetodoPagoService.updateMetodoPago(this.MetodoPagoId, MetodoPagoData).subscribe({
+      this.MetodoPagoService.updateMetodoPago(
+        this.MetodoPagoId,
+        MetodoPagoData
+      ).subscribe({
         next: (response: any) => {
           console.log('Metodo de Pago actualizado con éxito:', response);
           this.isSubmitting = false;
@@ -84,9 +92,10 @@ export class AddMetodoPagoComponent implements OnInit {
         },
         error: (error: any) => {
           console.error('Error al actualizar el Metodo de Pago:', error);
-          this.errorMessage = 'Hubo un error al actualizar el metodo de pago. Inténtalo de nuevo.';
+          this.errorMessage =
+            'Hubo un error al actualizar el metodo de pago. Inténtalo de nuevo.';
           this.isSubmitting = false;
-        }
+        },
       });
     } else {
       this.MetodoPagoService.addMetodoPago(MetodoPagoData).subscribe({
@@ -97,9 +106,10 @@ export class AddMetodoPagoComponent implements OnInit {
         },
         error: (error: any) => {
           console.error('Error al agregar el Metodo de Pago:', error);
-          this.errorMessage = 'Hubo un error al guardar el Metodo de Pago. Inténtalo de nuevo.';
+          this.errorMessage =
+            'Hubo un error al guardar el Metodo de Pago. Inténtalo de nuevo.';
           this.isSubmitting = false;
-        }
+        },
       });
     }
   }

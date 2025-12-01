@@ -9,9 +9,8 @@ import { RouterLink } from '@angular/router';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './registro.component.html',
-  styleUrl: './registro.component.css'
+  styleUrl: './registro.component.css',
 })
-
 export class RegistroComponent {
   nombre: string = '';
   email: string = '';
@@ -24,7 +23,7 @@ export class RegistroComponent {
 
   obtenerFortalezaContrasena(): string {
     if (!this.password) return '';
-    
+
     const length = this.password.length;
     if (length < 4) return 'Débil';
     if (length < 6) return 'Regular';
@@ -36,19 +35,20 @@ export class RegistroComponent {
     const nuevoUsuario = {
       nombre: this.nombre,
       email: this.email,
-      password: this.password
+      password: this.password,
     };
 
     this.http.post('/api/auth/registro', nuevoUsuario).subscribe({
       next: () => alert('Usuario registrado con éxito'),
-      error: (err) => alert('Error al registrar: ' + err.error?.message || err.message)
+      error: (err) =>
+        alert('Error al registrar: ' + err.error?.message || err.message),
     });
     console.log('Registrando usuario:', {
       nombre: this.nombre,
       email: this.email,
-      password: this.password
+      password: this.password,
     });
-    
+
     // Ejemplo de manejo de éxito/error
     if (this.nombre && this.email && this.password) {
       this.mensajeExito = '¡Registro exitoso! Redirigiendo...';

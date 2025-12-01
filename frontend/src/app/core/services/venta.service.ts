@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-// Datos que espera el Backend
 export interface Venta {
   metodopago_id: number;
+  usuario_id: number;
   items: {
     producto_id: number;
     cantidad: number;
@@ -14,7 +14,6 @@ export interface Venta {
 @Injectable({
   providedIn: 'root',
 })
-
 export class VentaService {
   private baseUrl = 'http://localhost:3000/api/ventas';
 

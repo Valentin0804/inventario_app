@@ -3,12 +3,14 @@ const Usuario = db.Usuario;
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-// Registro (siempre registra como Dueño)
+// Registro
 const register = async (req, res) => {
   try {
     const { nombre, email, password } = req.body;
     if (!nombre || !email || !password) {
-      return res.status(400).send({ message: "Todos los campos son requeridos." });
+      return res
+        .status(400)
+        .send({ message: "Todos los campos son requeridos." });
     }
 
     const hashedPassword = await bcrypt.hash(password, 8);
@@ -17,18 +19,22 @@ const register = async (req, res) => {
       nombre,
       email,
       password: hashedPassword,
-      rol: "DUEÑO",       // <-- NUEVO
-      owner_id: null       // <-- NUEVO
+      rol: "DUEÑO",
+      owner_id: null, 
     });
 
     res.status(201).send({
       message: "¡Dueño registrado con éxito!",
-      usuario: nuevoUsuario
+      usuario: nuevoUsuario,
     });
-
   } catch (error) {
     console.error("Error en el registro:", error);
-    res.status(500).send({ message: "Error al registrar el usuario.", error: error.message });
+    res
+      .status(500)
+      .send({
+        message: "Error al registrar el usuario.",
+        error: error.message,
+      });
   }
 };
 
@@ -45,11 +51,13 @@ const login = async (req, res) => {
 
     const passwordIsValid = await bcrypt.compare(password, usuario.password);
     if (!passwordIsValid) {
-      return res.status(401).send({ accessToken: null, message: "¡Contraseña incorrecta!" });
+      return res
+        .status(401)
+        .send({ accessToken: null, message: "¡Contraseña incorrecta!" });
     }
 
     const token = jwt.sign(
-      { id: usuario.id, role: usuario.rol },   // <-- ROLE agregado al token
+      { id: usuario.id, role: usuario.rol }, 
       process.env.JWT_SECRET,
       { expiresIn: 86400 }
     );
@@ -58,14 +66,15 @@ const login = async (req, res) => {
       id: usuario.id,
       nombre: usuario.nombre,
       email: usuario.email,
-      role: usuario.rol,    // <-- LO DEVOLVEMOS PARA ANGULAR
+      role: usuario.rol,
       owner_id: usuario.owner_id,
       accessToken: token,
     });
-
   } catch (error) {
     console.error("Error en el login:", error);
-    res.status(500).send({ message: "Error en el login.", error: error.message });
+    res
+      .status(500)
+      .send({ message: "Error en el login.", error: error.message });
   }
 };
 

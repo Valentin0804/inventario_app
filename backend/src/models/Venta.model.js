@@ -7,7 +7,7 @@ const Venta = sequelize.define(
   {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     fecha: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
-    total_venta: { type: DataTypes.DECIMAL(10,2), allowNull: false },
+    total_venta: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
     usuario_id: { type: DataTypes.INTEGER },
     metodopago_id: { type: DataTypes.INTEGER },
   },
@@ -16,6 +16,5 @@ const Venta = sequelize.define(
     timestamps: false,
   }
 );
-
 
 module.exports = Venta;

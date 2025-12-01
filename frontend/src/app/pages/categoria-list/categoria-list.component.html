@@ -5,10 +5,12 @@
       <i class="fas fa-tags"></i> Lista de Categorías
     </h1>
     <div class="contenedor-botones">
-      <button class="boton boton-primario boton-con-icono" routerLink="/add-categoria">
+      <button class="boton boton-primario boton-con-icono"
+        routerLink="/add-categoria">
         <i class="fas fa-plus-circle"></i> Nueva Categoría
       </button>
-      <button class="boton boton-secundario boton-con-icono" routerLink="/dashboard">
+      <button class="boton boton-secundario boton-con-icono"
+        routerLink="/dashboard">
         <i class="fas fa-arrow-alt-circle-left"></i> Volver al Dashboard
       </button>
     </div>
@@ -33,25 +35,30 @@
 
           <td>
             <div class="contenedor-acciones-celda">
-              <button class="boton boton-editar boton-con-icono" [routerLink]="['/add-categoria', p.id]">
+              <button class="boton boton-editar boton-con-icono"
+                [routerLink]="['/add-categoria', p.id]">
                 <i class="fas fa-edit"></i> Editar
               </button>
 
-              <button class="boton boton-eliminar boton-con-icono" (click)="eliminar(p.id!)">
+              <button class="boton boton-eliminar boton-con-icono"
+                (click)="eliminar(p.id!)">
                 <i class="fas fa-trash-alt"></i> Eliminar
               </button>
             </div>
           </td>
         </tr>
         <tr *ngIf="categorias && categorias.length === 0">
-          <td colspan="4" class="fila-sin-datos">No hay categorías registradas.</td>
+          <td colspan="4" class="fila-sin-datos">No hay categorías
+            registradas.</td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <div *ngIf="!categorias || categorias.length === 0" class="mensaje-informativo">
-    <i class="fas fa-info-circle"></i> Aún no hay categorías para mostrar. ¡Añade una nueva!
+  <div *ngIf="!categorias || categorias.length === 0"
+    class="mensaje-informativo">
+    <i class="fas fa-info-circle"></i> Aún no hay categorías para mostrar.
+    ¡Añade una nueva!
   </div>
 
 </div>

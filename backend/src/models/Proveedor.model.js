@@ -12,7 +12,7 @@ const Proveedor = sequelize.define(
   },
   {
     tableName: "proveedores",
-    timestamps: true,       
+    timestamps: true,
     createdAt: "created_at",
     updatedAt: "updated_at",
   }

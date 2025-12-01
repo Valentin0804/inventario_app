@@ -12,6 +12,6 @@ Este directorio contiene toda la documentación del proyecto **Sistema de Gesti�
 - [Evidencia de Test Automáticos](testing.md)
 
 ## 📺 Demo en Video
-*(colocar el link al video cuando esté)*
+
 
 ---

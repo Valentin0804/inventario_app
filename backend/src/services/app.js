@@ -4,6 +4,8 @@ const cors = require("cors");
 require("dotenv").config();
 // Middlewares
 app.use(express.json());
+const path = require('path');
+
 
 // CORS SIEMPRE ANTES DE LAS RUTAS
 app.use(cors({
@@ -12,9 +14,10 @@ app.use(cors({
   credentials: true
 }));
 
-const { verifyToken } = require("../middlewares/auth.middleware");
 
 // Rutas públicas
+app.use('/uploads', express.static(path.join(__dirname, '../../uploads'))); // Servir archivos estáticos desde la carpeta uploadss
+
 const authRoutes = require("../routes/auth.routes");
 app.use("/api/auth", authRoutes);
 

@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UsuarioService } from '../../core/services/usuario.service';
 import { CommonModule } from '@angular/common';
@@ -9,10 +14,9 @@ import { CommonModule } from '@angular/common';
   templateUrl: './add-usuario.component.html',
   styleUrls: ['./add-usuario.component.css'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule] 
+  imports: [CommonModule, ReactiveFormsModule],
 })
 export class AddUsuarioComponent implements OnInit {
-
   usuarioForm!: FormGroup;
   editing = false;
   isSubmitting = false;
@@ -34,7 +38,10 @@ export class AddUsuarioComponent implements OnInit {
       nombre: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
       rol: ['', [Validators.required]],
-      password: ['', this.editing ? [] : [Validators.required, Validators.minLength(6)]]
+      password: [
+        '',
+        this.editing ? [] : [Validators.required, Validators.minLength(6)],
+      ],
     });
 
     if (this.editing) {
@@ -48,12 +55,12 @@ export class AddUsuarioComponent implements OnInit {
         this.usuarioForm.patchValue({
           nombre: usuario.nombre,
           email: usuario.email,
-          rol: usuario.rol
+          rol: usuario.rol,
         });
       },
       error: () => {
         this.errorMessage = 'Error cargando el usuario.';
-      }
+      },
     });
   }
 
@@ -73,7 +80,7 @@ export class AddUsuarioComponent implements OnInit {
       error: (err) => {
         this.errorMessage = err.error?.message || 'Error al guardar.';
         this.isSubmitting = false;
-      }
+      },
     });
   }
 
@@ -82,8 +89,16 @@ export class AddUsuarioComponent implements OnInit {
   }
 
   // Getters para validaciones
-  get nombreControl() { return this.usuarioForm.get('nombre'); }
-  get emailControl() { return this.usuarioForm.get('email'); }
-  get rolControl() { return this.usuarioForm.get('rol'); }
-  get passwordControl() { return this.usuarioForm.get('password'); }
+  get nombreControl() {
+    return this.usuarioForm.get('nombre');
+  }
+  get emailControl() {
+    return this.usuarioForm.get('email');
+  }
+  get rolControl() {
+    return this.usuarioForm.get('rol');
+  }
+  get passwordControl() {
+    return this.usuarioForm.get('password');
+  }
 }

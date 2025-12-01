@@ -1,9 +1,9 @@
 <div class="contenedor-pagina-login">
   <div class="contenedor-login">
-    
+
     <!-- Card de Login -->
     <div class="tarjeta-login">
-      
+
       <!-- Header con logo -->
       <div class="encabezado-login">
         <div class="logo-sistema">
@@ -15,22 +15,21 @@
 
       <!-- Formulario -->
       <form (ngSubmit)="onLogin()" class="formulario-login">
-        
+
         <!-- Campo Email -->
         <div class="grupo-formulario">
           <label for="email" class="etiqueta-formulario">
             <i class="fas fa-envelope"></i>
             Correo electrónico
           </label>
-          <input 
-            type="email" 
-            id="email" 
-            name="email" 
-            [(ngModel)]="email" 
-            required 
-            class="campo-formulario" 
-            placeholder="ejemplo@correo.com"
-          />
+          <input
+            type="email"
+            id="email"
+            name="email"
+            [(ngModel)]="email"
+            required
+            class="campo-formulario"
+            placeholder="ejemplo@correo.com" />
           <div class="icono-campo">
             <i class="fas fa-user"></i>
           </div>
@@ -42,15 +41,14 @@
             <i class="fas fa-lock"></i>
             Contraseña
           </label>
-          <input 
-            type="password" 
-            id="password" 
-            name="password" 
-            [(ngModel)]="password" 
-            required 
-            class="campo-formulario" 
-            placeholder="••••••••"
-          />
+          <input
+            type="password"
+            id="password"
+            name="password"
+            [(ngModel)]="password"
+            required
+            class="campo-formulario"
+            placeholder="••••••••" />
           <div class="icono-campo">
             <i class="fas fa-key"></i>
           </div>
@@ -59,7 +57,7 @@
         <!-- Opciones adicionales -->
         <div class="opciones-login">
           <label class="recordar-sesion">
-             <!--<input type="checkbox" [(ngModel)]="recordarSesion" name="recordarSesion">-->
+            <!--<input type="checkbox" [(ngModel)]="recordarSesion" name="recordarSesion">-->
             <span class="checkmark"></span>
             Recordar sesión
           </label>
@@ -117,7 +115,7 @@
       <div class="contenido-panel">
         <h3>Control Total de tu Inventario</h3>
         <p>Gestiona productos, ventas y proveedores en un solo lugar</p>
-        
+
         <div class="lista-beneficios">
           <div class="beneficio">
             <i class="fas fa-check-circle"></i>

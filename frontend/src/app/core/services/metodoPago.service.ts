@@ -10,13 +10,12 @@ export interface MetodoPago {
 @Injectable({
   providedIn: 'root',
 })
-
 export class MetodoPagoService {
   private baseUrl = 'http://localhost:3000/api/metodosPago';
 
   constructor(private http: HttpClient) {}
 
-  // Crear proveedor
+  // Crear
   addMetodoPago(MetodoPago: MetodoPago): Observable<MetodoPago> {
     return this.http.post<MetodoPago>(this.baseUrl, MetodoPago);
   }

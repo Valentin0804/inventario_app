@@ -8,10 +8,9 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './usuario-list.component.html',
-  styleUrls: ['./usuario-list.component.css']
+  styleUrls: ['./usuario-list.component.css'],
 })
 export class UsuarioListComponent implements OnInit {
-
   usuarios: Usuario[] = [];
 
   constructor(private usuarioService: UsuarioService) {}
@@ -22,17 +21,17 @@ export class UsuarioListComponent implements OnInit {
 
   cargarUsuarios() {
     this.usuarioService.getUsuarios().subscribe({
-      next: (res) => this.usuarios = res,
-      error: (err) => console.log(err)
+      next: (res) => (this.usuarios = res),
+      error: (err) => console.log(err),
     });
   }
 
   eliminar(id: number) {
-    if (!confirm("¿Eliminar usuario?")) return;
+    if (!confirm('¿Eliminar usuario?')) return;
 
     this.usuarioService.eliminarUsuario(id).subscribe({
       next: () => this.cargarUsuarios(),
-      error: () => alert("Error al eliminar")
+      error: () => alert('Error al eliminar'),
     });
   }
 }

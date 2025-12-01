@@ -12,7 +12,6 @@ export interface Proveedor {
 @Injectable({
   providedIn: 'root',
 })
-
 export class ProveedorService {
   private baseUrl = 'http://localhost:3000/api/proveedores';
 

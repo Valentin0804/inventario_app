@@ -3,11 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MercadoPagoService {
-
-  private baseUrl = "http://localhost:3000/api/mercadopago";
+  private baseUrl = 'http://localhost:3000/api/mercadopago';
 
   constructor(private http: HttpClient) {}
 
@@ -18,7 +17,7 @@ export class MercadoPagoService {
   estadoPago(id: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/estado/${id}`);
   }
-  
+
   verificarEstadoPago(externalReference: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/estado/${externalReference}`);
   }

@@ -1,6 +1,6 @@
 <div class="contenedor">
   <div class="contenedor-formulario">
-    
+
     <!-- Titulo -->
     <h1 class="titulo-pagina">
       <i class="fas fa-edit"></i> Editando Venta #{{ ventaId }}
@@ -8,24 +8,26 @@
 
     <!-- Buscador y Agregar venta -->
     <div class="seccion-agregar-producto formulario-grid">
-      
+
       <div class="grupo-formulario">
         <label class="etiqueta-formulario">Producto:</label>
         <select class="campo-formulario" [(ngModel)]="productoSeleccionadoId">
-           <option [ngValue]="null">Seleccione Producto...</option>
-           <option *ngFor="let p of listaProductos" [value]="p.id">
-             {{ p.nombre }} - ${{ p.precio_final }} (Stock: {{p.stock}})
-           </option>
+          <option [ngValue]="null">Seleccione Producto...</option>
+          <option *ngFor="let p of listaProductos" [value]="p.id">
+            {{ p.nombre }} - ${{ p.precio_final }} (Stock: {{p.stock}})
+          </option>
         </select>
       </div>
 
       <div class="grupo-formulario">
         <label class="etiqueta-formulario">Cantidad:</label>
-        <input type="number" class="campo-formulario" [(ngModel)]="cantidadInput" min="1" placeholder="1">
+        <input type="number" class="campo-formulario"
+          [(ngModel)]="cantidadInput" min="1" placeholder="1">
       </div>
 
       <div class="contenedor-botones-vertical">
-        <button class="boton boton-secundario boton-con-icono" (click)="agregarProductoALista()">
+        <button class="boton boton-secundario boton-con-icono"
+          (click)="agregarProductoALista()">
           <i class="fas fa-plus"></i> Agregar
         </button>
       </div>
@@ -34,8 +36,10 @@
 
     <!-- Alerta Informativa -->
     <div class="mensaje-informativo">
-      <i class="fas fa-info-circle"></i> 
-      <span><strong>Nota:</strong> Al guardar, el sistema devolverá el stock de la venta original y descontará el stock de esta nueva configuración automáticamente.</span>
+      <i class="fas fa-info-circle"></i>
+      <span><strong>Nota:</strong> Al guardar, el sistema devolverá el stock de
+        la venta original y descontará el stock de esta nueva configuración
+        automáticamente.</span>
     </div>
 
     <!-- Tabla de Detalle -->
@@ -57,15 +61,18 @@
               <td>{{ item.nombre }}</td>
               <td class="texto-centrado">{{ item.cantidad }}</td>
               <td class="texto-derecha">${{ item.precio_unitario }}</td>
-              <td class="texto-derecha monto-total">${{ item.subtotal | number:'1.2-2' }}</td>
+              <td class="texto-derecha monto-total">${{ item.subtotal |
+                number:'1.2-2' }}</td>
               <td class="texto-centrado">
-                <button class="boton-eliminar-mini" (click)="eliminarItem(i)" title="Quitar item">
+                <button class="boton-eliminar-mini" (click)="eliminarItem(i)"
+                  title="Quitar item">
                   <i class="fas fa-trash"></i>
                 </button>
               </td>
             </tr>
             <tr *ngIf="itemsVenta.length === 0">
-              <td colspan="5" class="fila-sin-datos">La lista de productos está vacía.</td>
+              <td colspan="5" class="fila-sin-datos">La lista de productos está
+                vacía.</td>
             </tr>
           </tbody>
         </table>
@@ -74,30 +81,34 @@
 
     <!-- Totales y Venta de Pago -->
     <div class="seccion-totales">
-      
+
       <div class="grupo-formulario">
         <label class="etiqueta-formulario">Método de Pago:</label>
         <select class="campo-formulario" [(ngModel)]="metodoPagoId">
           <option [ngValue]="null">Seleccionar...</option>
-          <option *ngFor="let mp of listaMetodosPago" [value]="mp.id">{{ mp.nombre }}</option>
+          <option *ngFor="let mp of listaMetodosPago" [value]="mp.id">{{
+            mp.nombre }}</option>
         </select>
       </div>
 
       <div class="contenedor-total">
         <span class="texto-total">Nuevo Total:</span>
-        <h2 class="monto-total-final">${{ totalCalculado | number:'1.2-2' }}</h2>
+        <h2 class="monto-total-final">${{ totalCalculado | number:'1.2-2'
+          }}</h2>
       </div>
 
     </div>
 
     <!-- Botones de Pago -->
     <div class="contenedor-botones-formulario ancho-completo">
-      <button class="boton boton-secundario boton-con-icono" routerLink="/venta-list">
+      <button class="boton boton-secundario boton-con-icono"
+        routerLink="/venta-list">
         <i class="fas fa-times"></i> Cancelar
       </button>
 
-      <button class="boton boton-primario boton-con-icono" (click)="actualizarVenta()" 
-              [disabled]="itemsVenta.length === 0 || !metodoPagoId">
+      <button class="boton boton-primario boton-con-icono"
+        (click)="actualizarVenta()"
+        [disabled]="itemsVenta.length === 0 || !metodoPagoId">
         <i class="fas fa-save"></i> Guardar Cambios
       </button>
     </div>

@@ -1,83 +1,199 @@
-/* Contenedor general de los filtros */
-.filtros-container {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  flex-wrap: wrap;
-  background: #ffffff;
-  padding: 12px 15px;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
-  margin-bottom: 20px;
+.contenedor {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-/* Inputs y selects */
-.filtros-container input,
-.filtros-container select {
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 15px;
-  transition: 0.2s ease;
+.grid-productos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 25px;
+  margin-top: 20px;
 }
 
-.filtros-container input:focus,
-.filtros-container select:focus {
-  border-color: #1976d2;
-  outline: none;
-  box-shadow: 0 0 4px rgba(25,118,210,0.4);
-}
-
-/* Labels */
-.filtro-item {
+.card-producto {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  font-size: 14px;
-  font-weight: 600;
+  position: relative;
 }
 
-/* Botón limpiar filtros */
-.btn-limpiar {
-  padding: 9px 16px;
-  background: #d32f2f;
+.card-producto:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card-imagen {
+  height: 180px;
+  width: 100%;
+  position: relative;
+  background-color: #f4f4f4;
+}
+
+.card-imagen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.badge-stock {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: bold;
   color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 15px;
-  cursor: pointer;
-  transition: background 0.25s;
-}
-
-.btn-limpiar:hover {
-  background: #b71c1c;
-}
-
-/* Indicadores de stock */
-.indicador-stock {
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 600;
-  color: #fff;
+  text-transform: uppercase;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .stock-optimo {
-  background: #2e7d32;
+  background-color: #28a745;
 }
-
 .stock-bajo {
-  background: #f9a825;
+  background-color: #ffc107;
+  color: #333;
 }
-
 .stock-critico {
-  background: #d32f2f;
+  background-color: #dc3545;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .filtros-container {
-    flex-direction: column;
-    align-items: stretch;
-  }
+.card-contenido {
+  padding: 15px;
+  flex-grow: 1;
+}
+
+.producto-titulo {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #333;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.producto-marca {
+  font-size: 0.85rem;
+  color: #777;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.producto-detalles {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.precio {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #2c3e50;
+}
+
+.proveedor {
+  font-size: 0.75rem;
+  color: #888;
+  background: #f0f0f0;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.descripcion-corta {
+  font-size: 0.9rem;
+  color: #666;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-acciones {
+  display: flex;
+  border-top: 1px solid #eee;
+}
+
+.btn-icon {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 12px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-icon.editar {
+  color: #3498db;
+  border-right: 1px solid #eee;
+}
+.btn-icon.editar:hover {
+  background-color: #ebf5fb;
+}
+
+.btn-icon.eliminar {
+  color: #e74c3c;
+}
+.btn-icon.eliminar:hover {
+  background-color: #fdedec;
+}
+
+.filtros-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  align-items: flex-end;
+}
+
+.filtro-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.filtro-item label {
+  font-size: 0.85rem;
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #555;
+}
+
+.filtro-item input,
+.filtro-item select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  min-width: 150px;
+}
+
+.btn-limpiar {
+  padding: 8px 15px;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  height: 35px;
+}
+
+.mensaje-vacio {
+  text-align: center;
+  padding: 40px;
+  color: #888;
+  font-size: 1.2rem;
+}
+.mensaje-vacio i {
+  font-size: 3rem;
+  margin-bottom: 10px;
+  color: #ccc;
 }

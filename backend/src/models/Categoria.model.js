@@ -7,7 +7,7 @@ const Categoria = sequelize.define(
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     nombre: { type: DataTypes.STRING(100), allowNull: false, unique: true },
     descripcion: { type: DataTypes.STRING(255) },
-    activo: { type: DataTypes.BOOLEAN, defaultValue: true } // Borrado lógico
+    activo: { type: DataTypes.BOOLEAN, defaultValue: true },
   },
   { tableName: "categorias", timestamps: false }
 );

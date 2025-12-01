@@ -38,7 +38,7 @@ const getCategoriaById = async (req, res) => {
 const updateCategoria = async (req, res) => {
   try {
     const [updated] = await Categoria.update(req.body, {
-      where: { id: req.params.id }
+      where: { id: req.params.id },
     });
     if (updated) {
       const categoria = await Categoria.findByPk(req.params.id);
@@ -54,7 +54,7 @@ const updateCategoria = async (req, res) => {
 const deleteCategoria = async (req, res) => {
   try {
     const deleted = await Categoria.destroy({
-      where: { id: req.params.id }
+      where: { id: req.params.id },
     });
     if (deleted) {
       return res.status(204).send();
@@ -70,5 +70,5 @@ module.exports = {
   getCategorias,
   getCategoriaById,
   updateCategoria,
-  deleteCategoria
+  deleteCategoria,
 };

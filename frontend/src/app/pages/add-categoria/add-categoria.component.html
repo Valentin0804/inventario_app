@@ -4,7 +4,7 @@
   </h2>
 
   <form [formGroup]="categoriaForm" (ngSubmit)="guardar()">
-    
+
     <!-- Nombre -->
     <div class="grupo-formulario">
       <label for="nombre" class="etiqueta-formulario">Nombre *</label>
@@ -17,7 +17,8 @@
         [class.campo-invalido]="nombreControl?.invalid && nombreControl?.touched" />
       <div class="mensaje-error"
         *ngIf="nombreControl?.invalid && nombreControl?.touched">
-        <small *ngIf="nombreControl?.errors?.['required']">El nombre es obligatorio.</small>
+        <small *ngIf="nombreControl?.errors?.['required']">El nombre es
+          obligatorio.</small>
         <small *ngIf="nombreControl?.errors?.['minlength']">
           Debe tener al menos 3 caracteres.
         </small>
@@ -44,15 +45,16 @@
 
     <!-- Botones -->
     <div class="contenedor-botones-formulario">
-      <button 
-        type="submit" 
+      <button
+        type="submit"
         class="boton boton-primario"
         [disabled]="isSubmitting || categoriaForm.invalid">
-        <i class="fas" [class.fa-save]="!isSubmitting" [class.fa-spinner]="isSubmitting" [class.fa-spin]="isSubmitting"></i>
+        <i class="fas" [class.fa-save]="!isSubmitting"
+          [class.fa-spinner]="isSubmitting" [class.fa-spin]="isSubmitting"></i>
         {{ isSubmitting ? 'Guardando...' : 'Guardar' }}
       </button>
-      <button 
-        type="button" 
+      <button
+        type="button"
         class="boton boton-secundario"
         (click)="goToCategoryList()">
         <i class="fas fa-times"></i> Cancelar

@@ -37,7 +37,11 @@
 .logo-sistema {
   width: 80px;
   height: 80px;
-  background: linear-gradient(135deg, var(--color-primario), var(--color-primario-oscuro));
+  background: linear-gradient(
+    135deg,
+    var(--color-primario),
+    var(--color-primario-oscuro)
+  );
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -137,10 +141,18 @@
   background: var(--color-exito);
 }
 
-.nivel.activo:nth-child(1) { background: #e74c3c; }
-.nivel.activo:nth-child(2) { background: #f39c12; }
-.nivel.activo:nth-child(3) { background: #f1c40f; }
-.nivel.activo:nth-child(4) { background: #27ae60; }
+.nivel.activo:nth-child(1) {
+  background: #e74c3c;
+}
+.nivel.activo:nth-child(2) {
+  background: #f39c12;
+}
+.nivel.activo:nth-child(3) {
+  background: #f1c40f;
+}
+.nivel.activo:nth-child(4) {
+  background: #27ae60;
+}
 
 .texto-fortaleza {
   font-size: 0.8rem;
@@ -187,7 +199,7 @@
 }
 
 .checkbox-terminos input[type="checkbox"]:checked + .checkmark::after {
-  content: '✓';
+  content: "✓";
   color: white;
   font-size: 12px;
 }
@@ -210,7 +222,8 @@
 }
 
 /* Mensajes */
-.mensaje-exito, .mensaje-error {
+.mensaje-exito,
+.mensaje-error {
   padding: 12px;
   border-radius: var(--radio-borde);
   margin: 15px 0;
@@ -240,7 +253,7 @@
 }
 
 .separador::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   left: 0;
@@ -309,7 +322,11 @@
 
 /* ===== PANEL LATERAL ===== */
 .panel-lateral {
-  background: linear-gradient(135deg, var(--color-primario), var(--color-primario-oscuro));
+  background: linear-gradient(
+    135deg,
+    var(--color-primario),
+    var(--color-primario-oscuro)
+  );
   color: white;
   padding: 40px;
   display: flex;
@@ -430,19 +447,19 @@
     grid-template-columns: 1fr;
     max-width: 450px;
   }
-  
+
   .panel-lateral {
     display: none;
   }
-  
+
   .tarjeta-registro {
     padding: 30px 25px;
   }
-  
+
   .estadisticas-registro {
     grid-template-columns: 1fr;
   }
-  
+
   .beneficio {
     justify-content: flex-start;
   }
@@ -452,28 +469,28 @@
   .contenedor-pagina-registro {
     padding: 10px;
   }
-  
+
   .tarjeta-registro {
     padding: 20px;
   }
-  
+
   .titulo-registro {
     font-size: 1.6rem;
   }
-  
+
   .logo-sistema {
     width: 60px;
     height: 60px;
   }
-  
+
   .logo-sistema i {
     font-size: 2rem;
   }
-  
+
   .beneficios-registro {
     text-align: center;
   }
-  
+
   .separador span {
     padding: 0 10px;
     font-size: 0.8rem;

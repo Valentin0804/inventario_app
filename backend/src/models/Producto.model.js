@@ -1,7 +1,9 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/db");
 
-const Producto = sequelize.define("Producto", {
+const Producto = sequelize.define(
+  "Producto",
+  {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     codigo_barras: { type: DataTypes.STRING(50), unique: true },
     nombre: { type: DataTypes.STRING(255), allowNull: false },
@@ -11,11 +13,21 @@ const Producto = sequelize.define("Producto", {
     precio_final: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
     descripcion: { type: DataTypes.TEXT },
     stock: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 },
-    alarma_stock: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 },
+    alarma_stock: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
+    },
     categoria_id: { type: DataTypes.INTEGER },
     proveedor_id: { type: DataTypes.INTEGER },
-    usuario_id: { type: DataTypes.INTEGER }
-  }, {
+    usuario_id: { type: DataTypes.INTEGER },
+    imagen_url: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      defaultValue: null,
+    },
+  },
+  {
     tableName: "productos",
     timestamps: false,
   }

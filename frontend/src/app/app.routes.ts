@@ -18,37 +18,46 @@ import { EditVentaComponent } from './pages/edit-venta/edit-venta.component';
 import { AddUsuarioComponent } from './pages/add-usuario/add-usuario.component';
 import { UsuarioListComponent } from './pages/usuario-list/usuario-list.component';
 
-
-
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'registro', component: RegistroComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    canActivate: [authGuard],
+  },
 
-  { path: 'add-producto', component: AddProductoComponent, canActivate: [authGuard]},
-  { path: 'add-producto/:id', component: AddProductoComponent},
-  { path: 'producto-list',  component: ProductoListComponent},
+  {
+    path: 'add-producto',
+    component: AddProductoComponent,
+    canActivate: [authGuard],
+  },
+  { path: 'add-producto/:id', component: AddProductoComponent },
+  { path: 'producto-list', component: ProductoListComponent },
 
-  { path: 'add-categoria', component: AddCategoriaComponent, canActivate: [authGuard]},
-  { path: 'add-categoria/:id', component: AddCategoriaComponent},
-  { path: 'categoria-list',  component: CategoriaListComponent},
+  {
+    path: 'add-categoria',
+    component: AddCategoriaComponent,
+    canActivate: [authGuard],
+  },
+  { path: 'add-categoria/:id', component: AddCategoriaComponent },
+  { path: 'categoria-list', component: CategoriaListComponent },
 
-  { path: 'add-proveedor',  component: AddProveedorComponent},
-  { path: 'add-proveedor/:id',  component: AddProveedorComponent },
-  { path: 'proveedor-list',  component: ProveedorListComponent},
-  
-  { path: 'add-metodopago', component: AddMetodoPagoComponent},
-  { path: 'add-metodopago/:id', component: AddMetodoPagoComponent},
-  { path: 'metodopago-list', component: MetodoPagoListComponent},
-  
-  { path: 'add-venta', component: AddVentaComponent},
-  { path: 'add-venta/:id', component: AddVentaComponent},
-  { path: 'venta-list', component: VentaListComponent},
-  { path: 'ventas/edit/:id',  component: EditVentaComponent },
+  { path: 'add-proveedor', component: AddProveedorComponent },
+  { path: 'add-proveedor/:id', component: AddProveedorComponent },
+  { path: 'proveedor-list', component: ProveedorListComponent },
+
+  { path: 'add-metodopago', component: AddMetodoPagoComponent },
+  { path: 'add-metodopago/:id', component: AddMetodoPagoComponent },
+  { path: 'metodopago-list', component: MetodoPagoListComponent },
+
+  { path: 'add-venta', component: AddVentaComponent },
+  { path: 'add-venta/:id', component: AddVentaComponent },
+  { path: 'venta-list', component: VentaListComponent },
+  { path: 'ventas/edit/:id', component: EditVentaComponent },
 
   { path: 'usuario-list', component: UsuarioListComponent },
-  { path: 'add-usuario', component: AddUsuarioComponent},
-  { path: 'add-usuario/:id', component: AddUsuarioComponent}
-
+  { path: 'add-usuario', component: AddUsuarioComponent },
+  { path: 'add-usuario/:id', component: AddUsuarioComponent },
 ];

@@ -20,6 +20,7 @@
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "mercadopago": "^2.10.0",
+    "multer": "^2.0.2",
     "mysql2": "^3.14.0",
     "sequelize": "^6.37.7"
   },
@@ -29,6 +30,6 @@
     "supertest": "^7.1.4"
   },
   "jest": {
-  "testEnvironment": "node"
+    "testEnvironment": "node"
   }
 }

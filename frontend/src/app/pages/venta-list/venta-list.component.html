@@ -4,12 +4,14 @@
     <h1 class="titulo-pagina">
       <i class="fas fa-truck-loading"></i> Historial de Ventas
     </h1>
-    
+
     <div class="contenedor-botones">
-      <button class="boton boton-primario boton-con-icono" routerLink="/add-venta">
+      <button class="boton boton-primario boton-con-icono"
+        routerLink="/add-venta">
         <i class="fas fa-plus"></i> Nueva Venta
       </button>
-      <button class="boton boton-secundario boton-con-icono" routerLink="/dashboard">
+      <button class="boton boton-secundario boton-con-icono"
+        routerLink="/dashboard">
         <i class="fas fa-arrow-alt-circle-left"></i> Volver al Dashboard
       </button>
     </div>
@@ -45,26 +47,30 @@
           <td class="columna-id">#{{ venta.id }}</td>
           <td>
             <div class="celda-fecha">
-              <span class="fecha-dia">{{ venta.fecha | date:'dd/MM/yyyy' }}</span>
+              <span class="fecha-dia">{{ venta.fecha | date:'dd/MM/yyyy'
+                }}</span>
               <span class="fecha-hora">{{ venta.fecha | date:'HH:mm' }}</span>
             </div>
           </td>
           <td>{{ venta.usuario?.nombre || 'Desconocido' }}</td>
           <td>
-            <span class="etiqueta-metodo-pago">{{ venta.metodoPago?.nombre || 'General' }}</span>
+            <span class="etiqueta-metodo-pago">{{ venta.metodoPago?.nombre ||
+              'General' }}</span>
           </td>
           <td class="texto monto-total">
             {{ venta.total_venta | currency:'USD':'symbol':'1.2-2' }}
           </td>
           <td>
             <div class="contenedor-acciones-celda">
-              <button class="boton boton-editar boton-con-icono" (click)="editar(venta)" title="Editar">
+              <button class="boton boton-editar boton-con-icono"
+                (click)="editar(venta)" title="Editar">
                 <i class="fas fa-edit"> </i>Editar
               </button>
-              <button class="boton boton-eliminar boton-con-icono" (click)="eliminar(venta.id)" title="Eliminar (Restaurar Stock)">
+              <button class="boton boton-eliminar boton-con-icono"
+                (click)="eliminar(venta.id)" title="Eliminar (Restaurar Stock)">
                 <i class="fas fa-trash-alt"></i> Eliminar
               </button>
-            </div>   
+            </div>
           </td>
         </tr>
       </tbody>

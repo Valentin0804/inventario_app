@@ -4,30 +4,37 @@
   <nav class="barra-navegacion">
     <h1 class="titulo-dashboard">Panel de Control General</h1>
     <div class="contenedor-botones-navegacion">
-      <!-- Corregí las rutas de estos botones -->
+
       <button class="boton-navegacion">
         <i class="fas fa-home"></i> Inicio
       </button>
+
+      <!-- Historial de Ventas - visible para ambos -->
       <button class="boton-navegacion" (click)="goToVentas()">
         <i class="fas fa-chart-line"></i> Ventas
       </button>
-      <button class="boton-navegacion" (click)="goToAddProduct()">
+
+      <!-- Inventario SOLO para dueño -->
+      <button class="boton-navegacion" *ngIf="isDueno"
+        (click)="goToAddProduct()">
         <i class="fas fa-boxes"></i> Inventario
       </button>
-      <!-- Botón de configuración -->
-      <button class="boton-navegacion">
-        <i class="fas fa-cog"></i> Configuración
+
+      <button (click)="logout()" class="boton-navegacion">
+        Cerrar sesión
       </button>
     </div>
   </nav>
 
   <ng-container *ngIf="!loading; else cargando">
 
-    <!-- Sección de acciones principales -->
+    <!-- ACCIONES PRINCIPALES -->
     <section class="seccion-contenedor">
       <h2 class="titulo-seccion">Acciones Principales</h2>
+
       <div class="contenedor-acciones">
-        <!-- Acción principal destacada -->
+
+        <!-- NUEVA VENTA (dueño y empleado) -->
         <div class="tarjeta accion-principal">
           <div class="icono-accion-principal">
             <i class="fas fa-shopping-cart"></i>
@@ -41,107 +48,137 @@
           </div>
         </div>
 
-        <!-- Acciones secundarias en grid -->
+        <!-- Acciones secundarias -->
         <div class="contenedor-acciones-secundarias">
+
+          <!-- Cargar Producto (dueño y empleado) -->
           <div class="tarjeta accion-secundaria">
             <div class="icono-accion-secundaria">
               <i class="fas fa-box"></i>
             </div>
             <h3>Cargar Producto</h3>
-            <p>Añade un nuevo ítem a tu inventario de productos.</p>
+            <p>Añade un nuevo ítem a tu inventario.</p>
             <button class="boton-secundario" (click)="goToAddProduct()">
               Añadir Producto
             </button>
           </div>
 
-          <div class="tarjeta accion-secundaria">
+          <!-- Cargar Proveedor - SOLO dueño -->
+          <div class="tarjeta accion-secundaria" *ngIf="isDueno">
             <div class="icono-accion-secundaria">
               <i class="fas fa-truck"></i>
             </div>
             <h3>Cargar Proveedor</h3>
-            <p>Registra un nuevo contacto de proveedor.</p>
+            <p>Registra un nuevo proveedor.</p>
             <button class="boton-secundario" (click)="goToAddProveedor()">
               Añadir Proveedor
             </button>
           </div>
 
-          <div class="tarjeta accion-secundaria">
+          <!-- Categoría - SOLO dueño -->
+          <div class="tarjeta accion-secundaria" *ngIf="isDueno">
             <div class="icono-accion-secundaria">
               <i class="fas fa-tags"></i>
             </div>
             <h3>Cargar Categoría</h3>
-            <p>Organiza tus productos con nuevas categorías.</p>
+            <p>Organiza tus productos.</p>
             <button class="boton-secundario" (click)="goToAddCategoria()">
               Añadir Categoría
             </button>
           </div>
 
-          <div class="tarjeta accion-secundaria">
+          <!-- Método de Pago - SOLO dueño -->
+          <div class="tarjeta accion-secundaria" *ngIf="isDueno">
             <div class="icono-accion-secundaria">
               <i class="fas fa-credit-card"></i>
             </div>
             <h3>Cargar Método de Pago</h3>
-            <p>Agrega un nuevo método de pago para las transacciones.</p>
+            <p>Agrega un método de pago.</p>
             <button class="boton-secundario" (click)="goToAddMetodoPago()">
               Añadir Método
             </button>
           </div>
 
+          <!-- Historial de Ventas - ambos -->
           <div class="tarjeta accion-secundaria">
             <div class="icono-accion-secundaria">
               <i class="fas fa-history"></i>
             </div>
             <h3>Historial de Ventas</h3>
-            <p>Consulta el registro completo de todas las ventas realizadas.</p>
+            <p>Consulta el registro de ventas.</p>
             <button class="boton-secundario" (click)="goToVentas()">
               Ver Historial
             </button>
           </div>
 
-           <div class="tarjeta accion-secundaria">
+          <!-- Subcuentas SOLO dueño -->
+          <div class="tarjeta accion-secundaria" *ngIf="isDueno">
             <div class="icono-accion-secundaria">
-              <i class="fas fa-history"></i>
+              <i class="fas fa-users"></i>
             </div>
             <h3>Sub Cuentas</h3>
-            <p>Mira el registro de tus empleados.</p>
+            <p>Gestiona empleados.</p>
             <button class="boton-secundario" (click)="goToUsuarios()">
-              Ver Historial
+              Ver Usuarios
             </button>
           </div>
+
         </div>
       </div>
     </section>
 
-    <!-- Sección de KPIs -->
+    <!-- KPIs (Cambian por rol) -->
     <section class="seccion-contenedor">
       <h2 class="titulo-seccion">Resumen del Día</h2>
+
       <div class="contenedor-kpis">
         <div class="tarjeta tarjeta-kpi">
           <div class="icono-kpi">
             <i class="fas fa-chart-bar"></i>
           </div>
           <h3>Ventas Realizadas</h3>
-          <!-- Usamos summary directo -->
-          <p class="valor-kpi">{{ summary.kpis.salesToday }}</p>
+
+          <!-- Dueño ve ventas globales -->
+          <p class="valor-kpi" *ngIf="isDueno">
+            {{ summary.kpis.salesToday }}
+          </p>
+
+          <!-- Empleado ve solo sus ventas -->
+          <p class="valor-kpi" *ngIf="isEmpleado">
+            {{ summary.kpis.salesToday }}
+          </p>
+
           <span class="unidad-kpi">transacciones</span>
         </div>
+
         <div class="tarjeta tarjeta-kpi">
           <div class="icono-kpi">
             <i class="fas fa-money-bill-wave"></i>
           </div>
           <h3>Ingresos Totales</h3>
-          <!-- Usamos summary directo -->
-          <p class="valor-kpi">{{ summary.kpis.revenueToday |
-            currency:'ARS':'symbol-narrow':'1.0-0' }}</p>
+
+          <!-- zz -->
+          <p class="valor-kpi" *ngIf="isDueno">
+            {{ summary.kpis.revenueToday |
+            currency:'ARS':'symbol-narrow':'1.0-0' }}
+          </p>
+
+          <!-- Empleado -->
+          <p class="valor-kpi" *ngIf="isEmpleado">
+            {{ summary.kpis.revenueToday |
+            currency:'ARS':'symbol-narrow':'1.0-0' }}
+          </p>
+
           <span class="unidad-kpi">Pesos Argentinos</span>
         </div>
       </div>
     </section>
 
-    <!-- Tarjeta de Métodos de Pago -->
+    <!-- MÉTODOS DE PAGO: Ambos roles -->
     <section class="seccion-contenedor"
       *ngIf="summary.charts.salesByMethod.length > 0">
       <h2 class="titulo-seccion">Detalle Financiero</h2>
+
       <div class="tarjeta">
         <div class="encabezado-alerta">
           <i class="fas fa-wallet icono-alerta" style="color: #4CAF50;"></i>
@@ -155,11 +192,9 @@
               <span class="nombre-producto">{{ metodo.metodoPago.nombre
                 }}</span>
             </div>
-
             <div class="estado-stock">
               <span class="badge-stock">{{ metodo.cantidad }} ventas</span>
             </div>
-
             <div class="monto-metodo">
               <strong>${{ metodo.total }}</strong>
             </div>
@@ -168,16 +203,14 @@
       </div>
     </section>
 
-    <!-- Alerta Stock -->
+    <!-- ALERTAS STOCK: Ambos roles -->
     <ul class="lista-alerta">
       <li *ngFor="let product of summary.alerts.lowStockProducts"
         class="item-alerta">
 
-        <!--Info Producto -->
         <div class="info-producto">
           <span class="nombre-producto">{{ product.nombre }}</span>
 
-          <!-- Datos del proveedor -->
           <div class="info-proveedor" *ngIf="product.proveedor">
             <i class="fas fa-truck-loading"></i> {{ product.proveedor.nombre }}
           </div>
@@ -186,7 +219,6 @@
           </div>
         </div>
 
-        <!-- Estado del Stock -->
         <div class="estado-stock">
           <span class="badge-stock">
             Actual: <strong>{{ product.stock }}</strong>
@@ -194,35 +226,24 @@
           <span class="meta-stock">Mín: {{ product.alarma_stock }}</span>
         </div>
 
-
         <div class="acciones-rapidas" *ngIf="product.proveedor">
 
-          <!-- Botón WhatsApp -->
           <a *ngIf="product.proveedor.telefono"
             [href]="'https://wa.me/' + product.proveedor.telefono + '?text=Hola, necesito reponer stock de ' + product.nombre"
             target="_blank"
-            class="btn-icon whatsapp"
-            title="Pedir por WhatsApp">
+            class="btn-icon whatsapp">
             <i class="fab fa-whatsapp"></i>
           </a>
 
-          <!-- Botón Email -->
           <a *ngIf="product.proveedor.email"
             [href]="'mailto:' + product.proveedor.email + '?subject=Reposición de ' + product.nombre"
-            class="btn-icon email"
-            title="Enviar Correo">
+            class="btn-icon email">
             <i class="fas fa-envelope"></i>
           </a>
 
         </div>
       </li>
     </ul>
-
-    <!-- El botón principal ahora lleva al inventario filtrado 
-    <button class="boton-detalles" [routerLink]="['/productos']"
-      [queryParams]="{ alerta: 'stock-bajo' }">
-      Gestionar Inventario <i class="fas fa-arrow-right"></i>
-    </button> -->
 
   </ng-container>
 
@@ -232,4 +253,5 @@
       <p>Cargando datos del dashboard...</p>
     </div>
   </ng-template>
+
 </div>

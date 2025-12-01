@@ -1,8 +1,7 @@
 require("dotenv").config();
 const request = require("supertest");
-const app = require("../src/services/app"); 
+const app = require("../src/services/app");
 const sequelize = require("../src/config/db");
-
 
 describe("Pruebas de integración - Productos", () => {
   let token = "";
@@ -11,12 +10,10 @@ describe("Pruebas de integración - Productos", () => {
   beforeAll(async () => {
     await sequelize.authenticate();
 
-    const res = await request(app)
-      .post("/api/auth/login")
-      .send({
-        email: "admin@gmail.com",
-        password: "admin1234",
-      });
+    const res = await request(app).post("/api/auth/login").send({
+      email: "admin@gmail.com",
+      password: "admin1234",
+    });
 
     token = res.body.accessToken;
   });

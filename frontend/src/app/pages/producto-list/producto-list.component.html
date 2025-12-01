@@ -1,8 +1,9 @@
 <div class="contenedor">
 
+  <!-- ENCABEZADO (Igual que antes) -->
   <div class="encabezado-seccion">
     <h1 class="titulo-pagina">
-      <i class="fas fa-truck-loading"></i> Lista de Productos
+      <i class="fas fa-truck-loading"></i> Catálogo de Productos
     </h1>
 
     <div class="contenedor-botones">
@@ -16,101 +17,83 @@
     </div>
   </div>
 
-  <!-- 📌 FILTROS -->
- <div class="filtros-container">
+  <!-- FILTROS (Igual que antes) -->
+  <div class="filtros-container">
+    <div class="filtro-item">
+      <label>Buscar:</label>
+      <input type="text" placeholder="Nombre..." [(ngModel)]="busqueda" (input)="aplicarFiltros()" />
+    </div>
 
-  <div class="filtro-item">
-    <label>Buscar:</label>
-    <input 
-      type="text" 
-      placeholder="Buscar producto..."
-      [(ngModel)]="busqueda"
-      (input)="aplicarFiltros()"
-    />
+    <div class="filtro-item">
+      <label>Proveedor:</label>
+      <select [(ngModel)]="proveedorFiltro" (change)="aplicarFiltros()">
+        <option value="">Todos</option>
+        <option *ngFor="let p of proveedores" [value]="p.id">
+          {{ p.nombre }}
+        </option>
+      </select>
+    </div>
+
+    <div class="filtro-item">
+      <label>Orden:</label>
+      <select [(ngModel)]="ordenStock" (change)="aplicarFiltros()">
+        <option value="">Defecto</option>
+        <option value="asc">Stock: Menor a Mayor</option>
+        <option value="desc">Stock: Mayor a Menor</option>
+      </select>
+    </div>
+
+    <button class="btn-limpiar" (click)="limpiarFiltros()">Limpiar</button>
   </div>
 
-  <div class="filtro-item">
-    <label>Proveedor:</label>
-    <select 
-      [(ngModel)]="proveedorFiltro"
-      (change)="aplicarFiltros()"
-    >
-      <option value="">Todos</option>
-      <option *ngFor="let p of proveedores" [value]="p.id">
-        {{ p.nombre }}
-      </option>
-    </select>
+  <!-- 📌 AQUÍ COMIENZA EL GRID DE CARDS -->
+  <div class="grid-productos">
+    
+    <!-- TARJETA INDIVIDUAL -->
+    <div class="card-producto" *ngFor="let p of productosFiltrados">
+      
+      <!-- Imagen del producto -->
+      <div class="card-imagen">
+        <!-- Si p.imagen_url es null, muestra una imagen por defecto -->
+        <img [src]="p.imagen_url || 'assets/no-image.png'" alt="{{ p.nombre }}">
+        
+        <!-- Badge de Stock superpuesto -->
+        <span class="badge-stock" [ngClass]="getClaseStock(p.stock)">
+          Stock: {{ p.stock }}
+        </span>
+      </div>
+
+      <div class="card-contenido">
+        <h3 class="producto-titulo">{{ p.nombre }}</h3>
+        <p class="producto-marca">{{ p.marca || 'Marca Genérica' }}</p>
+        
+        <div class="producto-detalles">
+          <p class="precio">{{ p.precio_final | currency:'ARS':'symbol':'1.0-0' }}</p>
+          <small class="proveedor">Prov: {{ getNombreProveedor(p.proveedor_id) }}</small>
+        </div>
+
+        <p class="descripcion-corta" title="{{ p.descripcion }}">
+          {{ p.descripcion || 'Sin descripción' }}
+        </p>
+      </div>
+
+      <!-- Acciones (Botones) -->
+      <div class="card-acciones">
+        <button class="btn-icon editar" [routerLink]="['/add-producto', p.id]" title="Editar">
+          <i class="fas fa-edit"></i>
+        </button>
+        <button class="btn-icon eliminar" (click)="eliminar(p.id!)" title="Eliminar">
+          <i class="fas fa-trash-alt"></i>
+        </button>
+      </div>
+    </div>
+
   </div>
 
-  <div class="filtro-item">
-    <label>Ordenar por stock:</label>
-    <select 
-      [(ngModel)]="ordenStock"
-      (change)="aplicarFiltros()"
-    >
-      <option value="">Sin orden</option>
-      <option value="asc">Stock menor → mayor</option>
-      <option value="desc">Stock mayor → menor</option>
-    </select>
-  </div>
-
-  <button class="btn-limpiar" (click)="limpiarFiltros()">Limpiar</button>
-
-</div>
-
-
-  <!-- TABLA -->
-  <div class="contenedor-tabla">
-    <table class="tabla-datos">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nombre</th>
-          <th>Marca</th>
-          <th>Descripción</th>
-          <th>Proveedor</th>
-          <th>Stock</th>
-          <th class="columna-acciones">Acciones</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr *ngFor="let p of productosFiltrados">
-          <td class="columna-id">{{ p.id }}</td>
-          <td>{{ p.nombre }}</td>
-          <td>{{ p.marca }}</td>
-          <td>{{ p.descripcion }}</td>
-
-          <!-- Mostrar nombre de proveedor -->
-          <td>
-            {{ getNombreProveedor(p.proveedor_id) }}
-          </td>
-
-          <td>
-            <span [class]="getClaseStock(p.stock)">{{ p.stock }}</span>
-          </td>
-
-          <td>
-            <div class="contenedor-acciones-celda">
-              <button class="boton boton-editar boton-con-icono"
-                [routerLink]="['/add-producto', p.id]">
-                <i class="fas fa-edit"></i> Editar
-              </button>
-
-              <button class="boton boton-eliminar boton-con-icono"
-                (click)="eliminar(p.id!)">
-                <i class="fas fa-trash-alt"></i> Eliminar
-              </button>
-            </div>
-          </td>
-        </tr>
-
-        <!-- Sin datos -->
-        <tr *ngIf="productosFiltrados.length === 0">
-          <td colspan="7" class="fila-sin-datos">No hay productos que coincidan con la búsqueda.</td>
-        </tr>
-      </tbody>
-    </table>
+  <!-- MENSAJE SIN DATOS -->
+  <div *ngIf="productosFiltrados.length === 0" class="mensaje-vacio">
+    <i class="fas fa-box-open"></i>
+    <p>No hay productos que coincidan con la búsqueda.</p>
   </div>
 
 </div>
