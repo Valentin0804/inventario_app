@@ -7,8 +7,12 @@ const Usuario = sequelize.define("Usuario", {
   email: { type: DataTypes.STRING, unique: true,allowNull: false },
   password: { type: DataTypes.STRING, allowNull: false },
   rol: { 
-    type: DataTypes.ENUM('admin', 'vendedor'), 
-    defaultValue: 'vendedor' 
+    type: DataTypes.ENUM('DUEÑO', 'EMPLEADO'), 
+    defaultValue: 'DUEÑO' 
+  },
+  owner_id: {
+    type: DataTypes.INTEGER,
+    allowNull: true
   },
   activo: { type: DataTypes.BOOLEAN, defaultValue: true }
 }, {

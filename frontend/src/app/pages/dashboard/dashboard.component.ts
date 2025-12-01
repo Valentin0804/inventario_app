@@ -51,6 +51,7 @@ export class DashboardComponent implements OnInit {
   private router = inject(Router); 
 
 
+
   summary: DashboardSummary = {
     kpis: {
       salesToday: 0,
@@ -109,4 +110,8 @@ export class DashboardComponent implements OnInit {
   goToVentas(){
     this.router.navigate(['/venta-list']);
   }
+  goToUsuarios(){
+    this.router.navigate(['/usuario-list']);
+  }
+
 }

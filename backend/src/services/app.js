@@ -21,8 +21,6 @@ app.use("/api/auth", authRoutes);
 const mpWebhookRoutes = require("../routes/mp.webhook");
 app.use("/webhook", mpWebhookRoutes);
 
-app.use(verifyToken);
-
 // Rutas privadas
 const dashboardRoutes = require("../routes/dashboard.routes");
 const categoriaRoutes = require("../routes/categoria.routes");
@@ -31,6 +29,7 @@ const productoRoutes = require("../routes/producto.routes");
 const proveedorRoutes = require("../routes/proveedor.routes");
 const ventaRoutes = require("../routes/venta.routes");
 const mercadoPagoRoutes = require("../routes/mercadoPago.routes");
+const usuarioRoutes = require("../routes/usuario.routes");
 
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/categorias", categoriaRoutes);
@@ -39,5 +38,6 @@ app.use("/api/productos", productoRoutes);
 app.use("/api/proveedores", proveedorRoutes);
 app.use("/api/ventas", ventaRoutes);
 app.use("/api/mercadopago", mercadoPagoRoutes);
+app.use("/api/usuarios", usuarioRoutes);
 
 module.exports = app;

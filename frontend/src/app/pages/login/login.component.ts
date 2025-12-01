@@ -28,6 +28,7 @@ export class LoginComponent {
         console.log('Login exitoso!', response);
 
         localStorage.setItem('auth_token', response.accessToken);
+        localStorage.setItem('role', response.role);
 
         this.router.navigate(['/dashboard']);
       },

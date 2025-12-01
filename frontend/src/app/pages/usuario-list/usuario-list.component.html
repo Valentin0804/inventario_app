@@ -1,0 +1,53 @@
+<div class="contenedor">
+
+  <div class="encabezado-seccion">
+    <h1 class="titulo-pagina">
+      <i class="fas fa-credit-card"></i>Usuarios de tu negocio
+    </h1>
+    <div class="contenedor-botones">
+      <button class="boton boton-primario boton-con-icono" routerLink="/add-usuario">
+        <i class="fas fa-plus-circle"></i> Nuevo Usuario
+      </button>
+      <button class="boton boton-secundario boton-con-icono" routerLink="/dashboard">
+        <i class="fas fa-arrow-alt-circle-left"></i> Volver al Dashboard
+      </button>
+    </div>
+  </div>
+
+  <div class="contenedor-tabla">
+    <table class="tabla-datos">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th>Rol</th>
+          <th class="columna-acciones">Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr *ngFor="let u of usuarios">
+      
+          <td>{{ u.nombre }}</td>
+          <td>{{ u.email }}</td>
+          <td>{{ u.rol }}</td>
+
+          <td>
+            <div class="contenedor-acciones-celda">
+              <button class="boton boton-editar boton-con-icono" [routerLink]="['/add-usuario', u.id]">
+                <i class="fas fa-edit"></i> Editar
+              </button>
+
+              <button class="boton boton-eliminar boton-con-icono" (click)="eliminar(u.id!)">
+                <i class="fas fa-trash-alt"></i> Eliminar
+              </button>
+            </div>
+          </td>
+        </tr>
+        
+      </tbody>
+    </table>
+  </div>
+
+</div>

@@ -15,6 +15,10 @@ import { MetodoPagoListComponent } from './pages/metodoPago-list/metodoPago-list
 import { AddVentaComponent } from './pages/add-venta/add-venta.component';
 import { VentaListComponent } from './pages/venta-list/venta-list.component';
 import { EditVentaComponent } from './pages/edit-venta/edit-venta.component';
+import { AddUsuarioComponent } from './pages/add-usuario/add-usuario.component';
+import { UsuarioListComponent } from './pages/usuario-list/usuario-list.component';
+
+
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -41,6 +45,10 @@ export const routes: Routes = [
   { path: 'add-venta', component: AddVentaComponent},
   { path: 'add-venta/:id', component: AddVentaComponent},
   { path: 'venta-list', component: VentaListComponent},
-  { path: 'ventas/edit/:id',  component: EditVentaComponent }
+  { path: 'ventas/edit/:id',  component: EditVentaComponent },
+
+  { path: 'usuario-list', component: UsuarioListComponent },
+  { path: 'add-usuario', component: AddUsuarioComponent},
+  { path: 'add-usuario/:id', component: AddUsuarioComponent}
 
 ];

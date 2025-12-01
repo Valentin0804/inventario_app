@@ -1,7 +1,6 @@
 const jwt = require("jsonwebtoken");
 
 const verifyToken = (req, res, next) => {
-  // El token vendrá en la cabecera 'Authorization' como 'Bearer <token>'
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
 
@@ -13,10 +12,28 @@ const verifyToken = (req, res, next) => {
     if (err) {
       return res.status(401).send({ message: "No autorizado. Token inválido." });
     }
-    // Si el token es válido, guardamos el ID del usuario en el objeto 'request'
+
     req.userId = decoded.id;
-    next(); // Permite que la petición continúe hacia el controlador
+    req.userRole = decoded.role;     // <-- AGREGADO
+    next();
   });
 };
 
-module.exports = { verifyToken };
+// SOLO Dueños
+const isDueno = (req, res, next) => {
+  console.log("ROL DEL TOKEN:", req.userRole);
+  if (req.userRole !== "DUEÑO") {
+    return res.status(403).send({ message: "Acceso permitido solo a Dueños" });
+  }
+  next();
+};
+
+// Dueños o Cajas
+const isCaja = (req, res, next) => {
+  if (req.userRole !== "EMPLEADO" && req.userRole !== "DUEÑO") {
+    return res.status(403).send({ message: "Acceso permitido solo a Empleados o Dueños" });
+  }
+  next();
+};
+
+module.exports = { verifyToken, isDueno, isCaja };

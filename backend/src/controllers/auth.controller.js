@@ -3,7 +3,7 @@ const Usuario = db.Usuario;
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-// Registro
+// Registro (siempre registra como Dueño)
 const register = async (req, res) => {
   try {
     const { nombre, email, password } = req.body;
@@ -17,10 +17,12 @@ const register = async (req, res) => {
       nombre,
       email,
       password: hashedPassword,
+      rol: "DUEÑO",       // <-- NUEVO
+      owner_id: null       // <-- NUEVO
     });
 
     res.status(201).send({
-      message: "¡Usuario registrado con éxito!",
+      message: "¡Dueño registrado con éxito!",
       usuario: nuevoUsuario
     });
 
@@ -36,6 +38,7 @@ const login = async (req, res) => {
     const { email, password } = req.body;
 
     const usuario = await Usuario.findOne({ where: { email } });
+
     if (!usuario) {
       return res.status(404).send({ message: "Usuario no encontrado." });
     }
@@ -45,14 +48,18 @@ const login = async (req, res) => {
       return res.status(401).send({ accessToken: null, message: "¡Contraseña incorrecta!" });
     }
 
-    const token = jwt.sign({ id: usuario.id }, process.env.JWT_SECRET, {
-      expiresIn: 86400, // 24 horas
-    });
+    const token = jwt.sign(
+      { id: usuario.id, role: usuario.rol },   // <-- ROLE agregado al token
+      process.env.JWT_SECRET,
+      { expiresIn: 86400 }
+    );
 
     res.status(200).send({
       id: usuario.id,
       nombre: usuario.nombre,
       email: usuario.email,
+      role: usuario.rol,    // <-- LO DEVOLVEMOS PARA ANGULAR
+      owner_id: usuario.owner_id,
       accessToken: token,
     });
 
