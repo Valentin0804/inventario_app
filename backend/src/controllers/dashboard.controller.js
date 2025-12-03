@@ -18,10 +18,10 @@ const getSummary = async (req, res) => {
     const startOfToday = new Date(now.setHours(0, 0, 0, 0));
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
 
-    /* FILTRO: dueño ve TODAS las ventas empleado solo sus ventas */
+    /* Dueño ve TODAS las ventas empleado solo sus ventas */
     const matchUser = isDueno ? {} : { usuario_id: userId };
 
-    /* KPI */
+    /* Kpi's */
     const salesToday = await db.Venta.count({
       where: {
         ...matchUser,
@@ -48,7 +48,7 @@ const getSummary = async (req, res) => {
     const averageTicket =
       salesToday > 0 ? (revenueToday / salesToday).toFixed(2) : 0;
 
-    /* GRÁFICO ventas por método de pago */
+    /* Ventas por método de pago */
     const salesByMethod = await db.Venta.findAll({
       where: {
         ...matchUser,
@@ -70,10 +70,9 @@ const getSummary = async (req, res) => {
       nest: true,
     });
 
-    /** ALERTAS: dueño ve todos los productos, empleado solo los suyos */
+    /* Alertas de stock */
     const lowStockProducts = await db.Producto.findAll({
       where: {
-        ...matchUser,
         [Op.and]: [
           Sequelize.where(
             Sequelize.col("Producto.stock"),

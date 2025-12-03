@@ -21,7 +21,7 @@ const verifyToken = (req, res, next) => {
   });
 };
 
-// SOLO Dueños
+// Solo Dueños
 const isDueno = (req, res, next) => {
   console.log("ROL DEL TOKEN:", req.userRole);
   if (req.userRole !== "DUEÑO") {
@@ -30,7 +30,7 @@ const isDueno = (req, res, next) => {
   next();
 };
 
-// Dueños o Cajas
+// Dueños o Cajas(Empleados)
 const isCaja = (req, res, next) => {
   if (req.userRole !== "EMPLEADO" && req.userRole !== "DUEÑO") {
     return res

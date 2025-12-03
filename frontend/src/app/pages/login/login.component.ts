@@ -14,6 +14,9 @@ import { AuthService } from '../../core/services/auth.service';
 export class LoginComponent {
   email = '';
   password = '';
+  rememberSession: boolean = false;
+  error: boolean = false;
+  errorMessage: string = '';
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -23,14 +26,11 @@ export class LoginComponent {
     const credentials = {
       email: this.email,
       password: this.password,
+      rememberSession: this.rememberSession
     };
 
     this.authService.login(credentials).subscribe({
       next: (res) => {
-        console.log('✔ Login OK:', res);
-        console.log('✔ Token:', localStorage.getItem('token'));
-        console.log('✔ User:', localStorage.getItem('user'));
-
         this.router.navigate(['/dashboard']);
       },
       error: (err) => {

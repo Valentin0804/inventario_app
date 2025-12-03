@@ -7,7 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "cypress:open": "cypress opens"
   },
   "private": true,
   "dependencies": {
@@ -21,7 +22,8 @@
     "@angular/router": "^19.2.0",
     "@auth0/angular-jwt": "^5.2.0",
     "@fortawesome/fontawesome-free": "^7.1.0",
-    "bootstrap": "^5.3.5",
+    "@popperjs/core": "^2.11.8",
+    "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.13.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
@@ -32,6 +34,7 @@
     "@angular/cli": "^19.2.7",
     "@angular/compiler-cli": "^19.2.0",
     "@types/jasmine": "~5.1.0",
+    "cypress": "^15.7.0",
     "jasmine-core": "~5.6.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",

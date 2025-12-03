@@ -28,7 +28,7 @@ const createProducto = async (req, res) => {
     let imagen_url = null;
 
     if (req.file) {
-      // Construiye la URL.
+      // Construye la URL.
       imagen_url = `${req.protocol}://${req.get("host")}/uploads/${
         req.file.filename
       }`;

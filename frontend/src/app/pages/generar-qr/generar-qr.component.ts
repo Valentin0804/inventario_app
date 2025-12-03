@@ -16,8 +16,8 @@ export class GenerarQrComponent {
   @Input() items!: any[];
   @Input() total!: number;
 
-  qrBase64: string | null = null;
-  preferenceId: string = '';
+  @Input() qrBase64: string | null = null;
+  @Input() preferenceId: string = '';
   cargando: boolean = false;
   estadoPago: string | null = null;
 
@@ -39,9 +39,18 @@ export class GenerarQrComponent {
 
     this.mpService.generarQR(data).subscribe((res) => {
       this.preferenceId = res.preference_id;
-      this.qrBase64 = res.qr;
-      this.estadoPago = 'pending';
+      console.log("RESPUESTA GENERAR QR:", res);
 
+
+      const urlPago = res.init_point;
+      console.log("URL PAGO:", urlPago);
+
+      this.qrBase64 = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(
+        urlPago
+      )}`;
+      console.log("QR FINAL:", this.qrBase64)
+
+      this.estadoPago = 'pending';
       this.cargando = false;
 
       this.iniciarVerificacion();
@@ -64,13 +73,12 @@ export class GenerarQrComponent {
   }
 
   guardarVenta() {
-
     const currentUser = this.authService.getCurrentUser();
-    
+
     const venta = {
       metodopago_id: 3, // 3 = QR
       items: this.items,
-      usuario_id: currentUser?.id ?? 0
+      usuario_id: currentUser?.id ?? 0,
     };
 
     this.ventaService.addVenta(venta).subscribe(() => {

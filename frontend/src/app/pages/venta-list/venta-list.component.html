@@ -6,31 +6,60 @@
     </h1>
 
     <div class="contenedor-botones">
-      <button class="boton boton-primario boton-con-icono"
-        routerLink="/add-venta">
+      <button class="boton boton-primario boton-con-icono" routerLink="/add-venta">
         <i class="fas fa-plus"></i> Nueva Venta
       </button>
-      <button class="boton boton-secundario boton-con-icono"
-        routerLink="/dashboard">
+      <button class="boton boton-secundario boton-con-icono" routerLink="/dashboard">
         <i class="fas fa-arrow-alt-circle-left"></i> Volver al Dashboard
       </button>
     </div>
   </div>
 
-  <!-- Estado de Carga -->
   <div *ngIf="loading" class="estado-cargando">
     <i class="fas fa-spinner fa-spin icono-cargando"></i>
     <p>Cargando ventas...</p>
   </div>
 
-  <!-- Estado Vacío (Si no hay ventas) -->
-  <div *ngIf="!loading && ventas.length === 0" class="mensaje-informativo">
+  <div *ngIf="!loading && ventasFiltradas.length === 0" class="mensaje-informativo">
     <i class="fas fa-receipt"></i>
     <p>No se encontraron ventas registradas.</p>
   </div>
 
-  <!-- Tabla de Datos -->
-  <div class="contenedor-tabla" *ngIf="!loading && ventas.length > 0">
+  <div class="filtros-container">
+
+    <!-- FILTRO VENDEDOR -->
+    <div *ngIf="currentUser?.rol === 'dueno'">
+      <label>Vendedor:</label>
+      <select [(ngModel)]="filtroVendedor" (change)="aplicarFiltros()">
+        <option value="">Todos</option>
+        <option *ngFor="let v of vendedores" [value]="v.id">
+          {{ v.nombre }}
+        </option>
+      </select>
+    </div>
+
+    <!-- FILTRO FECHA -->
+    <div>
+      <label>Fecha:</label>
+      <input type="date" [(ngModel)]="filtroFecha" (change)="aplicarFiltros()" />
+    </div>
+
+    <!-- FILTRO MÉTODO DE PAGO -->
+    <div>
+      <label>Método de pago:</label>
+      <select [(ngModel)]="filtroMetodo" (change)="aplicarFiltros()">
+        <option value="">Todos</option>
+        <option *ngFor="let m of metodosPago" [value]="m.id">
+          {{ m.nombre }}
+        </option>
+      </select>
+    </div>
+
+    <button class="btn-limpiar" (click)="limpiarFiltros()">Limpiar filtros</button>
+
+  </div>
+
+  <div class="contenedor-tabla" *ngIf="!loading && ventasFiltradas.length > 0">
     <table class="tabla-datos">
       <thead>
         <tr class="texto-centrado">
@@ -43,37 +72,42 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let venta of ventas">
-          <td class="columna-id">#{{ venta.id }}</td>
+        <tr *ngFor="let venta of ventasFiltradas">
+          <td>#{{ venta.id }}</td>
+
           <td>
             <div class="celda-fecha">
-              <span class="fecha-dia">{{ venta.fecha | date:'dd/MM/yyyy'
-                }}</span>
+              <span class="fecha-dia">{{ venta.fecha | date:'dd/MM/yyyy' }}</span>
               <span class="fecha-hora">{{ venta.fecha | date:'HH:mm' }}</span>
             </div>
           </td>
+
           <td>{{ venta.usuario?.nombre || 'Desconocido' }}</td>
+
           <td>
-            <span class="etiqueta-metodo-pago">{{ venta.metodoPago?.nombre ||
-              'General' }}</span>
+            <span class="etiqueta-metodo-pago">
+              {{ venta.metodoPago?.nombre || 'General' }}
+            </span>
           </td>
+
           <td class="texto monto-total">
             {{ venta.total_venta | currency:'USD':'symbol':'1.2-2' }}
           </td>
+
           <td>
             <div class="contenedor-acciones-celda">
-              <button class="boton boton-editar boton-con-icono"
-                (click)="editar(venta)" title="Editar">
-                <i class="fas fa-edit"> </i>Editar
+              <button class="boton boton-editar" (click)="editar(venta)">
+                <i class="fas fa-edit"></i> Editar
               </button>
-              <button class="boton boton-eliminar boton-con-icono"
-                (click)="eliminar(venta.id)" title="Eliminar (Restaurar Stock)">
+              <button class="boton boton-eliminar" (click)="eliminar(venta.id)">
                 <i class="fas fa-trash-alt"></i> Eliminar
               </button>
             </div>
           </td>
+
         </tr>
       </tbody>
     </table>
   </div>
+
 </div>

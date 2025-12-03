@@ -14,4 +14,9 @@ Este directorio contiene toda la documentación del proyecto **Sistema de Gesti�
 ## 📺 Demo en Video
 
 
+## 📁 Directorio del backend
+**Path:** [`/backend/`](https://github.com/Valentin0804/inventario_app/tree/master/backend)
+
+## 📁 Directorio del frontend
+**Path:** [`/frontend/`](https://github.com/Valentin0804/inventario_app/tree/master/frontend)
 ---

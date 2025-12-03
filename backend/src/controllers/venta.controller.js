@@ -236,19 +236,27 @@ const getVentas = async (req, res) => {
     const userId = req.userId;
     const userRole = (req.userRole || "").toUpperCase();
 
-    // Si NO es dueño, solo ve sus propias ventas
+    const { vendedor, fecha, metodoPago } = req.query;
 
     let whereClause = {};
 
-    // Si NO es dueño filtramos por su ID.
+    // Empleado solo ve sus ventas
     if (userRole !== "DUEÑO" && userRole !== "DUENO") {
-      whereClause = { usuario_id: userId };
+      whereClause.usuario_id = userId;
+    } else {
+      // Dueño puede filtrar por vendedor
+      if (vendedor) whereClause.usuario_id = vendedor;
     }
+
+    // Otros filtros
+    if (fecha) whereClause.fecha = fecha;
+    if (metodoPago) whereClause.metodopago_id = metodoPago;
 
     const ventas = await Venta.findAll({
       where: whereClause,
       include: [
-        { model: Usuario, as: "usuario", attributes: ["nombre", "email"] },
+        { model: Usuario, as: "usuario", attributes: ["id", "nombre", "email"] },
+        { model: MetodoPago, as: "metodoPago" }
       ],
       order: [["fecha", "DESC"]],
     });
@@ -259,6 +267,8 @@ const getVentas = async (req, res) => {
     res.status(500).json({ message: "Error al obtener ventas" });
   }
 };
+
+
 
 const getVentaById = async (req, res) => {
   try {
@@ -279,6 +289,36 @@ const getVentaById = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+const getVendedores = async (req, res) => {
+  try {
+    const vendedores = await Usuario.findAll({
+      where: { rol: "EMPLEADO" },
+      attributes: ["id", "nombre", "email"]
+    });
+
+    const dueno = await Usuario.findAll({
+      where: { rol: "DUEÑO" },
+      attributes: ["id", "nombre", "email"]
+    });
+
+    res.json([...dueno, ...vendedores]);
+  } catch (error) {
+    res.status(500).json({ message: "Error al obtener vendedores" });
+  }
+};
+
+const getMetodosPago = async (req, res) => {
+  try {
+    const metodos = await MetodoPago.findAll({
+      attributes: ["id", "nombre"]
+    });
+
+    res.json(metodos);
+  } catch (error) {
+    res.status(500).json({ message: "Error al obtener métodos de pago" });
+  }
+};
+
 
 module.exports = {
   createVenta,
@@ -287,4 +327,6 @@ module.exports = {
   listarVentas,
   getVentas,
   getVentaById,
+  getMetodosPago,
+  getVendedores
 };

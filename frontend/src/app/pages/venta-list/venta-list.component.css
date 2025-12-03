@@ -1,0 +1,34 @@
+.filtros-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 12px;
+  background: #f6f6f6;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.filtros-container label {
+  font-size: 14px;
+  color: #333;
+}
+
+.filtros-container input,
+.filtros-container select {
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.btn-limpiar {
+  background: #d9534f;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-limpiar:hover {
+  background: #c9302c;
+}

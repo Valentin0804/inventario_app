@@ -1,8 +1,20 @@
-<button (click)="generarQR()" [disabled]="cargando">
-  {{ cargando ? "Generando..." : "Generar QR" }}
-</button>
+<div class="qr-container">
+  <h2 class="qr-title">Escaneá para pagar</h2>
 
-<div *ngIf="qrBase64">
-  <h3>Escanee el QR con Mercado Pago</h3>
-  <img [src]="qrBase64" alt="QR Mercado Pago" width="300">
+  <div class="qr-box">
+    <img [src]="qrBase64" class="qr-img" alt="QR de pago" />
+
+    <div class="qr-status" *ngIf="estadoPago === 'pending'">
+      <i class="fas fa-sync fa-spin"></i>
+      Esperando el pago...
+    </div>
+
+    <div class="qr-status success" *ngIf="estadoPago === 'approved'">
+      ✔ Pago aprobado
+    </div>
+  </div>
+
+  <p class="qr-hint">
+    Usá la app de Mercado Pago o cualquier lector QR.
+  </p>
 </div>

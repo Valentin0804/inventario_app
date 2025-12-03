@@ -13,8 +13,6 @@ const crearQR = async (req, res) => {
 
     const externalReference = `venta-${Date.now()}`;
 
-    //console.log("Datos recibidos del front:", JSON.stringify(items, null, 2));
-
     const bodyPreference = {
       items: items.map((i) => ({
         title: `Producto ${i.producto_id}`,
@@ -31,8 +29,6 @@ const crearQR = async (req, res) => {
       external_reference: externalReference,
     };
 
-    //console.log("ENVIANDO ESTO A MERCADO PAGO:", JSON.stringify(bodyPreference, null, 2));
-
     const preference = await new Preference(client).create({
       body: bodyPreference,
     });
@@ -42,7 +38,6 @@ const crearQR = async (req, res) => {
       external_reference: externalReference,
     });
   } catch (error) {
-    //console.error("Error MP:", error);
     return res
       .status(500)
       .json({ message: "Error generando link de pago", details: error });
@@ -75,7 +70,6 @@ const comprobarPago = async (req, res) => {
 
     return res.json({ pagado: false });
   } catch (error) {
-    //console.error("Error comprobando pago:", error);
     return res.status(500).json({ message: "Error" });
   }
 };

@@ -4,31 +4,61 @@
       <i class="fas fa-cash-register"></i> Nueva Venta
     </h1>
 
-    <!-- Buscador ded productos -->
-    <div class="seccion-agregar-producto formulario-grid">
-      <div class="grupo-formulario">
-        <label class="etiqueta-formulario">Producto:</label>
-        <select class="campo-formulario" [(ngModel)]="productoSeleccionadoId">
-          <option [ngValue]="null">Seleccione Producto...</option>
-          <option *ngFor="let p of listaProductos" [value]="p.id">
-            {{ p.nombre }} - ${{ p.precio_final || p.precio_neto }} (Stock:
-            {{p.stock}})
-          </option>
-        </select>
+    <!-- Buscador  -->
+    <div class="grupo-formulario buscador-wrapper">
+      <label class="etiqueta-formulario">Buscar producto:</label>
+
+      <div class="autocomplete-container">
+        <input
+          type="text"
+          class="campo-formulario"
+          placeholder="Nombre o código..."
+          [(ngModel)]="filtro"
+          (input)="filtrarProductos()"
+          (focus)="mostrarLista = true" />
+
+        <!-- Lista flotante -->
+        <ul *ngIf="mostrarLista && productosFiltrados.length > 0"
+          class="autocomplete-list">
+          <li
+            *ngFor="let p of productosFiltrados"
+            (click)="seleccionarProducto(p)"
+            class="autocomplete-item">
+            <strong>{{ p.nombre }}</strong><br>
+            <span class="sub">{{ p.codigo_barras }} — ${{ p.precio_final ||
+              p.precio_neto }}</span>
+          </li>
+        </ul>
       </div>
 
-      <div class="grupo-formulario">
-        <label class="etiqueta-formulario">Cantidad:</label>
-        <input type="number" class="campo-formulario"
-          [(ngModel)]="cantidadInput" min="1" placeholder="1">
-      </div>
-
-      <div class="contenedor-botones-vertical">
-        <button class="boton boton-secundario boton-con-icono"
-          (click)="agregarProductoALista()">
-          <i class="fas fa-plus"></i> Agregar
+      <div class="lector-codigo">
+        <button class="btn-lector" disabled>
+          <i class="fas fa-barcode"></i>
+          Escanear código
         </button>
+        <small class="nota">(Función no disponible)</small>
       </div>
+
+    </div>
+
+    <!-- CANTIDAD -->
+    <div class="grupo-formulario">
+      <label class="etiqueta-formulario">Cantidad:</label>
+      <input
+        type="number"
+        class="campo-formulario"
+        [(ngModel)]="cantidadInput"
+        min="1"
+        placeholder="1">
+    </div>
+
+    <!-- BOTÓN AGREGAR -->
+    <div class="contenedor-botones-vertical">
+      <button class="boton boton-secundario boton-con-icono"
+        (click)="agregarProductoALista()">
+        <i class="fas fa-plus"></i>
+        Agregar
+      </button>
     </div>
 
     <!--Lista de detalles -->
@@ -80,34 +110,16 @@
 
       <!-- Boton para QR -->
       <button
-        *ngIf="metodoPagoSeleccionadoNombre.includes('qr')"
+        *ngIf="metodoPagoSeleccionadoNombre.includes('mercado')"
         class="btn btn-primary"
         (click)="generarQR()">
         <i class="fas fa-qrcode"></i> Generar QR
       </button>
 
       <!-- Modal para QR -->
-      <div *ngIf="modalQR" class="modal open">
-        <div class="modal-content">
-          <h3>Escanea para pagar</h3>
-
-          <ng-container *ngIf="qrBase64; else cargandoQR">
-            <img [src]="qrBase64" width="250" alt="Código QR de pago" />
-            <!-- Mensaje fijo mientras el modal esté abierto -->
-            <p style="color: orange; font-weight: bold; margin-top: 10px;">
-              <i class="fas fa-sync fa-spin"></i> Esperando pago...
-            </p>
-            <p style="font-size: 0.8rem; color: #666;">La ventana se cerrará
-              automáticamente al aprobarse.</p>
-          </ng-container>
-
-          <ng-template #cargandoQR>
-            <p>Conectando con Mercado Pago...</p>
-          </ng-template>
-
-          <button class="btn btn-danger" (click)="cerrarModal()">Cancelar /
-            Cerrar</button>
-        </div>
+      <div *ngIf="qrBase64">
+        <h3>Escanee el QR </h3>
+        <img [src]="qrBase64" width="200" alt="QR de pago" />
       </div>
 
       <div class="contenedor-total">

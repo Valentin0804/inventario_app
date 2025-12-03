@@ -1,4 +1,10 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  inject,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -34,7 +40,10 @@ export class AddVentaComponent implements OnInit, OnDestroy {
   private ventaService = inject(VentaService);
   private authService = inject(AuthService);
 
-  constructor(private mpService: MercadoPagoService) {}
+  constructor(
+    private mpService: MercadoPagoService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   modalQR: boolean = false;
   qrBase64: string | null = null;
@@ -42,19 +51,30 @@ export class AddVentaComponent implements OnInit, OnDestroy {
   intervaloPago: any = null;
 
   listaProductos: Producto[] = [];
-  listaMetodosPago: any[] = [];
+  productosFiltrados: Producto[] = [];
 
+  listaMetodosPago: any[] = [];
   productoSeleccionadoId: number | null = null;
   cantidadInput: number = 1;
+
+  filtro: string = '';
 
   itemsVenta: ItemVisual[] = [];
   metodoPagoId: number | null = null;
   totalCalculado: number = 0;
   metodoPagoSeleccionadoNombre: string = '';
+  mostrarLista: boolean = false;
 
   ngOnInit(): void {
     this.cargarDatosIniciales();
-    
+    document.addEventListener('click', (event) => {
+    const target = event.target as HTMLElement;
+      if (!target.closest('.autocomplete-container')) {
+        this.mostrarLista = false;
+        this.cdr.detectChanges();
+      }
+    });
+
   }
 
   ngOnDestroy() {
@@ -63,14 +83,36 @@ export class AddVentaComponent implements OnInit, OnDestroy {
 
   cargarDatosIniciales() {
     this.productoService.getProductos().subscribe({
-      next: (res) => (this.listaProductos = res),
+      next: (res) => {
+        
+        this.listaProductos = res;
+        this.productosFiltrados = [...res];
+      },
       error: (err) => console.error('Error cargando productos', err),
     });
 
     this.metodoPagoService.getMetodosPagos().subscribe({
-      next: (res) => (this.listaMetodosPago = res),
+      next: (res) => 
+        (this.listaMetodosPago = res),
       error: (err) => console.error('Error cargando métodos de pago', err),
     });
+  }
+
+  filtrarProductos() {
+    const txt = this.filtro.toLowerCase().trim();
+    this.mostrarLista = true;
+
+    this.productosFiltrados = this.listaProductos.filter(
+      (p) =>
+        p.nombre.toLowerCase().includes(txt) ||
+        p.codigo_barras?.toString().includes(txt)
+    );
+  }
+
+  seleccionarProducto(p: Producto) {
+    this.productoSeleccionadoId = p.id!;
+    this.filtro = p.nombre; // muestra en input
+    this.mostrarLista = false;
   }
 
   agregarProductoALista() {
@@ -89,7 +131,7 @@ export class AddVentaComponent implements OnInit, OnDestroy {
 
     if (!productoReal) return;
 
-    // Validación de Stock
+    // Stock
     const cantidadEnLista = this.itemsVenta
       .filter((i) => i.producto_id === productoReal.id!)
       .reduce((acc, i) => acc + i.cantidad, 0);
@@ -102,9 +144,9 @@ export class AddVentaComponent implements OnInit, OnDestroy {
       );
       return;
     }
-    // Calcular precio
+
     const precioVenta = productoReal.precio_final || 0;
-    // Verificar si ya existe para agrupar
+
     const itemExistente = this.itemsVenta.find(
       (i) => i.producto_id === productoReal.id
     );
@@ -139,7 +181,6 @@ export class AddVentaComponent implements OnInit, OnDestroy {
       (acc, item) => acc + item.subtotal,
       0
     );
-    return this.totalCalculado;
   }
 
   onMetodoPagoChange() {
@@ -148,18 +189,13 @@ export class AddVentaComponent implements OnInit, OnDestroy {
   }
 
   generarQR() {
-    // Validaciones
-    if (this.itemsVenta.length === 0) {
-      alert('El carrito está vacío');
-      return;
-    }
-    if (!this.metodoPagoId) {
-      alert('Seleccione método de pago');
-      return;
-    }
+    console.log('BOTÓN QR PRESIONADO');
+
+    if (this.itemsVenta.length === 0) return alert('El carrito está vacío');
+    if (!this.metodoPagoId) return alert('Seleccione método de pago');
 
     const data = {
-      total: this.calcularTotalGeneral(),
+      total: this.totalCalculado,
       items: this.itemsVenta,
     };
 
@@ -168,21 +204,21 @@ export class AddVentaComponent implements OnInit, OnDestroy {
 
     this.mpService.generarQR(data).subscribe({
       next: (res) => {
-        // referencia
+        console.log('RESPUESTA MP:', res);
+
         this.externalReference = res.external_reference;
-
-        // imagen QR con API externa
         const link = res.init_point;
-        this.qrBase64 = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(
-          link
-        )}`;
 
-        // pregunta si pagaron
+        this.qrBase64 =
+          'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=' +
+          encodeURIComponent(link);
+
+        this.cdr.detectChanges();
         this.iniciarVerificacionDePago();
       },
       error: (err) => {
         console.error('Error generando QR', err);
-        alert('Error al conectar con Mercado Pago');
+        alert('Error con Mercado Pago');
         this.modalQR = false;
       },
     });
@@ -217,55 +253,40 @@ export class AddVentaComponent implements OnInit, OnDestroy {
 
   finalizarVentaExito() {
     this.detenerVerificacion();
-
     this.registrarVenta(true);
   }
 
   registrarVenta(esAutomatico: boolean = false) {
-    if (this.itemsVenta.length === 0) {
-      alert('No hay productos.');
-      return;
-    }
-    if (!this.metodoPagoId) {
-      alert('Seleccione método de pago.');
-      return;
-    }
+    if (this.itemsVenta.length === 0) return alert('No hay productos.');
+    if (!this.metodoPagoId) return alert('Seleccione método de pago.');
 
     const currentUser = this.authService.getCurrentUser();
 
     if (!currentUser) {
-      console.error('❌ No hay usuario logueado');
+      console.error('No hay usuario logueado');
       return;
     }
 
-    console.log('RegistrarVenta - currentUser:', currentUser);
-
     const payload: Venta = {
       metodopago_id: Number(this.metodoPagoId),
-      usuario_id: currentUser?.id ?? null,
-      items: this.itemsVenta.map((item) => ({
-        producto_id: item.producto_id,
-        cantidad: item.cantidad,
+      usuario_id: currentUser.id,
+      items: this.itemsVenta.map((i) => ({
+        producto_id: i.producto_id,
+        cantidad: i.cantidad,
       })),
     };
 
-    if (esAutomatico) {
-      alert('¡Pago Aprobado! Guardando venta en el sistema...');
-    }
+    if (esAutomatico) alert('¡Pago aprobado! Guardando venta...');
 
     this.ventaService.addVenta(payload).subscribe({
-      next: (res) => {
-        if (esAutomatico) {
-          this.modalQR = false;
-        }
+      next: () => {
+        if (esAutomatico) this.modalQR = false;
         alert('¡Venta registrada con éxito!');
         this.router.navigate(['/venta-list']);
       },
       error: (err) => {
-        console.error('Error guardando venta:', err);
-        const mensaje =
-          err.error?.message || 'Ocurrió un error al guardar la venta.';
-        alert(mensaje);
+        console.error(err);
+        alert(err.error?.message || 'Error al guardar la venta.');
       },
     });
   }

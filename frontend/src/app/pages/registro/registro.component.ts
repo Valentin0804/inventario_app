@@ -12,12 +12,16 @@ import { RouterLink } from '@angular/router';
   styleUrl: './registro.component.css',
 })
 export class RegistroComponent {
+checkPasswordStrength() {
+throw new Error('Method not implemented.');
+}
   nombre: string = '';
   email: string = '';
   password: string = '';
-  aceptaTerminos: boolean = false;
-  mensajeExito: string = '';
-  mensajeError: string = '';
+  acceptTerms: boolean = false;
+  successMessage: string = '';
+  errorMessage: string = '';
+  passwordStrength: number = 0;
 
   constructor(private http: HttpClient) {}
 
@@ -51,11 +55,11 @@ export class RegistroComponent {
 
     // Ejemplo de manejo de éxito/error
     if (this.nombre && this.email && this.password) {
-      this.mensajeExito = '¡Registro exitoso! Redirigiendo...';
-      this.mensajeError = '';
+      this.successMessage = '¡Registro exitoso! Redirigiendo...';
+      this.errorMessage = '';
     } else {
-      this.mensajeError = 'Por favor completa todos los campos';
-      this.mensajeExito = '';
+      this.errorMessage = 'Por favor completa todos los campos';
+      this.successMessage = '';
     }
   }
 }

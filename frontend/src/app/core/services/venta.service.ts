@@ -43,4 +43,21 @@ export class VentaService {
   deleteVenta(id: number, password: string): Observable<any> {
     return this.http.delete(`${this.baseUrl}/${id}`, { body: { password } });
   }
+  // FILTRADO
+  getVentaFiltrada(filtros: any): Observable<any[]> {
+    return this.http.get<any[]>(this.baseUrl, {
+      params: filtros,
+    });
+  }
+
+  // LISTA DE VENDEDORES
+  getVendedores(): Observable<any[]> {
+  return this.http.get<any[]>('http://localhost:3000/api/ventas/filtros/vendedores');
+}
+
+getMetodosPago(): Observable<any[]> {
+  return this.http.get<any[]>('http://localhost:3000/api/ventas/filtros/metodos-pago');
+}
+
+
 }
