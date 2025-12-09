@@ -49,15 +49,16 @@ export class VentaService {
       params: filtros,
     });
   }
-
   // LISTA DE VENDEDORES
   getVendedores(): Observable<any[]> {
-  return this.http.get<any[]>('http://localhost:3000/api/ventas/filtros/vendedores');
-}
+    return this.http.get<any[]>(
+      'http://localhost:3000/api/ventas/filtros/vendedores'
+    );
+  }
 
-getMetodosPago(): Observable<any[]> {
-  return this.http.get<any[]>('http://localhost:3000/api/ventas/filtros/metodos-pago');
-}
-
-
+  getMetodosPago(): Observable<any[]> {
+    return this.http.get<any[]>(
+      'http://localhost:3000/api/ventas/filtros/metodos-pago'
+    );
+  }
 }
