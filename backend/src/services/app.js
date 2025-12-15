@@ -11,7 +11,7 @@ const path = require('path');
 app.use(cors({
   origin: [
   "http://localhost:4200", 
-  "https://TU-PROYECTO.vercel.app"],
+  "https://inventario-jeixutjpo-valentins-projects-6a96cd31.vercel.app"],
   methods: "GET,POST,PUT,DELETE",
   credentials: true
 }));
