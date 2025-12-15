@@ -9,3 +9,5 @@
 # Env files
 /backend/.env
 /frontend/.env
+.vercel
+.env*.local

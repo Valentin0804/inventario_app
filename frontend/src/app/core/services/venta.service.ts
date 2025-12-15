@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface Venta {
   metodopago_id: number;
@@ -15,7 +16,7 @@ export interface Venta {
   providedIn: 'root',
 })
 export class VentaService {
-  private baseUrl = 'http://localhost:3000/api/ventas';
+  private baseUrl = `${environment.apiUrl}/api/ventas`;
 
   constructor(private http: HttpClient) {}
 
@@ -51,14 +52,10 @@ export class VentaService {
   }
   // LISTA DE VENDEDORES
   getVendedores(): Observable<any[]> {
-    return this.http.get<any[]>(
-      'http://localhost:3000/api/ventas/filtros/vendedores'
-    );
+    return this.http.get<any[]>(`${this.baseUrl}/filtros/vendedores`);
   }
 
   getMetodosPago(): Observable<any[]> {
-    return this.http.get<any[]>(
-      'http://localhost:3000/api/ventas/filtros/metodos-pago'
-    );
+    return this.http.get<any[]>(`${this.baseUrl}/filtros/metodos-pago`);
   }
 }

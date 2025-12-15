@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface MetodoPago {
   id?: number;
@@ -11,7 +12,7 @@ export interface MetodoPago {
   providedIn: 'root',
 })
 export class MetodoPagoService {
-  private baseUrl = 'http://localhost:3000/api/metodosPago';
+  private baseUrl = `${environment.apiUrl}/api/metodosPago`;
 
   constructor(private http: HttpClient) {}
 
