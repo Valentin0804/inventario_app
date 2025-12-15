@@ -9,7 +9,9 @@ const path = require('path');
 
 // CORS SIEMPRE ANTES DE LAS RUTAS
 app.use(cors({
-  origin: "http://localhost:4200",
+  origin: [
+  "http://localhost:4200", 
+  "https://TU-PROYECTO.vercel.app"],
   methods: "GET,POST,PUT,DELETE",
   credentials: true
 }));
