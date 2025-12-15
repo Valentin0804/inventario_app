@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-registro',
@@ -23,7 +24,7 @@ throw new Error('Method not implemented.');
   errorMessage: string = '';
   passwordStrength: number = 0;
 
-  constructor(private http: HttpClient) {}
+  constructor(private authService: AuthService) {}
 
   obtenerFortalezaContrasena(): string {
     if (!this.password) return '';
@@ -42,7 +43,7 @@ throw new Error('Method not implemented.');
       password: this.password,
     };
 
-    this.http.post('/api/auth/registro', nuevoUsuario).subscribe({
+    this.authService.registro(nuevoUsuario).subscribe({
       next: () => alert('Usuario registrado con éxito'),
       error: (err) =>
         alert('Error al registrar: ' + err.error?.message || err.message),

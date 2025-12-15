@@ -16,7 +16,6 @@ export interface User {
 })
 export class AuthService {
   private apiUrl = `${environment.apiUrl}/auth`;
-  
 
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
@@ -71,6 +70,13 @@ export class AuthService {
         this.currentUserSubject.next(fixedUser);
       })
     );
+  }
+  registro(data: {
+    nombre: string;
+    email: string;
+    password: string;
+  }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/registro`, data);
   }
 
   //  Obtener usuario actual
