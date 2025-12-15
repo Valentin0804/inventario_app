@@ -12,7 +12,7 @@ export interface MetodoPago {
   providedIn: 'root',
 })
 export class MetodoPagoService {
-  private baseUrl = `${environment.apiUrl}/api/metodosPago`;
+  private baseUrl = `${environment.apiUrl}/metodosPago`;
 
   constructor(private http: HttpClient) {}
 

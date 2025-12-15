@@ -24,7 +24,7 @@ export interface Producto {
   providedIn: 'root',
 })
 export class ProductosService {
-  private baseUrl = `${environment.apiUrl}/api/productos`;
+  private baseUrl = `${environment.apiUrl}/productos`;
 
   constructor(private http: HttpClient) {}
 

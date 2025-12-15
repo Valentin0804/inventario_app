@@ -16,7 +16,7 @@ export interface Venta {
   providedIn: 'root',
 })
 export class VentaService {
-  private baseUrl = `${environment.apiUrl}/api/ventas`;
+  private baseUrl = `${environment.apiUrl}/ventas`;
 
   constructor(private http: HttpClient) {}
 

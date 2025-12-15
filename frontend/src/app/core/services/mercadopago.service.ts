@@ -7,7 +7,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class MercadoPagoService {
-    private baseUrl = `${environment.apiUrl}/api/mercadopago`;
+    private baseUrl = `${environment.apiUrl}/mercadopago`;
   
 
   constructor(private http: HttpClient) {}

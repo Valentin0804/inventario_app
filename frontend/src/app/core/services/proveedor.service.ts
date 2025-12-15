@@ -14,7 +14,7 @@ export interface Proveedor {
   providedIn: 'root',
 })
 export class ProveedorService {
-  private baseUrl = `${environment.apiUrl}/api/proveedores`;
+  private baseUrl = `${environment.apiUrl}/proveedores`;
 
   constructor(private http: HttpClient) {}
 

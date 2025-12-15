@@ -13,7 +13,7 @@ export interface Categoria {
   providedIn: 'root',
 })
 export class CategoriaService {
-  private baseUrl = `${environment.apiUrl}/api/categorias`;
+  private baseUrl = `${environment.apiUrl}/categorias`;
   
 
   constructor(private http: HttpClient) {}
