@@ -3,7 +3,7 @@ const db = require("./models");
 const PORT = process.env.PORT || 3000;
 
 db.sequelize
-  .sync({ force: true })
+  .sync({ force: false })
   .then(() => {
     console.log("Base de datos sincronizada.");
     app.listen(PORT, () => {
