@@ -10,9 +10,9 @@ const path = require('path');
 // CORS SIEMPRE ANTES DE LAS RUTAS
 app.use(cors({
   origin: [
-  "http://localhost:4200", 
-  "https://inventario-9x0va4622-valentins-projects-6a96cd31.vercel.app",
-  "inventario-app-neon.vercel.app"],
+    "http://localhost:4200", 
+    "https://inventario-9x0va4622-valentins-projects-6a96cd31.vercel.app",
+    "https://inventario-app-neon.vercel.app"],
   methods: "GET,POST,PUT,DELETE",
   credentials: true
 }));
