@@ -1,4 +1,28 @@
-/* Utilizando las variables proporcionadas */
+:root {
+  /* --- PALETA DE COLORES (Igual que tu archivo anterior) --- */
+  --color-primario: #3498db;
+  --color-primario-oscuro: #2980b9;
+  --color-secundario: #2c3e50;
+  --color-exito: #27ae60;
+  --color-peligro: #e74c3c;
+  --color-advertencia: #f39c12;
+  --color-info: #17a2b8;
+
+  /* --- NEUTROS --- */
+  --color-fondo: #f8f9fa;
+  --color-borde: #e9ecef;
+  --color-texto: #333;
+  --color-texto-secundario: #6c757d;
+  --color-blanco: #ffffff;
+
+  /* --- SOMBRAS Y BORDES --- */
+  --sombra-suave: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --sombra-media: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --sombra-intensa: 0 8px 15px rgba(0, 0, 0, 0.1);
+  --radio-borde: 8px;
+  --radio-borde-pequeno: 4px;
+}
+
 .register-container {
   min-height: 100vh;
   display: flex;
@@ -10,13 +34,13 @@
 
 .register-wrapper {
   display: flex;
-  max-width: 1200px;
   width: 100%;
+  max-width: 1200px;
   min-height: 750px;
+  background: var(--color-blanco);
   border-radius: var(--radio-borde);
   overflow: hidden;
   box-shadow: var(--sombra-intensa);
-  background: var(--color-blanco);
 }
 
 .register-card {
@@ -36,6 +60,7 @@
   font-size: 3.5rem;
   color: var(--color-primario);
   margin-bottom: 20px;
+  display: block;
 }
 
 .register-title {
@@ -99,9 +124,9 @@
   transform: translateY(-50%);
   color: var(--color-texto-secundario);
   font-size: 1rem;
+  pointer-events: none;
 }
 
-/* Indicador de fortaleza de contraseña */
 .password-strength {
   margin-top: 10px;
 }
@@ -117,17 +142,13 @@
   height: 6px;
   background: var(--color-borde);
   border-radius: 3px;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease;
 }
 
-.level.active {
-  background: var(--color-exito);
-}
-
-.level:nth-child(1).active { background: var(--color-peligro); }
-.level:nth-child(2).active { background: var(--color-advertencia); }
-.level:nth-child(3).active { background: var(--color-info); }
-.level:nth-child(4).active { background: var(--color-exito); }
+.level.active:nth-child(1) { background: var(--color-peligro); }
+.level.active:nth-child(2) { background: var(--color-advertencia); }
+.level.active:nth-child(3) { background: var(--color-info); }
+.level.active:nth-child(4) { background: var(--color-exito); }
 
 .strength-text {
   font-size: 0.85rem;
@@ -135,7 +156,6 @@
   font-weight: 500;
 }
 
-/* Términos y condiciones */
 .terms-group {
   margin: 25px 0;
 }
@@ -147,10 +167,11 @@
   cursor: pointer;
   color: var(--color-texto);
   font-size: 0.95rem;
+  user-select: none;
 }
 
 .terms-checkbox input[type="checkbox"] {
-  display: none;
+  display: none; 
 }
 
 .terms-checkbox .checkmark {
@@ -188,6 +209,7 @@
 .terms-link {
   color: var(--color-primario);
   text-decoration: none;
+  font-weight: 600;
   transition: color 0.3s ease;
 }
 
@@ -196,17 +218,23 @@
   text-decoration: underline;
 }
 
-/* Botones */
-.btn-register {
+.btn-form {
   width: 100%;
   padding: 12px;
   font-size: 1.1rem;
   font-weight: 600;
   border-radius: var(--radio-borde-pequeno);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  text-align: center;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.btn-register {
   background: var(--color-primario);
   border: none;
   color: var(--color-blanco);
-  transition: all 0.3s ease;
   margin-top: 10px;
 }
 
@@ -222,14 +250,10 @@
 }
 
 .btn-login {
-  width: 100%;
-  padding: 10px;
-  font-weight: 600;
-  border-radius: var(--radio-borde-pequeno);
+  background: transparent;
   border: 2px solid var(--color-primario);
   color: var(--color-primario);
-  background: transparent;
-  transition: all 0.3s ease;
+  padding: 10px; 
 }
 
 .btn-login:hover {
@@ -238,7 +262,6 @@
   box-shadow: var(--sombra-media);
 }
 
-/* Separador */
 .separator {
   display: flex;
   align-items: center;
@@ -259,7 +282,6 @@
   font-size: 0.9rem;
 }
 
-/* Beneficios de registro */
 .register-benefits {
   margin-top: 30px;
   padding-top: 25px;
@@ -279,23 +301,18 @@
   gap: 12px;
 }
 
-.benefit-item {
+.benefit-item,
+.feature-item {
   display: flex;
   align-items: center;
   gap: 12px;
   color: var(--color-texto);
-}
-
-.benefit-item i {
-  color: var(--color-primario);
-  font-size: 1.2rem;
-}
-
-.benefit-item span {
   font-size: 0.95rem;
 }
 
-/* Panel lateral informativo */
+.benefit-item i { color: var(--color-primario); font-size: 1.2rem; }
+.feature-item i { color: var(--color-exito); }
+
 .info-panel {
   flex: 1;
   background: linear-gradient(135deg, var(--color-secundario) 0%, #1a2530 100%);
@@ -304,6 +321,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  position: relative; 
 }
 
 .info-content h3 {
@@ -334,6 +352,7 @@
   font-weight: 700;
   color: var(--color-primario);
   margin-bottom: 5px;
+  display: block;
 }
 
 .stat-text {
@@ -354,22 +373,12 @@
   margin-bottom: 40px;
 }
 
-.feature-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 0.95rem;
-}
-
-.feature-item i {
-  color: var(--color-exito);
-}
-
 .testimonial {
   background: rgba(255, 255, 255, 0.1);
   padding: 25px;
   border-radius: var(--radio-borde-pequeno);
   backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .quote {
@@ -389,35 +398,29 @@
   flex-direction: column;
 }
 
-.author strong {
-  font-size: 1.1rem;
-}
+.author strong { font-size: 1.1rem; }
+.author span { font-size: 0.9rem; opacity: 0.8; }
 
-.author span {
-  font-size: 0.9rem;
-  opacity: 0.8;
-}
-
-/* Alertas de Bootstrap personalizadas */
 .alert {
   border-radius: var(--radio-borde-pequeno);
-  border: none;
+  border: 1px solid transparent;
   padding: 12px 15px;
+  margin-bottom: 20px;
 }
 
 .alert-success {
   background-color: rgba(39, 174, 96, 0.1);
   color: var(--color-exito);
-  border: 1px solid rgba(39, 174, 96, 0.2);
+  border-color: rgba(39, 174, 96, 0.2);
 }
 
 .alert-danger {
   background-color: rgba(231, 76, 60, 0.1);
   color: var(--color-peligro);
-  border: 1px solid rgba(231, 76, 60, 0.2);
+  border-color: rgba(231, 76, 60, 0.2);
 }
 
-/* Responsive Design */
+
 @media (max-width: 992px) {
   .register-wrapper {
     flex-direction: column;
@@ -426,7 +429,7 @@
   
   .info-panel {
     order: -1;
-    padding: 30px 40px;
+    padding: 40px 30px;
   }
   
   .register-card {
@@ -447,19 +450,13 @@
     border-radius: 15px;
   }
   
-  .register-card {
+  .register-card, 
+  .info-panel {
     padding: 30px 20px;
   }
   
-  .info-panel {
-    padding: 25px 20px;
-  }
-  
+  .register-title,
   .info-content h3 {
-    font-size: 1.8rem;
-  }
-  
-  .register-title {
     font-size: 1.8rem;
   }
   
@@ -476,37 +473,26 @@
   }
   
   .stat-number {
-    font-size: 1.5rem;
     margin-bottom: 0;
+    font-size: 1.5rem;
   }
 }
 
 @media (max-width: 576px) {
-  .info-content h3 {
-    font-size: 1.6rem;
-  }
+  .register-logo { font-size: 3rem; }
+  .register-title { font-size: 1.6rem; }
+  .info-content h3 { font-size: 1.6rem; }
   
-  .register-logo {
-    font-size: 3rem;
-  }
-  
-  .register-title {
-    font-size: 1.6rem;
-  }
-  
-  .terms-text {
+  .terms-text,
+  .feature-item,
+  .benefit-item span {
     font-size: 0.9rem;
   }
+
+  .benefits-list { gap: 10px; }
   
-  .benefits-list {
-    gap: 10px;
-  }
-  
-  .feature-item {
-    font-size: 0.9rem;
-  }
-  
-  .btn-register, .btn-login {
+  .btn-form {
     font-size: 1rem;
+    padding: 10px;
   }
 }
