@@ -11,7 +11,8 @@ const path = require('path');
 app.use(cors({
   origin: [
   "http://localhost:4200", 
-  "https://inventario-9x0va4622-valentins-projects-6a96cd31.vercel.app"],
+  "https://inventario-9x0va4622-valentins-projects-6a96cd31.vercel.app",
+  "inventario-app-neon.vercel.app"],
   methods: "GET,POST,PUT,DELETE",
   credentials: true
 }));
